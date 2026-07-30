@@ -16,7 +16,7 @@ type ProductData = {
   imageUrl: string | null;
   price: number | null;
   unit: string | null;
-  status: "DRAFT" | "PUBLISHED";
+  status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
   categoryId: string;
   brandId: string | null;
   isFeatured: boolean;
@@ -89,6 +89,7 @@ export default function ProductEditForm({
         <select name="status" defaultValue={product.status} className={input}>
           <option value="DRAFT">Bản nháp</option>
           <option value="PUBLISHED">Công khai</option>
+          <option value="ARCHIVED">Đã lưu trữ</option>
         </select>
       </div>
       <MediaPicker name="imageUrl" defaultValue={product.imageUrl || ""} label="Ảnh đại diện sản phẩm" />
