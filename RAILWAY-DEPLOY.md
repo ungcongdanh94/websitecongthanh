@@ -1,41 +1,33 @@
-# Railway Deploy — v0.4
+# Railway Deploy — v0.5
 
-## 1. Variables bắt buộc
+Không cần tạo database mới.
+
+## Variables
 
 ```env
 DATABASE_URL=${{Postgres.DATABASE_URL}}
 ADMIN_EMAIL=admin@congthanhco.com
 ADMIN_PASSWORD=mat-khau-rat-manh
 AUTH_SECRET=chuoi-bi-mat-toi-thieu-32-ky-tu
+NEXT_PUBLIC_HOTLINE=so-hotline-cua-ban
+NEXT_PUBLIC_SITE_URL=https://congthanhco.com
 ```
 
-## 2. Sau khi deploy thành công
-
-Mở Railway Shell:
+## Sau khi deploy
 
 ```bash
 npx prisma db push
 npm run db:seed
 ```
 
-## 3. Kiểm tra dữ liệu
-
-```bash
-node -e "const {PrismaClient}=require('@prisma/client'); const p=new PrismaClient(); Promise.all([p.product.count(),p.category.count(),p.brand.count()]).then(console.log).finally(()=>p.$disconnect())"
-```
-
-Kết quả dự kiến tối thiểu:
+## Kiểm tra
 
 ```text
-[ 6, 3, 6 ]
+/
+ /san-pham
+ /bang-gia
+ /lien-he
+ /admin
 ```
 
-## 4. Kiểm tra font
-
-Mở các trang:
-
-- `/`
-- `/san-pham`
-- `/admin/products`
-
-Chữ “CÔNG THẢNH”, “Sản phẩm”, “Yêu cầu báo giá” phải hiển thị rõ dấu tiếng Việt.
+Nếu trang chủ không hiện sản phẩm, kiểm tra sản phẩm trong CMS đang ở trạng thái `PUBLISHED`.

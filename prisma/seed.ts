@@ -106,6 +106,7 @@ async function main() {
         unit: product.unit,
         specs: product.specs,
         status: PublishStatus.PUBLISHED,
+        isFeatured: ["nhom-xingfa-class-a-he-55", "phu-kien-cmech-cua-di", "tu-bep-nhom-phu-hoan-anh"].includes(product.slug),
         categoryId: categoryMap.get(product.category)!,
         brandId: brandMap.get(product.brand)!
       },
@@ -118,6 +119,7 @@ async function main() {
         unit: product.unit,
         specs: product.specs,
         status: PublishStatus.PUBLISHED,
+        isFeatured: ["nhom-xingfa-class-a-he-55", "phu-kien-cmech-cua-di", "tu-bep-nhom-phu-hoan-anh"].includes(product.slug),
         categoryId: categoryMap.get(product.category)!,
         brandId: brandMap.get(product.brand)!
       }

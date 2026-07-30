@@ -20,7 +20,8 @@ html {
 body {
   margin: 0;
   color: #10261d;
-  background: #f8fbf9;
+  background: #f7faf8;
+  min-height: 100vh;
   font-family: var(--font-be-vietnam-pro), "Segoe UI", sans-serif;
   font-feature-settings: "kern" 1, "liga" 1;
   -webkit-font-smoothing: antialiased;
@@ -61,4 +62,8 @@ select {
 
 .price {
   @apply text-xl font-bold text-brand-700;
+}
+
+.eyebrow {
+  @apply text-sm font-bold uppercase tracking-[0.18em] text-brand-700;
 }

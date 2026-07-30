@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { Send } from "lucide-react";
 
 type FormState = {
   customerName: string;
@@ -23,6 +24,9 @@ const initialState: FormState = {
   unit: "bộ",
   note: ""
 };
+
+const fieldClass =
+  "w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-100";
 
 export default function QuoteForm() {
   const [form, setForm] = useState(initialState);
@@ -57,23 +61,80 @@ export default function QuoteForm() {
   }
 
   return (
-    <form onSubmit={submit} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft">
+    <form onSubmit={submit} className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft sm:p-8">
       <div className="grid gap-4">
-        <input required value={form.customerName} onChange={(e) => setForm({ ...form, customerName: e.target.value })} className="rounded-2xl border px-4 py-3" placeholder="Họ và tên *" />
-        <input required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="rounded-2xl border px-4 py-3" placeholder="Số điện thoại *" />
-        <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="rounded-2xl border px-4 py-3" placeholder="Email" />
-        <input value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className="rounded-2xl border px-4 py-3" placeholder="Tên công ty/xưởng" />
-        <input value={form.productName} onChange={(e) => setForm({ ...form, productName: e.target.value })} className="rounded-2xl border px-4 py-3" placeholder="Sản phẩm quan tâm" />
         <div className="grid gap-4 sm:grid-cols-2">
-          <input type="number" min="0" step="0.01" value={form.quantity} onChange={(e) => setForm({ ...form, quantity: e.target.value })} className="rounded-2xl border px-4 py-3" placeholder="Số lượng" />
-          <input value={form.unit} onChange={(e) => setForm({ ...form, unit: e.target.value })} className="rounded-2xl border px-4 py-3" placeholder="Đơn vị" />
+          <input
+            required
+            value={form.customerName}
+            onChange={(e) => setForm({ ...form, customerName: e.target.value })}
+            className={fieldClass}
+            placeholder="Họ và tên *"
+          />
+          <input
+            required
+            value={form.phone}
+            onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            className={fieldClass}
+            placeholder="Số điện thoại *"
+          />
         </div>
-        <textarea value={form.note} onChange={(e) => setForm({ ...form, note: e.target.value })} className="min-h-36 rounded-2xl border px-4 py-3" placeholder="Nội dung cần tư vấn" />
-        <button disabled={status === "loading"} className="btn-primary disabled:opacity-60">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <input
+            type="email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            className={fieldClass}
+            placeholder="Email"
+          />
+          <input
+            value={form.company}
+            onChange={(e) => setForm({ ...form, company: e.target.value })}
+            className={fieldClass}
+            placeholder="Tên công ty/xưởng"
+          />
+        </div>
+        <input
+          value={form.productName}
+          onChange={(e) => setForm({ ...form, productName: e.target.value })}
+          className={fieldClass}
+          placeholder="Sản phẩm quan tâm"
+        />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            value={form.quantity}
+            onChange={(e) => setForm({ ...form, quantity: e.target.value })}
+            className={fieldClass}
+            placeholder="Số lượng"
+          />
+          <input
+            value={form.unit}
+            onChange={(e) => setForm({ ...form, unit: e.target.value })}
+            className={fieldClass}
+            placeholder="Đơn vị"
+          />
+        </div>
+        <textarea
+          value={form.note}
+          onChange={(e) => setForm({ ...form, note: e.target.value })}
+          className={`${fieldClass} min-h-36 resize-y`}
+          placeholder="Nội dung cần tư vấn"
+        />
+        <button disabled={status === "loading"} className="btn-primary mt-1 disabled:opacity-60">
           {status === "loading" ? "Đang gửi..." : "Gửi yêu cầu báo giá"}
+          <Send className="ml-2 h-4 w-4" />
         </button>
         {message && (
-          <p className={`rounded-2xl p-3 text-sm ${status === "success" ? "bg-brand-50 text-brand-800" : "bg-red-50 text-red-700"}`}>
+          <p
+            className={`rounded-2xl p-4 text-sm ${
+              status === "success"
+                ? "bg-brand-50 text-brand-800"
+                : "bg-red-50 text-red-700"
+            }`}
+          >
             {message}
           </p>
         )}

@@ -1,38 +1,41 @@
-# CÔNG THẢNH Website v0.4
+# CÔNG THẢNH Website v0.5
 
-Website sản phẩm, báo giá và CMS nội bộ cho CÔNG THẢNH.
+Bản giao diện thương mại đầu tiên của website CÔNG THẢNH.
 
-## Điểm mới v0.4
+## Điểm mới
 
-- Sửa lỗi font tiếng Việt bằng **Be Vietnam Pro**.
-- Đồng bộ trang `/san-pham` trực tiếp với PostgreSQL.
-- Trang chi tiết sản phẩm đọc dữ liệu từ database.
-- Sản phẩm ở trạng thái `PUBLISHED` tự động xuất hiện ngoài website.
-- Có nút xóa sản phẩm trong CMS.
-- Seed thêm danh mục, thương hiệu và 6 sản phẩm khởi tạo.
-- Chuẩn hóa hiển thị giá “Liên hệ” khi chưa nhập giá.
+- Thiết kế lại trang chủ theo phong cách cao cấp, hiện đại.
+- Header responsive, có trạng thái menu đang chọn.
+- Footer hoàn chỉnh với thông tin doanh nghiệp.
+- Tách header/footer website khỏi khu vực `/admin`.
+- Trang chủ lấy sản phẩm trực tiếp từ PostgreSQL.
+- Bảng giá lấy dữ liệu trực tiếp từ PostgreSQL.
+- Trang liên hệ và form báo giá được thiết kế lại.
+- Tiếp tục sử dụng Be Vietnam Pro cho tiếng Việt.
+- Giữ nguyên CMS và dữ liệu hiện có.
 
-## Cập nhật
+## Cập nhật local
 
-```bash
-npm install
-npm run build
+```powershell
+npm.cmd install
+npm.cmd run build
 git add .
-git commit -m "Upgrade website to v0.4 database products and Vietnamese font"
+git commit -m "Upgrade CÔNG THẢNH website to v0.5 premium UI"
 git push origin main
 ```
 
 ## Sau khi Railway deploy
-
-Mở Railway Shell:
 
 ```bash
 npx prisma db push
 npm run db:seed
 ```
 
-Sau đó kiểm tra:
+## Trang cần kiểm tra
 
+- `/`
 - `/san-pham`
+- `/bang-gia`
+- `/lien-he`
+- `/admin`
 - `/admin/products`
-- `/admin/products/new`
