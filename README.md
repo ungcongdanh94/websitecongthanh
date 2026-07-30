@@ -1,61 +1,38 @@
-# CÔNG THẢNH Website v0.3
+# CÔNG THẢNH Website v0.4
 
 Website sản phẩm, báo giá và CMS nội bộ cho CÔNG THẢNH.
 
-## Công nghệ
+## Điểm mới v0.4
 
-- Next.js 15.5.22
-- TypeScript
-- Tailwind CSS
-- Prisma ORM
-- PostgreSQL
-- JWT cookie bằng `jose`
-- Railway
+- Sửa lỗi font tiếng Việt bằng **Be Vietnam Pro**.
+- Đồng bộ trang `/san-pham` trực tiếp với PostgreSQL.
+- Trang chi tiết sản phẩm đọc dữ liệu từ database.
+- Sản phẩm ở trạng thái `PUBLISHED` tự động xuất hiện ngoài website.
+- Có nút xóa sản phẩm trong CMS.
+- Seed thêm danh mục, thương hiệu và 6 sản phẩm khởi tạo.
+- Chuẩn hóa hiển thị giá “Liên hệ” khi chưa nhập giá.
 
-## v0.3 có gì mới
-
-- Đăng nhập quản trị tại `/admin/login`
-- Middleware bảo vệ toàn bộ `/admin`
-- Dashboard thống kê
-- Danh sách sản phẩm
-- Thêm sản phẩm mới
-- Danh sách yêu cầu báo giá
-- Đăng xuất quản trị
-- Nâng Next.js lên 15.5.22
-
-## Biến môi trường bắt buộc
-
-```env
-DATABASE_URL=...
-ADMIN_EMAIL=admin@congthanhco.com
-ADMIN_PASSWORD=...
-AUTH_SECRET=...
-```
-
-`AUTH_SECRET` phải dài ít nhất 32 ký tự.
-
-## Chạy local
+## Cập nhật
 
 ```bash
 npm install
-copy .env.example .env
-npm run db:push
-npm run db:seed
-npm run dev
+npm run build
+git add .
+git commit -m "Upgrade website to v0.4 database products and Vietnamese font"
+git push origin main
 ```
 
-## Deploy Railway
+## Sau khi Railway deploy
 
-Sau khi push GitHub và deploy:
+Mở Railway Shell:
 
 ```bash
 npx prisma db push
 npm run db:seed
 ```
 
-Sau đó truy cập:
+Sau đó kiểm tra:
 
-- `/admin/login`
+- `/san-pham`
 - `/admin/products`
 - `/admin/products/new`
-- `/admin/quotes`
