@@ -1,24 +1,38 @@
-# CÔNG THẢNH Website v0.2
+# CÔNG THẢNH Website v0.3
 
-Nền tảng website sản phẩm và báo giá cho CÔNG THẢNH.
+Website sản phẩm, báo giá và CMS nội bộ cho CÔNG THẢNH.
 
 ## Công nghệ
 
-- Next.js 15
+- Next.js 15.5.22
 - TypeScript
 - Tailwind CSS
 - Prisma ORM
 - PostgreSQL
+- JWT cookie bằng `jose`
 - Railway
 
-## v0.2 có gì mới
+## v0.3 có gì mới
 
-- Database schema cho sản phẩm, thương hiệu, danh mục, dự án, tin tức, báo giá và cài đặt.
-- API `POST /api/quote-requests`.
-- Form báo giá lưu vào PostgreSQL.
-- Khung giao diện CMS tại `/admin`.
-- Prisma seed.
-- Hướng dẫn Railway.
+- Đăng nhập quản trị tại `/admin/login`
+- Middleware bảo vệ toàn bộ `/admin`
+- Dashboard thống kê
+- Danh sách sản phẩm
+- Thêm sản phẩm mới
+- Danh sách yêu cầu báo giá
+- Đăng xuất quản trị
+- Nâng Next.js lên 15.5.22
+
+## Biến môi trường bắt buộc
+
+```env
+DATABASE_URL=...
+ADMIN_EMAIL=admin@congthanhco.com
+ADMIN_PASSWORD=...
+AUTH_SECRET=...
+```
+
+`AUTH_SECRET` phải dài ít nhất 32 ký tự.
 
 ## Chạy local
 
@@ -30,8 +44,18 @@ npm run db:seed
 npm run dev
 ```
 
-## Lưu ý
+## Deploy Railway
 
-Bạn cần PostgreSQL và phải sửa `DATABASE_URL` trong `.env`.
+Sau khi push GitHub và deploy:
 
-Xem hướng dẫn triển khai trong `RAILWAY-DEPLOY.md`.
+```bash
+npx prisma db push
+npm run db:seed
+```
+
+Sau đó truy cập:
+
+- `/admin/login`
+- `/admin/products`
+- `/admin/products/new`
+- `/admin/quotes`
