@@ -1,18 +1,10 @@
-CÔNG THẢNH WEBSITE - BỘ MÃ NGUỒN TỔNG v0.8
+CÔNG THẢNH WEBSITE v0.8.1 - BẢN SỬA BUILD
 
-1. Giải nén file ZIP ra một thư mục riêng.
-2. Nhấp chuột phải OVERWRITE-AND-PUSH.ps1 -> Run with PowerShell.
-3. Script sẽ:
-   - giữ lại thư mục .git và các file .env cục bộ;
-   - xóa mã nguồn cũ;
-   - chép toàn bộ mã nguồn v0.8;
-   - commit và push lên nhánh main.
+1. Giải nén toàn bộ thư mục này.
+2. Nhấp phải OVERWRITE-AND-PUSH.ps1 > Run with PowerShell.
+3. Script tự clone GitHub nếu websitecongthanh-new đã bị xóa.
+4. Script tự chép đè toàn bộ mã nguồn, commit và push main.
+5. Railway sẽ tự deploy commit: Fix product publish status and deploy v0.8.1
 
-Repository mặc định:
-C:\Users\ACER\Downloads\websitecongthanh-new
-
-Railway phải dùng nhánh main. railway.json đã đặt trực tiếp:
-node .next/standalone/server.js
-
-Sau khi Railway deploy thành công, cập nhật database:
-npx prisma db push
+Đã sửa lỗi TypeScript PublishStatus ARCHIVED trong ProductEditForm và API sản phẩm.
+Lệnh Railway start: node .next/standalone/server.js

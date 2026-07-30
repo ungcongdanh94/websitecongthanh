@@ -64,6 +64,7 @@ export default function ProductForm({
         <select name="status" className="rounded-2xl border px-4 py-3">
           <option value="DRAFT">Bản nháp</option>
           <option value="PUBLISHED">Công khai</option>
+          <option value="ARCHIVED">Lưu trữ</option>
         </select>
       </div>
       <MediaPicker name="imageUrl" label="Ảnh đại diện sản phẩm" />

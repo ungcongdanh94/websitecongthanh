@@ -30,7 +30,7 @@ export async function PUT(
         imageUrl: String(body.imageUrl || "").trim() || null,
         price: body.price ? Number(body.price) : null,
         unit: String(body.unit || "").trim() || null,
-        status: body.status === "PUBLISHED" ? "PUBLISHED" : "DRAFT",
+        status: ["PUBLISHED", "ARCHIVED"].includes(body.status) ? body.status : "DRAFT",
         categoryId: String(body.categoryId || ""),
         brandId: String(body.brandId || "").trim() || null,
         isFeatured: Boolean(body.isFeatured)
