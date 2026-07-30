@@ -8,6 +8,8 @@ const items = [
   ["Sản phẩm", "/admin/products"],
   ["Danh mục", "/admin/categories"],
   ["Thương hiệu", "/admin/brands"],
+  ["Dự án", "/admin/projects"],
+  ["Banner", "/admin/banners"],
   ["Báo giá", "/admin/quotes"]
 ];
 
