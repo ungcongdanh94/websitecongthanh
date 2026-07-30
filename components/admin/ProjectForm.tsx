@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import MediaPicker from "@/components/admin/MediaPicker";
 
 type Project = {
   id?: string;
@@ -52,7 +53,7 @@ export default function ProjectForm({ project = {} }: { project?: Project }) {
       <input name="title" required defaultValue={project.title || ""} className={field} placeholder="Tên dự án *" />
       <input name="slug" required defaultValue={project.slug || ""} className={field} placeholder="Slug *" />
       <input name="location" defaultValue={project.location || ""} className={field} placeholder="Địa điểm" />
-      <input name="coverUrl" defaultValue={project.coverUrl || ""} className={field} placeholder="URL ảnh đại diện" />
+      <MediaPicker name="coverUrl" defaultValue={project.coverUrl || ""} label="Ảnh đại diện dự án" />
       <textarea name="description" defaultValue={project.description || ""} className={`${field} min-h-40`} placeholder="Mô tả dự án" />
       <select name="status" defaultValue={project.status || "DRAFT"} className={field}>
         <option value="DRAFT">Bản nháp</option>

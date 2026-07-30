@@ -10,6 +10,7 @@ const items = [
   ["Thương hiệu", "/admin/brands"],
   ["Dự án", "/admin/projects"],
   ["Banner", "/admin/banners"],
+  ["Media", "/admin/media"],
   ["Báo giá", "/admin/quotes"]
 ];
 

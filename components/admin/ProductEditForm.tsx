@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import MediaPicker from "@/components/admin/MediaPicker";
 
 type Option = { id: string; name: string };
 
@@ -90,7 +91,7 @@ export default function ProductEditForm({
           <option value="PUBLISHED">Công khai</option>
         </select>
       </div>
-      <input name="imageUrl" defaultValue={product.imageUrl || ""} className={input} placeholder="URL ảnh đại diện" />
+      <MediaPicker name="imageUrl" defaultValue={product.imageUrl || ""} label="Ảnh đại diện sản phẩm" />
       <label className="flex items-center gap-3 rounded-2xl border border-slate-200 p-4">
         <input name="isFeatured" type="checkbox" defaultChecked={product.isFeatured} />
         <span className="font-semibold">Đánh dấu là sản phẩm nổi bật</span>

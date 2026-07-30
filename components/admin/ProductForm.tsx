@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import MediaPicker from "@/components/admin/MediaPicker";
 
 type Option = { id: string; name: string };
 
@@ -65,7 +66,7 @@ export default function ProductForm({
           <option value="PUBLISHED">Công khai</option>
         </select>
       </div>
-      <input name="imageUrl" className="rounded-2xl border px-4 py-3" placeholder="URL ảnh đại diện" />
+      <MediaPicker name="imageUrl" label="Ảnh đại diện sản phẩm" />
       <button disabled={loading} className="btn-primary disabled:opacity-60">
         {loading ? "Đang lưu..." : "Tạo sản phẩm"}
       </button>

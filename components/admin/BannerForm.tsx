@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import MediaPicker from "@/components/admin/MediaPicker";
 
 const field = "w-full rounded-2xl border border-slate-200 px-4 py-3";
 
@@ -41,7 +42,7 @@ export default function BannerForm() {
     <form onSubmit={submit} className="grid gap-4 rounded-3xl border bg-white p-6">
       <input name="title" required className={field} placeholder="Tiêu đề *" />
       <input name="subtitle" className={field} placeholder="Dòng mô tả" />
-      <input name="imageUrl" className={field} placeholder="URL ảnh nền" />
+      <MediaPicker name="imageUrl" label="Ảnh nền banner" />
       <div className="grid gap-4 sm:grid-cols-2">
         <input name="buttonLabel" className={field} placeholder="Nhãn nút" />
         <input name="buttonUrl" className={field} placeholder="Đường dẫn nút" />
