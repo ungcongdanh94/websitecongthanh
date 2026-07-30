@@ -1,33 +1,19 @@
-# Railway Deploy — v0.5
+# Railway Deploy — v0.6
 
 Không cần tạo database mới.
 
-## Variables
-
-```env
-DATABASE_URL=${{Postgres.DATABASE_URL}}
-ADMIN_EMAIL=admin@congthanhco.com
-ADMIN_PASSWORD=mat-khau-rat-manh
-AUTH_SECRET=chuoi-bi-mat-toi-thieu-32-ky-tu
-NEXT_PUBLIC_HOTLINE=so-hotline-cua-ban
-NEXT_PUBLIC_SITE_URL=https://congthanhco.com
-```
-
-## Sau khi deploy
+Sau khi Railway deploy thành công:
 
 ```bash
 npx prisma db push
 npm run db:seed
 ```
 
-## Kiểm tra
+Kiểm tra:
 
 ```text
-/
- /san-pham
- /bang-gia
- /lien-he
- /admin
+/admin/products
+/admin/categories
+/admin/brands
+/admin/quotes
 ```
-
-Nếu trang chủ không hiện sản phẩm, kiểm tra sản phẩm trong CMS đang ở trạng thái `PUBLISHED`.

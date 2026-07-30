@@ -1,26 +1,23 @@
-# CÔNG THẢNH Website v0.5
-
-Bản giao diện thương mại đầu tiên của website CÔNG THẢNH.
+# CÔNG THẢNH Website v0.6
 
 ## Điểm mới
 
-- Thiết kế lại trang chủ theo phong cách cao cấp, hiện đại.
-- Header responsive, có trạng thái menu đang chọn.
-- Footer hoàn chỉnh với thông tin doanh nghiệp.
-- Tách header/footer website khỏi khu vực `/admin`.
-- Trang chủ lấy sản phẩm trực tiếp từ PostgreSQL.
-- Bảng giá lấy dữ liệu trực tiếp từ PostgreSQL.
-- Trang liên hệ và form báo giá được thiết kế lại.
-- Tiếp tục sử dụng Be Vietnam Pro cho tiếng Việt.
-- Giữ nguyên CMS và dữ liệu hiện có.
+- Chỉnh sửa sản phẩm đầy đủ.
+- Tìm kiếm sản phẩm trong CMS.
+- Quản lý danh mục.
+- Quản lý thương hiệu.
+- Cập nhật trạng thái yêu cầu báo giá.
+- Menu quản trị rõ ràng hơn.
+- Giữ nguyên giao diện premium v0.5.
+- Không làm mất dữ liệu hiện tại.
 
-## Cập nhật local
+## Cập nhật
 
 ```powershell
 npm.cmd install
 npm.cmd run build
 git add .
-git commit -m "Upgrade CÔNG THẢNH website to v0.5 premium UI"
+git commit -m "Upgrade website to v0.6 CMS management"
 git push origin main
 ```
 
@@ -31,11 +28,9 @@ npx prisma db push
 npm run db:seed
 ```
 
-## Trang cần kiểm tra
+## Trang quản trị
 
-- `/`
-- `/san-pham`
-- `/bang-gia`
-- `/lien-he`
-- `/admin`
 - `/admin/products`
+- `/admin/categories`
+- `/admin/brands`
+- `/admin/quotes`
