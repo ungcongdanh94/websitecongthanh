@@ -12,7 +12,7 @@ export default function Footer() {
   const hotline = process.env.NEXT_PUBLIC_HOTLINE || site.hotline;
 
   return (
-    <footer className="mt-24 bg-slate-950 text-slate-300">
+    <footer className="mt-24 bg-brand-900 text-brand-100">
       <div className="container-page grid gap-12 py-16 lg:grid-cols-[1.3fr_0.7fr_0.8fr]">
         <div>
           <div className="flex items-center gap-3">
@@ -26,7 +26,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
-          <p className="mt-6 max-w-xl text-sm leading-7 text-slate-400">
+          <p className="mt-6 max-w-xl text-sm leading-7 text-brand-200/80">
             Cung cấp nhôm thanh, phụ kiện cửa và giải pháp nội thất nhôm cho xưởng sản xuất,
             đại lý và công trình tại An Giang và khu vực miền Tây.
           </p>
@@ -53,17 +53,17 @@ export default function Footer() {
           <h3 className="font-bold text-white">Thông tin liên hệ</h3>
           <div className="mt-5 grid gap-4 text-sm">
             <div className="flex gap-3">
-              <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-brand-400" />
+              <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-brand-300" />
               <span>{site.address}</span>
             </div>
             <div className="flex gap-3">
-              <Phone className="h-5 w-5 shrink-0 text-brand-400" />
+              <Phone className="h-5 w-5 shrink-0 text-brand-300" />
               <a href={`tel:${hotline.replace(/\s/g, "")}`} className="hover:text-white">
                 {hotline}
               </a>
             </div>
             <div className="flex gap-3">
-              <Globe2 className="h-5 w-5 shrink-0 text-brand-400" />
+              <Globe2 className="h-5 w-5 shrink-0 text-brand-300" />
               <a href="https://congthanhco.com" className="hover:text-white">
                 congthanhco.com
               </a>
@@ -73,9 +73,9 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-page flex flex-col gap-2 py-5 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+        <div className="container-page flex flex-col gap-2 py-5 text-xs text-brand-300/70 sm:flex-row sm:items-center sm:justify-between">
           <span>© 2026 CÔNG THẢNH. Bảo lưu mọi quyền.</span>
-          <span>Website v0.5 · Nền tảng sản phẩm và báo giá</span>
+          <span>Website v0.9 · Nền tảng sản phẩm và báo giá</span>
         </div>
       </div>
     </footer>

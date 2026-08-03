@@ -2,31 +2,31 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAdminSession } from "@/lib/auth";
 
-async function requireAdmin() {
-  return getAdminSession();
-}
-
-export async function PUT(
-  request: Request,
-  context: { params: Promise<{ id: string }> }
-) {
-  const session = await requireAdmin();
+export async function POST(request: Request) {
+  const session = await getAdminSession();
   if (!session) {
     return NextResponse.json({ ok: false, message: "Chưa đăng nhập" }, { status: 401 });
   }
 
   try {
-    const { id } = await context.params;
     const body = await request.json();
+    const name = String(body.name || "").trim();
+    const slug = String(body.slug || "").trim().toLowerCase();
+    const categoryId = String(body.categoryId || "").trim();
 
-    const product = await prisma.product.update({
-      where: { id },
+    if (!name || !slug || !categoryId) {
+      return NextResponse.json(
+        { ok: false, message: "Thiếu tên, slug hoặc danh mục" },
+        { status: 400 }
+      );
+    }
+
+    const product = await prisma.product.create({
       data: {
-        name: String(body.name || "").trim(),
-        slug: String(body.slug || "").trim().toLowerCase(),
+        name,
+        slug,
         sku: String(body.sku || "").trim() || null,
         shortDesc: String(body.shortDesc || "").trim() || null,
-        description: String(body.description || "").trim() || null,
         imageUrl: String(body.imageUrl || "").trim() || null,
         price: body.price ? Number(body.price) : null,
         dealerPrice: body.dealerPrice ? Number(body.dealerPrice) : null,
@@ -38,40 +38,18 @@ export async function PUT(
         stockLength: body.stockLength ? Number(body.stockLength) : null,
         catalogUrl: String(body.catalogUrl || "").trim() || null,
         videoUrl: String(body.videoUrl || "").trim() || null,
+        isFeatured: Boolean(body.isFeatured),
         status: ["PUBLISHED", "ARCHIVED"].includes(body.status) ? body.status : "DRAFT",
-        categoryId: String(body.categoryId || ""),
-        brandId: String(body.brandId || "").trim() || null,
-        isFeatured: Boolean(body.isFeatured)
+        categoryId,
+        brandId: String(body.brandId || "").trim() || null
       }
     });
 
     return NextResponse.json({ ok: true, product });
   } catch (error) {
-    console.error("UPDATE_PRODUCT_ERROR", error);
+    console.error("CREATE_PRODUCT_ERROR", error);
     return NextResponse.json(
-      { ok: false, message: "Không thể cập nhật. Kiểm tra slug hoặc mã sản phẩm bị trùng." },
-      { status: 500 }
-    );
-  }
-}
-
-export async function DELETE(
-  _request: Request,
-  context: { params: Promise<{ id: string }> }
-) {
-  const session = await requireAdmin();
-  if (!session) {
-    return NextResponse.json({ ok: false, message: "Chưa đăng nhập" }, { status: 401 });
-  }
-
-  try {
-    const { id } = await context.params;
-    await prisma.product.delete({ where: { id } });
-    return NextResponse.json({ ok: true });
-  } catch (error) {
-    console.error("DELETE_PRODUCT_ERROR", error);
-    return NextResponse.json(
-      { ok: false, message: "Không thể xóa sản phẩm" },
+      { ok: false, message: "Không thể tạo sản phẩm. Kiểm tra slug hoặc mã sản phẩm bị trùng." },
       { status: 500 }
     );
   }

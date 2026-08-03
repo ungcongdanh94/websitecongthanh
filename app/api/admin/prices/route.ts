@@ -1,41 +1,63 @@
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAdminSession } from "@/lib/auth";
 
-function csvCell(value: unknown) {
-  const text = value === null || value === undefined ? "" : String(value);
-  return `"${text.replaceAll('"', '""')}"`;
-}
+type PriceUpdate = {
+  productId: string;
+  price: number | null;
+  dealerPrice: number | null;
+};
 
-export async function GET() {
+export async function PATCH(request: Request) {
   if (!(await getAdminSession())) {
-    return new Response("Unauthorized", { status: 401 });
+    return NextResponse.json({ ok: false, message: "Chưa đăng nhập" }, { status: 401 });
   }
 
-  const products = await prisma.product.findMany({
-    include: { category: true, brand: true },
-    orderBy: [{ category: { sortOrder: "asc" } }, { name: "asc" }]
-  });
+  try {
+    const body = await request.json();
+    const updates: PriceUpdate[] = Array.isArray(body.updates) ? body.updates : [];
+    const note = typeof body.note === "string" ? body.note.trim() || null : null;
 
-  const rows = [
-    ["SKU", "Tên sản phẩm", "Danh mục", "Thương hiệu", "Hệ nhôm", "Màu", "Đơn vị", "Giá bán", "Giá đại lý"],
-    ...products.map((product) => [
-      product.sku || "",
-      product.name,
-      product.category.name,
-      product.brand?.name || "",
-      product.aluminumSystem || "",
-      product.color || "",
-      product.unit || "",
-      product.price === null ? "" : Number(product.price),
-      product.dealerPrice === null ? "" : Number(product.dealerPrice)
-    ])
-  ];
-
-  const csv = `\uFEFF${rows.map((row) => row.map(csvCell).join(",")).join("\r\n")}`;
-  return new Response(csv, {
-    headers: {
-      "Content-Type": "text/csv; charset=utf-8",
-      "Content-Disposition": `attachment; filename="bang-gia-cong-thanh-${new Date().toISOString().slice(0, 10)}.csv"`
+    if (!updates.length) {
+      return NextResponse.json({ ok: false, message: "Không có thay đổi nào" }, { status: 400 });
     }
-  });
+
+    let updatedCount = 0;
+
+    await prisma.$transaction(async (tx) => {
+      for (const update of updates) {
+        const existing = await tx.product.findUnique({
+          where: { id: update.productId },
+          select: { price: true, dealerPrice: true }
+        });
+        if (!existing) continue;
+
+        await tx.product.update({
+          where: { id: update.productId },
+          data: {
+            price: update.price === null ? null : update.price,
+            dealerPrice: update.dealerPrice === null ? null : update.dealerPrice
+          }
+        });
+
+        await tx.priceChange.create({
+          data: {
+            productId: update.productId,
+            oldPrice: existing.price,
+            newPrice: update.price === null ? null : update.price,
+            oldDealerPrice: existing.dealerPrice,
+            newDealerPrice: update.dealerPrice === null ? null : update.dealerPrice,
+            note
+          }
+        });
+
+        updatedCount += 1;
+      }
+    });
+
+    return NextResponse.json({ ok: true, updatedCount });
+  } catch (error) {
+    console.error("UPDATE_PRICES_ERROR", error);
+    return NextResponse.json({ ok: false, message: "Không thể cập nhật bảng giá" }, { status: 500 });
+  }
 }

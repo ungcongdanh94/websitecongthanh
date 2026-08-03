@@ -1,34 +1,54 @@
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const project = await prisma.project.findFirst({ where: { slug, status: "PUBLISHED" } });
-  if (!project) notFound();
+export default async function ProjectsPage() {
+  const projects = await prisma.project.findMany({
+    where: { status: "PUBLISHED" },
+    orderBy: { createdAt: "desc" }
+  });
 
   return (
     <main className="container-page py-16">
-      <div className="mx-auto max-w-5xl">
-        <div className="eyebrow">Dự án thực tế</div>
-        <h1 className="mt-3 text-4xl font-black tracking-tight md:text-6xl">{project.title}</h1>
-        {project.location && (
-          <div className="mt-5 flex items-center gap-2 text-slate-500">
-            <MapPin className="h-5 w-5" /> {project.location}
-          </div>
-        )}
-        {project.coverUrl && (
-          <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-[2rem] bg-slate-100">
-            <Image src={project.coverUrl} alt={project.title} fill priority className="object-cover" />
-          </div>
-        )}
-        <div className="prose prose-slate mt-10 max-w-none text-lg leading-8 text-slate-700">
-          {project.description || "Thông tin dự án đang được cập nhật."}
-        </div>
+      <div className="max-w-3xl">
+        <div className="eyebrow">Công trình thực tế</div>
+        <h1 className="section-title mt-3">Dự án tiêu biểu của CÔNG THẢNH.</h1>
+        <p className="mt-5 text-lg leading-8 text-slate-600">
+          Các công trình và giải pháp nhôm – phụ kiện – nội thất được cập nhật trực tiếp từ hệ thống quản trị.
+        </p>
       </div>
+
+      <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {projects.map((project) => (
+          <Link key={project.id} href={`/du-an/${project.slug}`} className="group overflow-hidden rounded-[2rem] border border-slate-200 bg-white transition hover:-translate-y-1 hover:shadow-soft">
+            <div className="relative aspect-[4/3] bg-slate-100">
+              {project.coverUrl ? (
+                <Image src={project.coverUrl} alt={project.title} fill className="object-cover transition duration-500 group-hover:scale-105" />
+              ) : (
+                <div className="grid h-full place-items-center text-slate-400">Chưa có ảnh</div>
+              )}
+            </div>
+            <div className="p-6">
+              <h2 className="text-xl font-black">{project.title}</h2>
+              {project.location && (
+                <div className="mt-3 flex items-center gap-2 text-sm text-slate-500">
+                  <MapPin className="h-4 w-4" /> {project.location}
+                </div>
+              )}
+              <p className="mt-3 line-clamp-3 leading-7 text-slate-600">{project.description || "Xem chi tiết dự án."}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {!projects.length && (
+        <div className="mt-10 rounded-3xl border border-dashed p-10 text-center text-slate-500">
+          Chưa có dự án công khai.
+        </div>
+      )}
     </main>
   );
 }

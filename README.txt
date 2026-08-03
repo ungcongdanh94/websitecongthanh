@@ -1,14 +1,16 @@
-BẢN VÁ MEDIA ROUTE v0.11.2
+BẢN VÁ PRODUCT ROUTE v0.11.3
 
-Chép thư mục app vào root repository và chọn ghi đè.
+Cấu trúc đúng:
+- app/api/admin/products/route.ts: chỉ có POST
+- app/api/admin/products/[id]/route.ts: có PUT và DELETE
 
-Kiểm tra:
-1. app/api/admin/media/route.ts chỉ có GET và POST.
-2. app/api/admin/media/[id]/route.ts chỉ có DELETE.
-
-Sau đó chạy:
-  npm.cmd run build
-  git add .
-  git commit -m "Fix media delete route v0.11.2"
-  git pull --rebase origin main
-  git push origin main
+Cách áp dụng:
+1. Giải nén file ZIP.
+2. Chép thư mục app vào root dự án, chọn ghi đè.
+3. Chạy:
+   npm.cmd run build
+4. Nếu thành công:
+   git add .
+   git commit -m "Fix product route handlers v0.11.3"
+   git pull --rebase origin main
+   git push origin main
