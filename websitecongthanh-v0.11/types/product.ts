@@ -1,0 +1,22 @@
+export type PublicProduct = {
+  id: string;
+  name: string;
+  slug: string;
+  shortDesc: string | null;
+  description: string | null;
+  imageUrl: string | null;
+  price: number | null;
+  unit: string | null;
+  productLine: string | null;
+  aluminumSystem: string | null;
+  color: string | null;
+  thickness: number | null;
+  stockLength: number | null;
+  catalogUrl: string | null;
+  videoUrl: string | null;
+  specs: Record<string, unknown> | null;
+  categoryName: string;
+  categorySlug: string;
+  brandName: string | null;
+  brandSlug: string | null;
+};
