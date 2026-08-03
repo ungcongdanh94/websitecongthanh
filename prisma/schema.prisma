@@ -127,6 +127,7 @@ model Article {
 
 model Banner {
   id          String   @id @default(cuid())
+  slug        String?  @unique
   title       String
   subtitle    String?
   imageUrl    String?

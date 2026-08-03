@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { MapPin, Phone, Globe2, ArrowUpRight } from "lucide-react";
 import { site } from "@/data/site";
@@ -16,8 +17,13 @@ export default function Footer() {
       <div className="container-page grid gap-12 py-16 lg:grid-cols-[1.3fr_0.7fr_0.8fr]">
         <div>
           <div className="flex items-center gap-3">
-            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-500 text-lg font-black text-white">
-              CT
+            <span className="relative h-12 w-12 shrink-0">
+              <Image
+                src="/assets/logos/logo-cong-thanh-white.png"
+                alt={site.name}
+                fill
+                className="object-contain"
+              />
             </span>
             <div>
               <div className="text-2xl font-black text-white">{site.name}</div>

@@ -1,8 +1,38 @@
 import { PrismaClient, PublishStatus } from "@prisma/client";
+import siteAssets from "../data/site-assets.json";
+import brandContent from "../data/brand-content.json";
 
 const prisma = new PrismaClient();
 
+function findAsset(keyword: string): string {
+  const match = siteAssets.assets.products.find((path) => path.includes(keyword));
+  if (!match) throw new Error(`Không tìm thấy ảnh sản phẩm khớp từ khoá: ${keyword}`);
+  return match;
+}
+
+function findProjectAsset(keyword: string): string {
+  const match = siteAssets.assets.projects.find((path) => path.includes(keyword));
+  if (!match) throw new Error(`Không tìm thấy ảnh dự án khớp từ khoá: ${keyword}`);
+  return match;
+}
+
+// Ảnh cho từng slug sản phẩm. Xingfa/Phú Hoàn Anh/Ocean Luxury có ảnh riêng;
+// Candy và Draho (phụ kiện) chưa có ảnh chụp riêng nên dùng chung ảnh phụ kiện CMECH
+// làm ảnh mặc định — cập nhật lại khi có ảnh thật qua CMS.
+const productImages: Record<string, { imageUrl: string; gallery?: string[] }> = {
+  "nhom-xingfa-class-a-he-55": { imageUrl: findAsset("xingfa-class-a") },
+  "phu-kien-cmech-cua-di": {
+    imageUrl: findAsset("cmech-hinge"),
+    gallery: [findAsset("cmech-handle")]
+  },
+  "phu-kien-candy-cua-nhom": { imageUrl: findAsset("cmech-handle") },
+  "phu-kien-draho-cua-nhom": { imageUrl: findAsset("cmech-hinge") },
+  "tu-bep-nhom-phu-hoan-anh": { imageUrl: findAsset("phu-hoan-anh") },
+  "tu-bep-nhom-ocean-luxury": { imageUrl: findAsset("ocean-luxury") }
+};
+
 async function main() {
+  // ---------- Danh mục ----------
   const categories = [
     ["nhom-thanh", "Nhôm thanh", "Các hệ nhôm dùng cho cửa và công trình."],
     ["phu-kien", "Phụ kiện", "Phụ kiện cửa nhôm và giải pháp đồng bộ."],
@@ -20,6 +50,7 @@ async function main() {
     categoryMap.set(slug, category.id);
   }
 
+  // ---------- Thương hiệu ----------
   const brands = [
     ["xingfa-class-a", "Xingfa Class A"],
     ["cmech", "CMECH"],
@@ -40,6 +71,7 @@ async function main() {
     brandMap.set(slug, brand.id);
   }
 
+  // ---------- Sản phẩm ----------
   const products = [
     {
       slug: "nhom-xingfa-class-a-he-55",
@@ -102,46 +134,108 @@ async function main() {
     }
   ];
 
+  const featuredSlugs = ["nhom-xingfa-class-a-he-55", "phu-kien-cmech-cua-di", "tu-bep-nhom-phu-hoan-anh"];
+
   for (const product of products) {
+    const image = productImages[product.slug];
+
+    const sharedData = {
+      name: product.name,
+      shortDesc: product.shortDesc,
+      imageUrl: image.imageUrl,
+      gallery: image.gallery ?? undefined,
+      unit: product.unit,
+      productLine: "productLine" in product ? product.productLine : null,
+      aluminumSystem: "aluminumSystem" in product ? product.aluminumSystem : null,
+      color: "color" in product ? product.color : null,
+      thickness: "thickness" in product ? product.thickness : null,
+      stockLength: "stockLength" in product ? product.stockLength : null,
+      specs: product.specs,
+      status: PublishStatus.PUBLISHED,
+      isFeatured: featuredSlugs.includes(product.slug),
+      categoryId: categoryMap.get(product.category)!,
+      brandId: brandMap.get(product.brand)!
+    };
+
     await prisma.product.upsert({
       where: { slug: product.slug },
-      update: {
-        name: product.name,
-        shortDesc: product.shortDesc,
-        unit: product.unit,
-        productLine: "productLine" in product ? product.productLine : null,
-        aluminumSystem: "aluminumSystem" in product ? product.aluminumSystem : null,
-        color: "color" in product ? product.color : null,
-        thickness: "thickness" in product ? product.thickness : null,
-        stockLength: "stockLength" in product ? product.stockLength : null,
-        specs: product.specs,
-        status: PublishStatus.PUBLISHED,
-        isFeatured: ["nhom-xingfa-class-a-he-55", "phu-kien-cmech-cua-di", "tu-bep-nhom-phu-hoan-anh"].includes(product.slug),
-        categoryId: categoryMap.get(product.category)!,
-        brandId: brandMap.get(product.brand)!
-      },
+      update: sharedData,
       create: {
-        name: product.name,
+        ...sharedData,
         slug: product.slug,
-        shortDesc: product.shortDesc,
-        description:
-          "Dữ liệu khởi tạo. Bạn có thể thay đổi nội dung và hình ảnh trong trang quản trị.",
-        unit: product.unit,
-        productLine: "productLine" in product ? product.productLine : null,
-        aluminumSystem: "aluminumSystem" in product ? product.aluminumSystem : null,
-        color: "color" in product ? product.color : null,
-        thickness: "thickness" in product ? product.thickness : null,
-        stockLength: "stockLength" in product ? product.stockLength : null,
-        specs: product.specs,
-        status: PublishStatus.PUBLISHED,
-        isFeatured: ["nhom-xingfa-class-a-he-55", "phu-kien-cmech-cua-di", "tu-bep-nhom-phu-hoan-anh"].includes(product.slug),
-        categoryId: categoryMap.get(product.category)!,
-        brandId: brandMap.get(product.brand)!
+        description: "Dữ liệu khởi tạo. Bạn có thể thay đổi nội dung và hình ảnh trong trang quản trị."
       }
     });
   }
 
-  console.log("Seed hoàn tất: danh mục, thương hiệu và sản phẩm khởi tạo đã được đồng bộ.");
+  // ---------- Dự án ----------
+  const projects = [
+    {
+      slug: "biet-thu-binh-duc",
+      title: "Biệt thự Bình Đức",
+      location: "P. Bình Đức, An Giang",
+      description: "Thi công trọn bộ cửa đi, cửa sổ và lan can nhôm cho biệt thự hiện đại.",
+      coverUrl: findProjectAsset("villa")
+    },
+    {
+      slug: "khach-san-an-giang",
+      title: "Khách sạn An Giang",
+      location: "TP. Long Xuyên, An Giang",
+      description: "Giải pháp nhôm kính đồng bộ cho mặt tiền và hệ thống cửa phòng khách sạn.",
+      coverUrl: findProjectAsset("hotel")
+    },
+    {
+      slug: "nha-pho-tran-hung-dao",
+      title: "Nhà phố Trần Hưng Đạo",
+      location: "P. Bình Đức, An Giang",
+      description: "Lắp đặt cửa nhôm Xingfa Class A cho toàn bộ mặt tiền nhà phố.",
+      coverUrl: findProjectAsset("townhouse")
+    },
+    {
+      slug: "showroom-cong-thanh",
+      title: "Showroom Công Thảnh",
+      location: "Trần Hưng Đạo, An Giang",
+      description: "Không gian trưng bày sản phẩm nhôm, phụ kiện và nội thất nhôm của CÔNG THẢNH.",
+      coverUrl: findProjectAsset("showroom")
+    }
+  ];
+
+  for (const project of projects) {
+    const data = {
+      title: project.title,
+      location: project.location,
+      description: project.description,
+      coverUrl: project.coverUrl,
+      status: PublishStatus.PUBLISHED
+    };
+
+    await prisma.project.upsert({
+      where: { slug: project.slug },
+      update: data,
+      create: { ...data, slug: project.slug }
+    });
+  }
+
+  // ---------- Banner trang chủ ----------
+  const bannerData = {
+    title: `${brandContent.hero.eyebrow} — ${brandContent.hero.title}`,
+    subtitle: brandContent.intro.description,
+    imageUrl: siteAssets.assets.hero,
+    buttonLabel: brandContent.hero.cta,
+    buttonUrl: "/san-pham",
+    sortOrder: 0,
+    isActive: true
+  };
+
+  await prisma.banner.upsert({
+    where: { slug: "trang-chu-hero" },
+    update: bannerData,
+    create: { ...bannerData, slug: "trang-chu-hero" }
+  });
+
+  console.log(
+    "Seed hoàn tất: danh mục, thương hiệu, sản phẩm, dự án và banner trang chủ đã được đồng bộ."
+  );
 }
 
 main()

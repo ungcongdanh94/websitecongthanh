@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, Phone, Search, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -41,8 +42,14 @@ export default function Header() {
 
       <div className="container-page flex min-h-20 items-center gap-4 py-3">
         <Link href="/" className="group flex shrink-0 items-center gap-3">
-          <span className="grid h-11 w-11 place-items-center rounded-2xl bg-brand-700 text-lg font-black text-white shadow-soft">
-            CT
+          <span className="relative h-11 w-11 shrink-0">
+            <Image
+              src="/assets/logos/logo-cong-thanh-color.png"
+              alt="CÔNG THẢNH"
+              fill
+              className="object-contain"
+              priority
+            />
           </span>
           <span className="hidden sm:block">
             <span className="block text-xl font-black tracking-tight text-slate-950">

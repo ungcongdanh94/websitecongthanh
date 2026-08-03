@@ -15,8 +15,23 @@ import {
 import DatabaseProductCard from "@/components/DatabaseProductCard";
 import { prisma } from "@/lib/prisma";
 import type { PublicProduct } from "@/types/product";
+import siteAssets from "@/data/site-assets.json";
 
 export const dynamic = "force-dynamic";
+
+const promotionTitles: Record<string, string> = {
+  "promo-xingfa-class-a.webp": "Ưu đãi hệ nhôm Xingfa Class A",
+  "promo-ocean-luxury.webp": "Bộ sưu tập tủ bếp Ocean Luxury",
+  "promo-cmech.webp": "Phụ kiện CMECH chính hãng",
+  "promo-phu-hoan-anh.webp": "Tủ bếp nhôm Phú Hoàn Anh",
+  "promo-software.webp": "Phần mềm thiết kế nhôm miễn phí",
+  "promo-monthly-offer.webp": "Ưu đãi tháng này"
+};
+
+const promotions = siteAssets.assets.promotions.map((image) => ({
+  image,
+  title: promotionTitles[image.split("/").pop() || ""] || "Ưu đãi CÔNG THẢNH"
+}));
 
 const strengths = [
   {
@@ -126,9 +141,16 @@ export default async function HomePage() {
       {/* HERO */}
       <section className="pt-6">
         <div className="container-page">
-          <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-900 via-brand-800 to-slate-950 text-white">
-            <div className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-brand-400/25 blur-3xl" />
-            <div className="pointer-events-none absolute -left-16 bottom-[-6rem] h-72 w-72 rounded-full bg-brand-300/10 blur-3xl" />
+          <div className="relative overflow-hidden rounded-[2rem] bg-brand-950 text-white">
+            <Image
+              src="/assets/banners/hero-homepage.webp"
+              alt="Công trình sử dụng giải pháp nhôm CÔNG THẢNH"
+              fill
+              priority
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-950 via-brand-950/85 to-brand-950/30" />
+            <div className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-brand-400/20 blur-3xl" />
 
             <div className="relative grid gap-10 px-7 py-14 sm:px-10 lg:grid-cols-[1.05fr_0.95fr] lg:px-14 lg:py-20">
               <div className="flex flex-col justify-center">
@@ -163,19 +185,8 @@ export default async function HomePage() {
 
               <div className="hidden lg:flex lg:items-center lg:justify-end">
                 <div className="w-full max-w-md rounded-[1.75rem] border border-white/15 bg-white/10 p-5 shadow-2xl backdrop-blur-2xl">
-                  <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.16em] text-brand-200">
-                    <span>Mặt cắt — Hệ nhôm Class A</span>
-                    <span>TL 1:1</span>
-                  </div>
-                  <div className="mt-4 rounded-2xl border border-dashed border-white/20 bg-slate-950/40 p-4">
-                    <svg viewBox="0 0 260 200" className="w-full">
-                      <rect x="30" y="14" width="170" height="160" rx="4" fill="none" stroke="#e2e8f0" strokeWidth="2" />
-                      <rect x="45" y="30" width="55" height="55" rx="2" fill="none" stroke="#7fe0ae" strokeWidth="1.4" />
-                      <rect x="45" y="95" width="55" height="65" rx="2" fill="none" stroke="#7fe0ae" strokeWidth="1.4" />
-                      <rect x="108" y="30" width="80" height="130" rx="2" fill="none" stroke="#94a3b8" strokeWidth="1.2" />
-                      <line x1="30" y1="184" x2="200" y2="184" stroke="#94a3b8" strokeWidth="1" />
-                      <text x="115" y="196" fontSize="10" fill="#94a3b8" textAnchor="middle">80.0 mm</text>
-                    </svg>
+                  <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-200">
+                    Quy trình đặt hàng
                   </div>
                   <div className="mt-5 grid gap-3">
                     {["Chọn sản phẩm", "So sánh cấu hình", "Gửi yêu cầu báo giá"].map(
@@ -247,6 +258,32 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* PROMOTIONS */}
+      <section className="container-page py-16">
+        <div className="sec-head max-w-2xl">
+          <div className="eyebrow">Ưu đãi & chương trình</div>
+          <h2 className="section-title mt-3">Khuyến mãi đang diễn ra</h2>
+        </div>
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          {promotions.map((promo) => (
+            <div
+              key={promo.image}
+              className="group relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-slate-100 bg-brand-50"
+            >
+              <Image
+                src={promo.image}
+                alt={promo.title}
+                fill
+                className="object-cover transition duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                <div className="text-sm font-black text-white">{promo.title}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* STRENGTHS STRIP */}
       <section className="container-page py-16">
