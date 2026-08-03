@@ -1,5 +1,59 @@
 # CHANGELOG
 
+## v0.15.0 — Phase 3: Chuẩn hóa API cho plugin SketchUp
+
+### ✨ Tính năng mới
+
+- **Xác thực API key**: model `ApiKey` mới (schema — xem bên dưới). Trang quản trị `/admin/api-keys` để tạo/thu hồi/xóa key. `GET /api/catalog/products` giờ bắt buộc header `x-api-key`, trả `401` nếu thiếu hoặc key không hợp lệ/đã thu hồi.
+- **Rate limit**: giới hạn 60 request/phút cho mỗi API key (in-memory, phù hợp 1 instance Railway hiện tại). Vượt quá trả `429` kèm header `Retry-After`.
+- **Phân trang**: thêm `page`, `pageSize` (mặc định 50, tối đa 100) cho `/api/catalog/products`, response có `total`, `totalPages`, `hasMore`.
+- **Ảnh gallery**: response catalog giờ có thêm trường `gallery` (mảng ảnh chi tiết) và `catalogUrl`, ngoài `imageUrl` như trước.
+- **Tài liệu API**: `API-CATALOG.md` — đầy đủ endpoint, auth, rate limit, tham số, ví dụ `curl`, mẫu response, và lưu ý bảo mật (không trả `dealerPrice`).
+
+### 🗄️ Schema mới (cần chạy `prisma db push`)
+
+```prisma
+model ApiKey {
+  id         String    @id @default(cuid())
+  key        String    @unique
+  label      String
+  isActive   Boolean   @default(true)
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([key])
+}
+```
+
+---
+
+## v0.14.0 — Tích hợp asset thật + seed dữ liệu thật
+
+### ✨ Thay đổi
+
+- **Logo thật**: `Header.tsx` dùng `/assets/logos/logo-cong-thanh-color.png` (nền sáng), `Footer.tsx` dùng `/assets/logos/logo-cong-thanh-white.png` (nền xanh đậm) — thay cho ô chữ "CT" placeholder trước đây.
+- **Hero trang chủ**: dùng ảnh thật `/assets/banners/hero-homepage.webp` làm nền, thay cho minh hoạ SVG. Bỏ khối mặt cắt nhôm giả (không còn cần thiết khi đã có ảnh thật), giữ lại thẻ "Quy trình đặt hàng".
+- **Khối quảng bá (promotions)**: thêm mục "Khuyến mãi đang diễn ra" trên trang chủ, hiển thị 6 ảnh trong `/assets/promotions`, đọc đường dẫn trực tiếp từ `data/site-assets.json` (không hard-code lại đường dẫn).
+- **`prisma/seed.ts` viết lại toàn bộ**:
+  - Đọc dữ liệu từ `data/site-assets.json` (ảnh) và `data/brand-content.json` (nội dung hero) thay vì hard-code.
+  - Upsert 3 danh mục, 6 thương hiệu, 6 sản phẩm (đã có `imageUrl` thật; sản phẩm CMECH có thêm `gallery` — dùng luôn tính năng gallery từ Phase 1), 4 dự án (ảnh thật), và 1 banner trang chủ.
+  - Toàn bộ dùng `upsert` theo slug ổn định — **chạy lại nhiều lần không tạo trùng, không xoá dữ liệu đang có**.
+  - Ghi chú rõ trong code: sản phẩm CANDY và DRAHO chưa có ảnh chụp riêng nên tạm dùng ảnh phụ kiện CMECH làm ảnh mặc định.
+
+### 🗄️ Schema mới (cần chạy `prisma db push`)
+
+Thêm `slug String? @unique` vào model `Banner` — cần thiết để `seed.ts` có thể `upsert` banner một cách ổn định (Banner trước đây không có khoá duy nhất nào ngoài `id` tự sinh). Cột này **tuỳ chọn (nullable)** nên các banner đã tạo qua CMS trước đây không bị ảnh hưởng.
+
+### 📦 Việc cần làm sau khi deploy
+
+Ngoài `prisma db push`, lần này cần chạy thêm:
+```
+npm run db:seed
+```
+để nạp dữ liệu mẫu (sản phẩm, dự án, banner) có ảnh thật vào database.
+
+---
+
 ## v0.13.0 — Phase 2: CRM khách hàng, Banner trang chủ, SEO
 
 ### ✨ Tính năng mới

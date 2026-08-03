@@ -1,4 +1,20 @@
-# PROJECT STATUS — v0.13.0
+# PROJECT STATUS — v0.15.0
+
+## Phase 3 (v0.15.0) — Hoàn thành
+
+- API key auth cho `/api/catalog/products` (model `ApiKey` mới + trang quản trị `/admin/api-keys`)
+- Rate limit 60 request/phút/key
+- Phân trang (`page`, `pageSize`) cho catalog API
+- Response catalog có thêm `gallery` và `catalogUrl`
+- Tài liệu API đầy đủ tại `API-CATALOG.md`
+
+## v0.14.0 — Tích hợp asset thật + seed dữ liệu thật (Hoàn thành)
+
+- Logo thật ở Header (màu) và Footer (trắng), thay placeholder "CT"
+- Hero trang chủ dùng ảnh thật `hero-homepage.webp`
+- Khối "Khuyến mãi đang diễn ra" — 6 ảnh từ `/assets/promotions`
+- `prisma/seed.ts` viết lại: đọc từ `data/site-assets.json` + `data/brand-content.json`, upsert 3 danh mục / 6 thương hiệu / 6 sản phẩm (có ảnh + gallery) / 4 dự án (có ảnh) / 1 banner trang chủ — an toàn chạy lại nhiều lần, không xoá dữ liệu cũ
+- Thêm `Banner.slug` (schema mới, tuỳ chọn) để seed có thể upsert ổn định
 
 ## Phase 1 (v0.12.0) — Hoàn thành
 
@@ -33,6 +49,6 @@
 - JSON-LD structured data cho sản phẩm (schema.org Product) — có thể làm thêm nếu cần tối ưu SEO sâu hơn
 - Liên kết CRM sâu hơn vào `QuoteBuilder` (chọn khách hàng có sẵn ngay khi soạn báo giá, thay vì chỉ tạo từ trang hồ sơ khách hàng)
 
-## Phase 3 (sau)
+## Đã hoàn thành toàn bộ 3 phase ban đầu
 
-- Hoàn thiện `/api/catalog/products` cho plugin SketchUp: phân trang, ảnh gallery, API key/rate-limit, tài liệu API
+Xem chi tiết từng phase ở các mục phía trên. Các việc còn lại (nếu muốn làm tiếp) nằm ở mục "Chưa làm (còn lại)" bên trên, và các gợi ý mở rộng trong `API-CATALOG.md` (mục "Lộ trình tiếp theo").

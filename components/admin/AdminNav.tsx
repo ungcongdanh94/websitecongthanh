@@ -10,6 +10,7 @@ const items = [
   ["Thương hiệu", "/admin/brands"],
   ["Dự án", "/admin/projects"],
   ["Khách hàng", "/admin/customers"],
+  ["API Keys", "/admin/api-keys"],
   ["Banner", "/admin/banners"],
   ["Media", "/admin/media"],
   ["Bảng giá", "/admin/prices"],

@@ -258,3 +258,14 @@ model PriceChange {
   @@index([productId])
   @@index([effectiveAt])
 }
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  key        String    @unique
+  label      String
+  isActive   Boolean   @default(true)
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([key])
+}
