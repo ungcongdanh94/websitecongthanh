@@ -1,26 +1,20 @@
-# CÔNG THẢNH Website — Trạng thái v0.10.0
+# PROJECT STATUS — v0.11.0
 
-## Đã hoàn thành
+## Hoàn thành
 
-- Website giao diện cao cấp.
-- CMS sản phẩm, danh mục, thương hiệu, dự án, banner và media.
-- Cloudinary Media Manager.
-- PostgreSQL + Prisma.
-- Module sản phẩm chuyên ngành nhôm.
-- Quản lý bảng giá hàng loạt.
-- Lịch sử thay đổi giá bán và giá đại lý.
-- Xuất bảng giá CSV có dấu tiếng Việt.
-- Public Catalog API tại `/api/catalog/products` để chuẩn bị cho plugin SketchUp.
+- Website premium UI
+- PostgreSQL + Prisma
+- CMS sản phẩm chuyên ngành nhôm
+- Cloudinary Media Manager
+- Dự án, banner, danh mục, thương hiệu
+- Quản lý bảng giá và lịch sử giá
+- Catalog API cho plugin
+- Báo giá chuyên nghiệp, tính VAT/chiết khấu, in A4/PDF
 
-## Việc cần làm sau khi deploy
+## Tiếp theo
 
-```bash
-npx prisma db push
-```
-
-## Sprint tiếp theo
-
-- Import bảng giá CSV.
-- Báo giá có nhiều sản phẩm.
-- Xuất báo giá PDF.
-- API có khóa bảo mật cho plugin SketchUp.
+1. CRM khách hàng và lịch sử liên hệ
+2. Import bảng giá Excel/CSV
+3. Báo giá có logo, QR và mẫu điều khoản tùy chỉnh
+4. API xác thực cho SketchUp plugin
+5. BOM và danh sách cắt

@@ -1,115 +1,96 @@
-import DatabaseProductCard from "@/components/DatabaseProductCard";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Download, PlayCircle } from "lucide-react";
 import { prisma } from "@/lib/prisma";
-import type { PublicProduct } from "@/types/product";
 
 export const dynamic = "force-dynamic";
 
-export default async function ProductsPage({
-  searchParams
-}: {
-  searchParams: Promise<{ q?: string; category?: string; brand?: string; system?: string }>;
-}) {
-  const { q = "", category = "", brand = "", system = "" } = await searchParams;
+function displayValue(value: unknown) {
+  if (typeof value === "string" || typeof value === "number") return String(value);
+  if (typeof value === "boolean") return value ? "Có" : "Không";
+  return JSON.stringify(value);
+}
 
-  const [rows, categories, brands, systems] = await Promise.all([
-    prisma.product.findMany({
-      where: {
-        status: "PUBLISHED",
-        ...(q ? {
-          OR: [
-            { name: { contains: q, mode: "insensitive" } },
-            { sku: { contains: q, mode: "insensitive" } },
-            { productLine: { contains: q, mode: "insensitive" } },
-            { aluminumSystem: { contains: q, mode: "insensitive" } }
-          ]
-        } : {}),
-        ...(category ? { category: { slug: category } } : {}),
-        ...(brand ? { brand: { slug: brand } } : {}),
-        ...(system ? { aluminumSystem: system } : {})
-      },
-      include: { category: true, brand: true },
-      orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }]
-    }),
-    prisma.category.findMany({ where: { isActive: true }, orderBy: { sortOrder: "asc" } }),
-    prisma.brand.findMany({ where: { isActive: true }, orderBy: { name: "asc" } }),
-    prisma.product.findMany({
-      where: { status: "PUBLISHED", aluminumSystem: { not: null } },
-      select: { aluminumSystem: true },
-      distinct: ["aluminumSystem"],
-      orderBy: { aluminumSystem: "asc" }
-    })
-  ]);
+export default async function ProductDetail({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
 
-  const products: PublicProduct[] = rows.map((product) => ({
-    id: product.id,
-    name: product.name,
-    slug: product.slug,
-    shortDesc: product.shortDesc,
-    description: product.description,
-    imageUrl: product.imageUrl,
-    price: product.price === null ? null : Number(product.price),
-    unit: product.unit,
-    productLine: product.productLine,
-    aluminumSystem: product.aluminumSystem,
-    color: product.color,
-    thickness: product.thickness === null ? null : Number(product.thickness),
-    stockLength: product.stockLength,
-    catalogUrl: product.catalogUrl,
-    videoUrl: product.videoUrl,
-    specs: product.specs && typeof product.specs === "object" && !Array.isArray(product.specs)
-      ? (product.specs as Record<string, unknown>)
-      : null,
-    categoryName: product.category.name,
-    categorySlug: product.category.slug,
-    brandName: product.brand?.name || null,
-    brandSlug: product.brand?.slug || null
-  }));
+  const product = await prisma.product.findFirst({
+    where: { slug, status: "PUBLISHED" },
+    include: { category: true, brand: true }
+  });
 
-  const field = "rounded-2xl border border-slate-200 bg-white px-4 py-3";
+  if (!product) notFound();
+
+  const specs = [
+    product.productLine ? ["Dòng sản phẩm", product.productLine] : null,
+    product.aluminumSystem ? ["Hệ nhôm", product.aluminumSystem] : null,
+    product.color ? ["Màu sắc", product.color] : null,
+    product.thickness !== null ? ["Độ dày", `${Number(product.thickness)} mm`] : null,
+    product.stockLength ? ["Chiều dài thanh", `${product.stockLength.toLocaleString("vi-VN")} mm`] : null,
+    product.unit ? ["Đơn vị tính", product.unit] : null,
+    ...(product.specs && typeof product.specs === "object" && !Array.isArray(product.specs)
+      ? Object.entries(product.specs as Record<string, unknown>).map(([key, value]) => [key, displayValue(value)] as [string, string])
+      : [])
+  ].filter(Boolean) as [string, string][];
 
   return (
     <section className="container-page py-16">
-      <div className="max-w-3xl">
-        <div className="eyebrow">Danh mục sản phẩm</div>
-        <h1 className="section-title mt-3">Tra cứu sản phẩm theo đúng nhu cầu.</h1>
-        <p className="mt-4 text-lg leading-8 text-slate-600">
-          Lọc theo danh mục, thương hiệu và hệ nhôm để tìm nhanh sản phẩm phù hợp.
-        </p>
-      </div>
+      <Link href="/san-pham" className="text-sm font-bold text-brand-700">← Quay lại sản phẩm</Link>
 
-      <form className="mt-8 grid gap-3 rounded-3xl border border-slate-200 bg-white p-5 md:grid-cols-2 xl:grid-cols-5">
-        <input name="q" defaultValue={q} className={field} placeholder="Tên, mã hoặc hệ nhôm..." />
-        <select name="category" defaultValue={category} className={field}>
-          <option value="">Tất cả danh mục</option>
-          {categories.map((item) => <option key={item.id} value={item.slug}>{item.name}</option>)}
-        </select>
-        <select name="brand" defaultValue={brand} className={field}>
-          <option value="">Tất cả thương hiệu</option>
-          {brands.map((item) => <option key={item.id} value={item.slug}>{item.name}</option>)}
-        </select>
-        <select name="system" defaultValue={system} className={field}>
-          <option value="">Tất cả hệ nhôm</option>
-          {systems.map((item) => item.aluminumSystem && (
-            <option key={item.aluminumSystem} value={item.aluminumSystem}>{item.aluminumSystem}</option>
-          ))}
-        </select>
-        <button className="btn-primary">Lọc sản phẩm</button>
-      </form>
-
-      <div className="mt-6 text-sm font-semibold text-slate-500">
-        Tìm thấy {products.length} sản phẩm
-      </div>
-
-      {products.length ? (
-        <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {products.map((product) => <DatabaseProductCard key={product.id} product={product} />)}
+      <div className="mt-8 grid gap-10 lg:grid-cols-2">
+        <div className="relative aspect-square overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-50 to-slate-100">
+          {product.imageUrl ? (
+            <Image src={product.imageUrl} alt={product.name} fill className="object-cover" />
+          ) : (
+            <div className="flex h-full items-center justify-center text-3xl font-black text-brand-800">CÔNG THẢNH</div>
+          )}
         </div>
-      ) : (
-        <div className="mt-10 rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center">
-          <h2 className="text-xl font-bold">Không tìm thấy sản phẩm phù hợp</h2>
-          <p className="mt-2 text-slate-600">Hãy thay đổi bộ lọc hoặc liên hệ CÔNG THẢNH để được tư vấn.</p>
+
+        <div>
+          <div className="text-sm font-bold uppercase tracking-widest text-brand-700">
+            {product.brand?.name || product.category.name}
+          </div>
+          <h1 className="mt-3 text-4xl font-black text-slate-950 md:text-6xl">{product.name}</h1>
+          {product.sku && <p className="mt-3 text-sm font-semibold text-slate-500">Mã sản phẩm: {product.sku}</p>}
+
+          <div className="mt-6 text-3xl font-black text-brand-700">
+            {product.price
+              ? `${Number(product.price).toLocaleString("vi-VN")} đ${product.unit ? `/${product.unit}` : ""}`
+              : "Liên hệ báo giá"}
+          </div>
+          <p className="mt-2 text-sm text-slate-500">Giá có thể thay đổi theo số lượng, màu sắc và cấu hình.</p>
+
+          <p className="mt-6 text-lg leading-8 text-slate-600">
+            {product.description || product.shortDesc || "Liên hệ CÔNG THẢNH để được tư vấn chi tiết."}
+          </p>
+
+          {!!specs.length && (
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              {specs.map(([key, value]) => (
+                <div key={key} className="rounded-2xl border border-slate-200 bg-white p-4">
+                  <div className="text-xs font-bold uppercase text-slate-500">{key}</div>
+                  <div className="mt-1 font-bold">{value}</div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href={`/lien-he?product=${encodeURIComponent(product.name)}`} className="btn-primary">Yêu cầu báo giá</Link>
+            {product.catalogUrl && (
+              <a href={product.catalogUrl} target="_blank" rel="noreferrer" className="btn-secondary">
+                <Download className="mr-2 h-4 w-4" /> Catalogue
+              </a>
+            )}
+            {product.videoUrl && (
+              <a href={product.videoUrl} target="_blank" rel="noreferrer" className="btn-secondary">
+                <PlayCircle className="mr-2 h-4 w-4" /> Video
+              </a>
+            )}
+          </div>
         </div>
-      )}
+      </div>
     </section>
   );
 }

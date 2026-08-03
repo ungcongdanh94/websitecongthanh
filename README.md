@@ -1,24 +1,35 @@
-# CÔNG THẢNH Website v0.10.0
+# CÔNG THẢNH Website v0.11.0
 
-## Điểm mới
+## Tính năng mới: Báo giá chuyên nghiệp
 
-- Trang quản trị bảng giá tại `/admin/prices`.
-- Cập nhật nhiều sản phẩm trong một lần.
-- Lưu lịch sử giá.
-- Xuất CSV.
-- API sản phẩm công khai tại `/api/catalog/products`.
+- Tạo báo giá trực tiếp từ CMS.
+- Chọn sản phẩm và tự lấy giá bán.
+- Nhập sản phẩm tùy chỉnh.
+- Chiết khấu từng dòng và chiết khấu toàn đơn.
+- Tính VAT và tổng tiền tự động.
+- Lưu thời hạn hiệu lực, ghi chú và điều khoản.
+- Theo dõi trạng thái báo giá.
+- Trang in A4 và lưu PDF bằng trình duyệt.
 
-## Cập nhật Railway
+## Cập nhật
 
-Sau khi deploy:
+```powershell
+npm.cmd install
+npm.cmd run build
+git add .
+git commit -m "Add professional quotation module v0.11"
+git pull --rebase origin main
+git push origin main
+```
+
+Sau khi Railway deploy:
 
 ```bash
 npx prisma db push
 ```
 
-## Build local
+Truy cập:
 
-```powershell
-npm.cmd install
-npm.cmd run build
-```
+- `/admin/quotes`
+- `/admin/quotes/[id]`
+- `/admin/quotes/[id]/print`

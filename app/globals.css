@@ -67,3 +67,9 @@ select {
 .eyebrow {
   @apply text-sm font-bold uppercase tracking-[0.18em] text-brand-700;
 }
+
+@media print {
+  @page { size: A4; margin: 12mm; }
+  html, body { background: white !important; }
+  header, footer { display: none !important; }
+}

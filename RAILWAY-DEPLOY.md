@@ -1,46 +1,15 @@
-# Railway Deploy — v0.9.0
+# Railway v0.11
 
-## Root Directory
-
-Để trống nếu `package.json` nằm ở gốc repository.
-
-## Build / Start
-
-```text
-Build Command: npm run build
-Start Command: node .next/standalone/server.js
-```
-
-## Variables bắt buộc
-
-```env
-DATABASE_URL=${{Postgres.DATABASE_URL}}
-ADMIN_EMAIL=...
-ADMIN_PASSWORD=...
-AUTH_SECRET=...
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_API_KEY=...
-CLOUDINARY_API_SECRET=...
-NEXT_PUBLIC_SITE_URL=...
-NEXT_PUBLIC_HOTLINE=...
-```
-
-## Sau khi deploy
-
-Mở Railway Shell:
+Sau khi deploy mã nguồn mới, chạy trong Railway Shell:
 
 ```bash
 npx prisma db push
-npm run db:seed
 ```
 
-## Kiểm tra
+Schema mới bổ sung các trường tổng tiền, VAT, chiết khấu, hiệu lực và chi tiết đơn giá cho báo giá.
+
+Kiểm tra:
 
 ```text
-/
- /san-pham
- /admin/products
- /admin/media
- /admin/projects
- /admin/banners
+/admin/quotes
 ```
