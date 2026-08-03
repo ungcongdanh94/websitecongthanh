@@ -1,5 +1,36 @@
 # CHANGELOG
 
+## v0.13.0 — Phase 2: CRM khách hàng, Banner trang chủ, SEO
+
+### ✨ Tính năng mới
+
+- **CRM khách hàng**: thêm model `Customer` (schema mới — xem bên dưới), thêm `customerId` tuỳ chọn vào `QuoteRequest`. Trang quản trị `/admin/customers` (danh sách + tìm kiếm), `/admin/customers/new`, `/admin/customers/[id]` (hồ sơ, sửa thông tin, lịch sử báo giá — kể cả báo giá cũ trước khi có CRM, đối chiếu theo số điện thoại). Nút tạo báo giá nhanh ngay từ hồ sơ khách hàng.
+- **Banner trang chủ**: dữ liệu `Banner` (đã có CMS từ trước nhưng chưa từng hiển thị) nay được render thật trên trang chủ công khai.
+- **SEO**: thêm `app/sitemap.ts` (sitemap động, tự cập nhật theo sản phẩm/dự án công khai), `app/robots.ts`, và `generateMetadata` riêng cho từng trang chi tiết sản phẩm/dự án (title, description, Open Graph) thay vì dùng chung 1 metadata tĩnh cho toàn site.
+
+### 🗄️ Schema mới (cần chạy `prisma db push`)
+
+```prisma
+model Customer {
+  id        String         @id @default(cuid())
+  name      String
+  phone     String         @unique
+  email     String?
+  company   String?
+  address   String?
+  note      String?
+  source    String?
+  quotes    QuoteRequest[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@index([phone])
+}
+```
+Và thêm vào `QuoteRequest`: `customerId String?` + quan hệ `customer Customer? @relation(...)`. Đây là cột **tuỳ chọn (nullable)** nên không ảnh hưởng báo giá cũ.
+
+---
+
 ## v0.12.0 — Sửa lỗi nghiêm trọng + Phase 1 hoàn thành
 
 ### 🔴 Sửa lỗi nghiêm trọng

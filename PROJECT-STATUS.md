@@ -1,34 +1,37 @@
-# PROJECT STATUS — v0.12.0
+# PROJECT STATUS — v0.13.0
 
-## Đã sửa lỗi nghiêm trọng (trước khi làm tính năng mới)
+## Phase 1 (v0.12.0) — Hoàn thành
 
-- **`app/layout.tsx`** bị ghi đè bằng nội dung của `app/admin/layout.tsx` → mất toàn bộ CSS/Tailwind và lộ menu quản trị trên trang công khai. Đã khôi phục.
-- **`app/page.tsx`, `app/san-pham/page.tsx`, `app/du-an/page.tsx`** và toàn bộ khu quản trị (`dashboard`, `quotes`, `products`, `projects` + API tương ứng) bị trùng lặp nội dung do lỗi từ một commit cũ ("Fix v0.11 folder structure"). Đã khôi phục/viết lại toàn bộ, xác nhận không còn file trùng lặp trong `app/`, `components/`, `lib/`.
-- **Database drift**: `dealerPrice` và nhiều cột khác (v0.9–v0.11) chưa được `prisma db push` — đã đồng bộ.
-- **Lỗi in báo giá**: trang `/admin/quotes/[id]/print` dùng thẻ `<header>`/`<footer>` bị CSS in ấn toàn cục ẩn đi → in ra mất logo và phần chữ ký. Đã sửa (đổi sang `<div>`).
-- **Lỗi CMS sản phẩm**: API tạo sản phẩm mới bỏ sót trường `description` (chỉ lưu `shortDesc`). Đã sửa.
+- Bộ lọc sản phẩm nâng cao: khoảng giá, sắp xếp, phân trang
+- Thư viện ảnh sản phẩm (gallery) trong CMS + trang chi tiết
+- Import/Export Excel thật cho bảng giá
+- Sửa lỗi in báo giá PDF (mất letterhead/chữ ký do CSS in ấn)
+- Sửa lỗi thiếu trường `description` khi tạo sản phẩm mới
+- Sửa lỗi nghiêm trọng: layout gốc + nhiều trang công khai/quản trị bị ghi đè nhầm nội dung, database chưa đồng bộ schema
 
-## Phase 1 — Hoàn thành
+## Phase 2 (v0.13.0) — Hoàn thành
 
-- **Bộ lọc sản phẩm nâng cao**: thêm lọc theo khoảng giá (`minPrice`/`maxPrice`), sắp xếp (mới nhất / giá tăng / giá giảm / tên A-Z), và **phân trang** (12 sản phẩm/trang) cho `/san-pham`.
-- **CMS sản phẩm — thư viện ảnh**: trường `gallery` (đã có sẵn trong schema nhưng chưa dùng) nay được quản lý qua `GalleryPicker` mới trong form thêm/sửa sản phẩm, và hiển thị dạng gallery có thumbnail trên trang chi tiết sản phẩm (`ProductGallery`).
-- **Bảng giá — Import/Export Excel thật**: xuất file `.xlsx` (trước đây là CSV giả danh Excel), và **nhập giá hàng loạt từ file Excel/CSV** — khớp theo SKU (hoặc tên sản phẩm), tự động ghi lịch sử vào `PriceChange`, báo cáo dòng nào bị bỏ qua và lý do.
-- **Báo giá PDF chuyên nghiệp**: tính năng này thực ra đã tồn tại sẵn (letterhead, bảng chi tiết, tổng tiền, chữ ký) — chỉ bị lỗi ẩn nhầm khi in như trên, nay đã in đúng và đầy đủ.
+### CRM khách hàng
+- Model `Customer` mới (tên, SĐT — khoá duy nhất, email, công ty, địa chỉ, ghi chú, nguồn khách hàng)
+- `QuoteRequest` có thêm `customerId` (tuỳ chọn) để liên kết báo giá với hồ sơ khách hàng
+- CRUD đầy đủ: `/admin/customers` (danh sách + tìm kiếm + số báo giá + tổng giá trị), `/admin/customers/new`, `/admin/customers/[id]` (hồ sơ + sửa + lịch sử báo giá)
+- Báo giá cũ (trước khi có CRM) vẫn hiển thị trong lịch sử khách hàng nhờ đối chiếu theo số điện thoại — không cần migrate dữ liệu cũ
+- Nút "Tạo báo giá cho khách này" ngay tại hồ sơ khách hàng, tự điền sẵn thông tin
 
-## Đã có từ trước (xác nhận qua audit, không đổi)
+### Banner trang chủ
+- Banner (đã có CMS từ trước) nay hiển thị thật trên trang chủ công khai, tự ẩn nếu chưa có banner nào đang bật
 
-- PostgreSQL + Prisma, Cloudinary Media Manager
-- CMS: sản phẩm, danh mục, thương hiệu, dự án, banner
-- Quản lý bảng giá + lịch sử giá (`PriceChange`)
-- Catalog API công khai cho plugin (`/api/catalog/products`)
-- Báo giá: tính VAT, chiết khấu, in A4/PDF
+### SEO
+- `app/sitemap.ts` — sitemap động, tự thêm mọi sản phẩm/dự án đã công khai
+- `app/robots.ts` — chặn `/admin`, `/api`, trỏ đến sitemap
+- `generateMetadata` riêng cho từng trang chi tiết sản phẩm và dự án (title, description, Open Graph theo đúng nội dung từng trang)
+- Metadata riêng cho trang danh sách sản phẩm và dự án
 
-## Tiếp theo (Phase 2)
+## Chưa làm (còn lại)
 
-1. CRM khách hàng (model `Customer` mới + lịch sử liên hệ/báo giá theo khách hàng)
-2. Hiển thị `Banner` (đã có CMS, chưa render) lên trang chủ công khai
-3. SEO: `generateMetadata` theo từng trang/sản phẩm, `sitemap.xml`, `robots.txt`, Open Graph
-4. Thiết kế lại các trang còn lại (`/lien-he`, `/bang-gia`, `/phan-mem`, `/so-sanh`) theo mockup premium
+- Thiết kế lại các trang `/lien-he`, `/bang-gia`, `/phan-mem`, `/so-sanh` theo đúng bố cục mockup premium (hiện đã cùng tông màu nhưng chưa cùng bố cục với trang chủ)
+- JSON-LD structured data cho sản phẩm (schema.org Product) — có thể làm thêm nếu cần tối ưu SEO sâu hơn
+- Liên kết CRM sâu hơn vào `QuoteBuilder` (chọn khách hàng có sẵn ngay khi soạn báo giá, thay vì chỉ tạo từ trang hồ sơ khách hàng)
 
 ## Phase 3 (sau)
 

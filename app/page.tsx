@@ -66,7 +66,7 @@ const solutions = [
 ];
 
 export default async function HomePage() {
-  const [productRows, categories, brands, projects] = await Promise.all([
+  const [productRows, categories, brands, projects, banners] = await Promise.all([
     prisma.product.findMany({
       where: { status: "PUBLISHED" },
       include: { category: true, brand: true },
@@ -87,6 +87,10 @@ export default async function HomePage() {
       where: { status: "PUBLISHED" },
       orderBy: { createdAt: "desc" },
       take: 4
+    }),
+    prisma.banner.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: "asc" }
     })
   ]);
 
@@ -211,6 +215,38 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* BANNERS */}
+      {banners.length > 0 && (
+        <section className="container-page py-10">
+          <div className="grid gap-5 lg:grid-cols-2">
+            {banners.map((banner) => (
+              <div
+                key={banner.id}
+                className="group relative overflow-hidden rounded-[1.75rem] border border-slate-100 bg-brand-900 text-white"
+              >
+                {banner.imageUrl && (
+                  <Image
+                    src={banner.imageUrl}
+                    alt={banner.title}
+                    fill
+                    className="object-cover opacity-60 transition duration-500 group-hover:scale-105"
+                  />
+                )}
+                <div className="relative z-10 flex min-h-[180px] flex-col justify-center gap-3 p-8">
+                  <h3 className="text-2xl font-black">{banner.title}</h3>
+                  {banner.subtitle && <p className="max-w-md text-sm text-brand-50/85">{banner.subtitle}</p>}
+                  {banner.buttonLabel && banner.buttonUrl && (
+                    <Link href={banner.buttonUrl} className="btn-primary mt-2 w-fit bg-white text-brand-900 hover:bg-brand-50">
+                      {banner.buttonLabel}
+                    </Link>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* STRENGTHS STRIP */}
       <section className="container-page py-16">

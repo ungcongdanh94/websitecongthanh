@@ -1,10 +1,47 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cache } from "react";
+import type { Metadata } from "next";
 import { Download, PlayCircle } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import ProductGallery from "@/components/ProductGallery";
 
 export const dynamic = "force-dynamic";
+
+const getProduct = cache(async (slug: string) => {
+  return prisma.product.findFirst({
+    where: { slug, status: "PUBLISHED" },
+    include: { category: true, brand: true }
+  });
+});
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProduct(slug);
+
+  if (!product) {
+    return { title: "Sản phẩm không tồn tại | CÔNG THẢNH" };
+  }
+
+  const description =
+    product.shortDesc ||
+    product.description?.slice(0, 160) ||
+    `${product.name} — ${product.category.name} chính hãng tại CÔNG THẢNH.`;
+
+  return {
+    title: `${product.name} | CÔNG THẢNH`,
+    description,
+    openGraph: {
+      title: product.name,
+      description,
+      images: product.imageUrl ? [{ url: product.imageUrl }] : undefined
+    }
+  };
+}
 
 function displayValue(value: unknown) {
   if (typeof value === "string" || typeof value === "number") return String(value);
@@ -15,10 +52,7 @@ function displayValue(value: unknown) {
 export default async function ProductDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
-  const product = await prisma.product.findFirst({
-    where: { slug, status: "PUBLISHED" },
-    include: { category: true, brand: true }
-  });
+  const product = await getProduct(slug);
 
   if (!product) notFound();
 

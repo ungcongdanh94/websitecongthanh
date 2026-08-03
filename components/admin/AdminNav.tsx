@@ -9,6 +9,7 @@ const items = [
   ["Danh mục", "/admin/categories"],
   ["Thương hiệu", "/admin/brands"],
   ["Dự án", "/admin/projects"],
+  ["Khách hàng", "/admin/customers"],
   ["Banner", "/admin/banners"],
   ["Media", "/admin/media"],
   ["Bảng giá", "/admin/prices"],

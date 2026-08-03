@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { quoteRequestSchema } from "@/lib/validators";
+import { findOrCreateCustomer } from "@/lib/customer";
 
 export async function POST(request: Request) {
   try {
@@ -15,25 +16,35 @@ export async function POST(request: Request) {
     }
 
     const data = parsed.data;
-    const quote = await prisma.quoteRequest.create({
-      data: {
-        customerName: data.customerName,
-        phone: data.phone,
-        email: data.email || null,
-        company: data.company || null,
-        note: data.note || null,
-        source: "website",
-        items: data.productName
-          ? {
-              create: [{
-                productName: data.productName,
-                quantity: data.quantity,
-                unit: data.unit || null
-              }]
-            }
-          : undefined
-      },
-      select: { id: true, createdAt: true }
+
+    const quote = await prisma.$transaction(async (tx) => {
+      const customerId = await findOrCreateCustomer(
+        tx,
+        { name: data.customerName, phone: data.phone, email: data.email, company: data.company },
+        "website"
+      );
+
+      return tx.quoteRequest.create({
+        data: {
+          customerName: data.customerName,
+          phone: data.phone,
+          email: data.email || null,
+          company: data.company || null,
+          note: data.note || null,
+          source: "website",
+          customerId,
+          items: data.productName
+            ? {
+                create: [{
+                  productName: data.productName,
+                  quantity: data.quantity,
+                  unit: data.unit || null
+                }]
+              }
+            : undefined
+        },
+        select: { id: true, createdAt: true }
+      });
     });
 
     return NextResponse.json({ ok: true, quote });
@@ -45,3 +56,4 @@ export async function POST(request: Request) {
     );
   }
 }
+

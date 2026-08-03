@@ -1,13 +1,46 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { cache } from "react";
+import type { Metadata } from "next";
 import { MapPin } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
+const getProject = cache(async (slug: string) => {
+  return prisma.project.findFirst({ where: { slug, status: "PUBLISHED" } });
+});
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await getProject(slug);
+
+  if (!project) {
+    return { title: "Dự án không tồn tại | CÔNG THẢNH" };
+  }
+
+  const description =
+    project.description?.slice(0, 160) ||
+    `Dự án ${project.title} thực hiện bởi CÔNG THẢNH${project.location ? ` tại ${project.location}` : ""}.`;
+
+  return {
+    title: `${project.title} | Dự án CÔNG THẢNH`,
+    description,
+    openGraph: {
+      title: project.title,
+      description,
+      images: project.coverUrl ? [{ url: project.coverUrl }] : undefined
+    }
+  };
+}
+
 export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const project = await prisma.project.findFirst({ where: { slug, status: "PUBLISHED" } });
+  const project = await getProject(slug);
   if (!project) notFound();
 
   return (

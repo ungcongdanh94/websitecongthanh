@@ -16,19 +16,30 @@ export async function GET() {
   return NextResponse.json({ ok: true, quotes });
 }
 
-export async function POST() {
+export async function POST(request: Request) {
   if (!(await getAdminSession())) {
     return NextResponse.json({ ok: false, message: "Chưa đăng nhập" }, { status: 401 });
   }
 
   try {
+    const body = await request.json().catch(() => ({}));
+    const customerId = typeof body?.customerId === "string" ? body.customerId : null;
+
+    const customer = customerId
+      ? await prisma.customer.findUnique({ where: { id: customerId } })
+      : null;
+
     const quote = await prisma.quoteRequest.create({
       data: {
         quoteNumber: createQuoteNumber(),
-        customerName: "Khách hàng mới",
-        phone: "",
+        customerName: customer?.name || "Khách hàng mới",
+        phone: customer?.phone || "",
+        email: customer?.email || null,
+        company: customer?.company || null,
+        address: customer?.address || null,
         status: "NEW",
-        source: "admin"
+        source: customer ? "crm" : "admin",
+        customerId: customer?.id || null
       }
     });
 

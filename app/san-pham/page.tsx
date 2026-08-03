@@ -1,10 +1,17 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import DatabaseProductCard from "@/components/DatabaseProductCard";
 import { prisma } from "@/lib/prisma";
 import type { PublicProduct } from "@/types/product";
 import type { Prisma } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Sản phẩm nhôm, phụ kiện, nội thất nhôm | CÔNG THẢNH",
+  description:
+    "Tra cứu đầy đủ sản phẩm nhôm Xingfa, Namsung, phụ kiện Draho, Candy và nội thất nhôm — lọc theo danh mục, thương hiệu, hệ nhôm và khoảng giá."
+};
 
 const PAGE_SIZE = 12;
 

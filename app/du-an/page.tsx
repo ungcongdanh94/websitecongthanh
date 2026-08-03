@@ -1,9 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { MapPin } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Dự án thực tế | CÔNG THẢNH",
+  description: "Các công trình và giải pháp nhôm — phụ kiện — nội thất thực tế do CÔNG THẢNH thi công tại An Giang và khu vực miền Tây."
+};
 
 export default async function ProjectsPage() {
   const projects = await prisma.project.findMany({
