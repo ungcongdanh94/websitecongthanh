@@ -1,22 +1,32 @@
-import Link from "next/link";
-import LogoutButton from "@/components/admin/LogoutButton";
-import AdminNav from "@/components/admin/AdminNav";
+import type { Metadata } from "next";
+import { Be_Vietnam_Pro } from "next/font/google";
+import "./globals.css";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+const beVietnamPro = Be_Vietnam_Pro({
+  subsets: ["latin", "vietnamese"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  display: "swap",
+  variable: "--font-be-vietnam-pro"
+});
+
+export const metadata: Metadata = {
+  title: "CÔNG THẢNH | Nhôm và phụ kiện cao cấp",
+  description:
+    "Tham khảo sản phẩm, giá nhôm, phụ kiện và giải pháp nội thất nhôm tại CÔNG THẢNH."
+};
+
+export default function RootLayout({
+  children
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="min-h-screen bg-slate-100">
-      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur-xl">
-        <div className="container-page flex min-h-16 items-center justify-between gap-4">
-          <div className="flex items-center gap-7">
-            <Link href="/admin" className="font-black text-brand-800">
-              CÔNG THẢNH CMS
-            </Link>
-            <AdminNav />
-          </div>
-          <LogoutButton />
-        </div>
-      </header>
-      {children}
-    </div>
+    <html lang="vi" className={beVietnamPro.variable}>
+      <body className={beVietnamPro.className}>
+        <Header />
+        <main>{children}</main>
+        <Footer />
+      </body>
+    </html>
   );
 }
