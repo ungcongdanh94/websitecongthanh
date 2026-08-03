@@ -48,7 +48,12 @@ async function main() {
       brand: "xingfa-class-a",
       shortDesc: "Hệ nhôm cao cấp dùng cho cửa đi và cửa sổ.",
       unit: "kg",
-      specs: { "Hệ nhôm": "55", "Chiều dài thanh": "6 m" }
+      productLine: "Class A",
+      aluminumSystem: "Hệ 55",
+      color: "Ghi xám",
+      thickness: 2.0,
+      stockLength: 6000,
+      specs: { "Ứng dụng": "Cửa đi, cửa sổ" }
     },
     {
       slug: "phu-kien-cmech-cua-di",
@@ -104,6 +109,11 @@ async function main() {
         name: product.name,
         shortDesc: product.shortDesc,
         unit: product.unit,
+        productLine: "productLine" in product ? product.productLine : null,
+        aluminumSystem: "aluminumSystem" in product ? product.aluminumSystem : null,
+        color: "color" in product ? product.color : null,
+        thickness: "thickness" in product ? product.thickness : null,
+        stockLength: "stockLength" in product ? product.stockLength : null,
         specs: product.specs,
         status: PublishStatus.PUBLISHED,
         isFeatured: ["nhom-xingfa-class-a-he-55", "phu-kien-cmech-cua-di", "tu-bep-nhom-phu-hoan-anh"].includes(product.slug),
@@ -117,6 +127,11 @@ async function main() {
         description:
           "Dữ liệu khởi tạo. Bạn có thể thay đổi nội dung và hình ảnh trong trang quản trị.",
         unit: product.unit,
+        productLine: "productLine" in product ? product.productLine : null,
+        aluminumSystem: "aluminumSystem" in product ? product.aluminumSystem : null,
+        color: "color" in product ? product.color : null,
+        thickness: "thickness" in product ? product.thickness : null,
+        stockLength: "stockLength" in product ? product.stockLength : null,
         specs: product.specs,
         status: PublishStatus.PUBLISHED,
         isFeatured: ["nhom-xingfa-class-a-he-55", "phu-kien-cmech-cua-di", "tu-bep-nhom-phu-hoan-anh"].includes(product.slug),

@@ -81,12 +81,21 @@ export default async function HomePage() {
     imageUrl: product.imageUrl,
     price: product.price === null ? null : Number(product.price),
     unit: product.unit,
+    productLine: product.productLine,
+    aluminumSystem: product.aluminumSystem,
+    color: product.color,
+    thickness: product.thickness === null ? null : Number(product.thickness),
+    stockLength: product.stockLength,
+    catalogUrl: product.catalogUrl,
+    videoUrl: product.videoUrl,
     specs:
       product.specs && typeof product.specs === "object" && !Array.isArray(product.specs)
         ? (product.specs as Record<string, unknown>)
         : null,
     categoryName: product.category.name,
-    brandName: product.brand?.name || null
+    categorySlug: product.category.slug,
+    brandName: product.brand?.name || null,
+    brandSlug: product.brand?.slug || null
   }));
 
   return (

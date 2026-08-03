@@ -72,7 +72,15 @@ model Product {
   imageUrl      String?
   gallery       Json?
   price         Decimal?      @db.Decimal(14, 2)
+  dealerPrice   Decimal?      @db.Decimal(14, 2)
   unit          String?
+  productLine   String?
+  aluminumSystem String?
+  color         String?
+  thickness     Decimal?      @db.Decimal(8, 2)
+  stockLength   Int?
+  catalogUrl    String?
+  videoUrl      String?
   specs         Json?
   isFeatured    Boolean       @default(false)
   status        PublishStatus @default(DRAFT)

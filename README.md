@@ -1,39 +1,43 @@
-# CÔNG THẢNH Website v0.8
+# CÔNG THẢNH Website v0.9.0
 
-## Điểm mới
+Nền tảng website + CMS dành cho ngành nhôm, phụ kiện và nội thất nhôm.
 
-- Media Manager tại `/admin/media`.
-- Kéo thả và tải nhiều ảnh cùng lúc.
-- Lưu ảnh trên Cloudinary, metadata trong PostgreSQL.
-- Sao chép URL và xóa ảnh.
-- Chọn ảnh trực tiếp trong form sản phẩm, dự án và banner.
-- Giới hạn 12 ảnh/lần, 10 MB/ảnh; hỗ trợ JPG, PNG, WebP và GIF.
+## Điểm mới v0.9
 
-## Biến môi trường Railway
-
-```env
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_API_KEY=...
-CLOUDINARY_API_SECRET=...
-```
-
-Các giá trị nằm trong Cloudinary Dashboard → API Keys.
-
-## Cập nhật database
-
-```bash
-npx prisma db push
-```
+- Mở rộng dữ liệu sản phẩm theo đúng ngành:
+  - Dòng sản phẩm
+  - Hệ nhôm
+  - Màu sắc
+  - Độ dày
+  - Chiều dài thanh
+  - Giá bán lẻ
+  - Giá đại lý
+  - Catalogue PDF
+  - Video giới thiệu
+- Bộ lọc sản phẩm ngoài website theo danh mục, thương hiệu và hệ nhôm.
+- Trang chi tiết hiển thị quy cách kỹ thuật rõ ràng.
+- CMS tìm kiếm theo hệ nhôm và dòng sản phẩm.
+- Giữ nguyên Media Manager, Dự án, Banner và Báo giá.
 
 ## Triển khai
 
-Chép đè gói v0.8 vào repository, sau đó:
+Sau khi cập nhật code:
 
-```powershell
-npm.cmd install
-npm.cmd run build
+```bash
+npm install
+npm run build
 git add .
-git commit -m "Add Media Manager v0.8"
-git pull --rebase origin main
+git commit -m "Add aluminum product module v0.9"
 git push origin main
 ```
+
+Sau khi Railway deploy, chạy:
+
+```bash
+npx prisma db push
+npm run db:seed
+```
+
+## Lưu ý
+
+`dealerPrice` chỉ được quản lý trong CMS, chưa hiển thị công khai ngoài website.

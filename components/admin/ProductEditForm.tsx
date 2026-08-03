@@ -15,12 +15,22 @@ type ProductData = {
   description: string | null;
   imageUrl: string | null;
   price: number | null;
+  dealerPrice: number | null;
   unit: string | null;
+  productLine: string | null;
+  aluminumSystem: string | null;
+  color: string | null;
+  thickness: number | null;
+  stockLength: number | null;
+  catalogUrl: string | null;
+  videoUrl: string | null;
   status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
   categoryId: string;
   brandId: string | null;
   isFeatured: boolean;
 };
+
+const input = "rounded-2xl border border-slate-200 px-4 py-3";
 
 export default function ProductEditForm({
   product,
@@ -65,15 +75,20 @@ export default function ProductEditForm({
     }
   }
 
-  const input = "rounded-2xl border border-slate-200 px-4 py-3";
-
   return (
     <form onSubmit={submit} className="grid gap-5 rounded-3xl border bg-white p-6">
-      <input name="name" required defaultValue={product.name} className={input} placeholder="Tên sản phẩm" />
-      <input name="slug" required defaultValue={product.slug} className={input} placeholder="Slug" />
-      <input name="sku" defaultValue={product.sku || ""} className={input} placeholder="Mã sản phẩm" />
+      <div className="grid gap-4 md:grid-cols-2">
+        <input name="name" required defaultValue={product.name} className={input} placeholder="Tên sản phẩm" />
+        <input name="slug" required defaultValue={product.slug} className={input} placeholder="Slug" />
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <input name="sku" defaultValue={product.sku || ""} className={input} placeholder="Mã sản phẩm" />
+        <input name="productLine" defaultValue={product.productLine || ""} className={input} placeholder="Dòng sản phẩm" />
+      </div>
+
       <textarea name="shortDesc" defaultValue={product.shortDesc || ""} className={`${input} min-h-24`} placeholder="Mô tả ngắn" />
       <textarea name="description" defaultValue={product.description || ""} className={`${input} min-h-40`} placeholder="Mô tả chi tiết" />
+
       <div className="grid gap-4 md:grid-cols-2">
         <select name="categoryId" required defaultValue={product.categoryId} className={input}>
           {categories.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
@@ -83,8 +98,15 @@ export default function ProductEditForm({
           {brands.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
         </select>
       </div>
+
       <div className="grid gap-4 md:grid-cols-3">
-        <input name="price" type="number" min="0" step="1" defaultValue={product.price ?? ""} className={input} placeholder="Giá bán" />
+        <input name="aluminumSystem" defaultValue={product.aluminumSystem || ""} className={input} placeholder="Hệ nhôm" />
+        <input name="color" defaultValue={product.color || ""} className={input} placeholder="Màu sắc" />
+        <input name="thickness" type="number" min="0" step="0.01" defaultValue={product.thickness ?? ""} className={input} placeholder="Độ dày (mm)" />
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        <input name="stockLength" type="number" min="0" step="1" defaultValue={product.stockLength ?? ""} className={input} placeholder="Chiều dài thanh (mm)" />
         <input name="unit" defaultValue={product.unit || ""} className={input} placeholder="Đơn vị" />
         <select name="status" defaultValue={product.status} className={input}>
           <option value="DRAFT">Bản nháp</option>
@@ -92,11 +114,24 @@ export default function ProductEditForm({
           <option value="ARCHIVED">Lưu trữ</option>
         </select>
       </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <input name="price" type="number" min="0" step="1" defaultValue={product.price ?? ""} className={input} placeholder="Giá bán lẻ" />
+        <input name="dealerPrice" type="number" min="0" step="1" defaultValue={product.dealerPrice ?? ""} className={input} placeholder="Giá đại lý" />
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <input name="catalogUrl" defaultValue={product.catalogUrl || ""} className={input} placeholder="URL catalogue PDF" />
+        <input name="videoUrl" defaultValue={product.videoUrl || ""} className={input} placeholder="URL video giới thiệu" />
+      </div>
+
       <MediaPicker name="imageUrl" defaultValue={product.imageUrl || ""} label="Ảnh đại diện sản phẩm" />
+
       <label className="flex items-center gap-3 rounded-2xl border border-slate-200 p-4">
         <input name="isFeatured" type="checkbox" defaultChecked={product.isFeatured} />
         <span className="font-semibold">Đánh dấu là sản phẩm nổi bật</span>
       </label>
+
       <button disabled={loading} className="btn-primary disabled:opacity-60">
         {loading ? "Đang lưu..." : "Lưu thay đổi"}
       </button>
