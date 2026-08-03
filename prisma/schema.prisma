@@ -89,6 +89,7 @@ model Product {
   category      Category      @relation(fields: [categoryId], references: [id])
   brand         Brand?        @relation(fields: [brandId], references: [id])
   quoteItems    QuoteItem[]
+  priceChanges  PriceChange[]
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 
@@ -204,4 +205,20 @@ model MediaAsset {
 
   @@index([folder])
   @@index([createdAt])
+}
+
+model PriceChange {
+  id             String   @id @default(cuid())
+  productId      String
+  oldPrice       Decimal? @db.Decimal(14, 2)
+  newPrice       Decimal? @db.Decimal(14, 2)
+  oldDealerPrice Decimal? @db.Decimal(14, 2)
+  newDealerPrice Decimal? @db.Decimal(14, 2)
+  note           String?
+  effectiveAt    DateTime @default(now())
+  createdAt      DateTime @default(now())
+  product        Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([effectiveAt])
 }

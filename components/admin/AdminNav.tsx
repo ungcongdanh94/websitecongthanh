@@ -11,6 +11,7 @@ const items = [
   ["Dự án", "/admin/projects"],
   ["Banner", "/admin/banners"],
   ["Media", "/admin/media"],
+  ["Bảng giá", "/admin/prices"],
   ["Báo giá", "/admin/quotes"]
 ];
 
