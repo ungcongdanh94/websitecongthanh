@@ -1,0 +1,32 @@
+{
+  "companyName": "CÔNG THẢNH",
+  "colors": {
+    "primaryDark": "#0D5B32",
+    "primary": "#16A34A",
+    "accent": "#22C55E",
+    "gold": "#D4AF37",
+    "charcoal": "#1F2937",
+    "offWhite": "#F5F7F7",
+    "logoRed": "#E51F2A"
+  },
+  "font": {
+    "family": "Be Vietnam Pro",
+    "headingWeight": 700,
+    "bodyWeight": 400
+  },
+  "hero": {
+    "eyebrow": "GIẢI PHÁP NHÔM CAO CẤP",
+    "title": "CHO MỌI CÔNG TRÌNH",
+    "cta": "KHÁM PHÁ NGAY"
+  },
+  "intro": {
+    "title": "Giải pháp nhôm đồng bộ cho công trình hiện đại",
+    "description": "CÔNG THẢNH cung cấp nhôm thanh định hình, phụ kiện đồng bộ và giải pháp nội thất nhôm cho khách hàng, đại lý và xưởng sản xuất.",
+    "benefits": [
+      "Sản phẩm chính hãng",
+      "Giá cạnh tranh",
+      "Tư vấn tận tâm",
+      "Hỗ trợ kỹ thuật"
+    ]
+  }
+}
