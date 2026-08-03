@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import MediaPicker from "@/components/admin/MediaPicker";
+import GalleryPicker from "@/components/admin/GalleryPicker";
 
 type Option = { id: string; name: string };
 
@@ -14,6 +15,7 @@ type ProductData = {
   shortDesc: string | null;
   description: string | null;
   imageUrl: string | null;
+  gallery: string[];
   price: number | null;
   dealerPrice: number | null;
   unit: string | null;
@@ -126,6 +128,7 @@ export default function ProductEditForm({
       </div>
 
       <MediaPicker name="imageUrl" defaultValue={product.imageUrl || ""} label="Ảnh đại diện sản phẩm" />
+      <GalleryPicker name="gallery" defaultValue={product.gallery} label="Thư viện ảnh chi tiết (nhiều ảnh)" />
 
       <label className="flex items-center gap-3 rounded-2xl border border-slate-200 p-4">
         <input name="isFeatured" type="checkbox" defaultChecked={product.isFeatured} />

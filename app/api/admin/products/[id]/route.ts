@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getAdminSession } from "@/lib/auth";
 
@@ -19,6 +20,14 @@ export async function PUT(
     const { id } = await context.params;
     const body = await request.json();
 
+    let gallery: string[] = [];
+    try {
+      const parsed = JSON.parse(body.gallery || "[]");
+      if (Array.isArray(parsed)) gallery = parsed.filter((item) => typeof item === "string");
+    } catch {
+      gallery = [];
+    }
+
     const product = await prisma.product.update({
       where: { id },
       data: {
@@ -28,6 +37,7 @@ export async function PUT(
         shortDesc: String(body.shortDesc || "").trim() || null,
         description: String(body.description || "").trim() || null,
         imageUrl: String(body.imageUrl || "").trim() || null,
+        gallery: gallery.length ? gallery : Prisma.DbNull,
         price: body.price ? Number(body.price) : null,
         dealerPrice: body.dealerPrice ? Number(body.dealerPrice) : null,
         unit: String(body.unit || "").trim() || null,

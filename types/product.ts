@@ -5,6 +5,7 @@ export type PublicProduct = {
   shortDesc: string | null;
   description: string | null;
   imageUrl: string | null;
+  gallery: string[];
   price: number | null;
   unit: string | null;
   productLine: string | null;

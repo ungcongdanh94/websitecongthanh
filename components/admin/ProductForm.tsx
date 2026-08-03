@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import MediaPicker from "@/components/admin/MediaPicker";
+import GalleryPicker from "@/components/admin/GalleryPicker";
 
 type Option = { id: string; name: string };
 const input = "rounded-2xl border border-slate-200 px-4 py-3";
@@ -98,6 +99,7 @@ export default function ProductForm({
       </div>
 
       <MediaPicker name="imageUrl" label="Ảnh đại diện sản phẩm" />
+      <GalleryPicker name="gallery" label="Thư viện ảnh chi tiết (nhiều ảnh)" />
 
       <label className="flex items-center gap-3 rounded-2xl border border-slate-200 p-4">
         <input name="isFeatured" type="checkbox" />

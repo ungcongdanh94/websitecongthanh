@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Download, PlayCircle } from "lucide-react";
 import { prisma } from "@/lib/prisma";
+import ProductGallery from "@/components/ProductGallery";
 
 export const dynamic = "force-dynamic";
 
@@ -39,13 +39,12 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
       <Link href="/san-pham" className="text-sm font-bold text-brand-700">← Quay lại sản phẩm</Link>
 
       <div className="mt-8 grid gap-10 lg:grid-cols-2">
-        <div className="relative aspect-square overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-50 to-slate-100">
-          {product.imageUrl ? (
-            <Image src={product.imageUrl} alt={product.name} fill className="object-cover" />
-          ) : (
-            <div className="flex h-full items-center justify-center text-3xl font-black text-brand-800">CÔNG THẢNH</div>
+        <ProductGallery
+          images={[product.imageUrl, ...(Array.isArray(product.gallery) ? (product.gallery as string[]) : [])].filter(
+            (url): url is string => Boolean(url)
           )}
-        </div>
+          alt={product.name}
+        />
 
         <div>
           <div className="text-sm font-bold uppercase tracking-widest text-brand-700">

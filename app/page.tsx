@@ -97,6 +97,7 @@ export default async function HomePage() {
     shortDesc: product.shortDesc,
     description: product.description,
     imageUrl: product.imageUrl,
+    gallery: Array.isArray(product.gallery) ? (product.gallery as string[]) : [],
     price: product.price === null ? null : Number(product.price),
     unit: product.unit,
     productLine: product.productLine,

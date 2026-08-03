@@ -14,6 +14,14 @@ export async function POST(request: Request) {
     const slug = String(body.slug || "").trim().toLowerCase();
     const categoryId = String(body.categoryId || "").trim();
 
+    let gallery: string[] = [];
+    try {
+      const parsed = JSON.parse(body.gallery || "[]");
+      if (Array.isArray(parsed)) gallery = parsed.filter((item) => typeof item === "string");
+    } catch {
+      gallery = [];
+    }
+
     if (!name || !slug || !categoryId) {
       return NextResponse.json(
         { ok: false, message: "Thiếu tên, slug hoặc danh mục" },
@@ -27,7 +35,9 @@ export async function POST(request: Request) {
         slug,
         sku: String(body.sku || "").trim() || null,
         shortDesc: String(body.shortDesc || "").trim() || null,
+        description: String(body.description || "").trim() || null,
         imageUrl: String(body.imageUrl || "").trim() || null,
+        gallery: gallery.length ? gallery : undefined,
         price: body.price ? Number(body.price) : null,
         dealerPrice: body.dealerPrice ? Number(body.dealerPrice) : null,
         unit: String(body.unit || "").trim() || null,

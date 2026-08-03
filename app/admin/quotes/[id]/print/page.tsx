@@ -21,7 +21,7 @@ export default async function QuotePrintPage({ params }: { params: Promise<{ id:
     <main className="min-h-screen bg-slate-100 px-4 py-8 print:bg-white print:p-0">
       <div className="mx-auto mb-5 flex max-w-5xl justify-end print:hidden"><PrintButton /></div>
       <article className="mx-auto max-w-5xl bg-white p-10 shadow-xl print:max-w-none print:p-0 print:shadow-none">
-        <header className="flex items-start justify-between gap-8 border-b-2 border-brand-800 pb-6">
+        <div className="flex items-start justify-between gap-8 border-b-2 border-brand-800 pb-6">
           <div>
             <div className="text-3xl font-black text-brand-800">CÔNG THẢNH</div>
             <div className="mt-2 max-w-xl text-sm leading-6 text-slate-600">{site.legalName}</div>
@@ -34,7 +34,7 @@ export default async function QuotePrintPage({ params }: { params: Promise<{ id:
             <div className="mt-1 text-sm text-slate-500">Ngày: {quote.createdAt.toLocaleDateString("vi-VN")}</div>
             {quote.validUntil && <div className="text-sm text-slate-500">Hiệu lực đến: {quote.validUntil.toLocaleDateString("vi-VN")}</div>}
           </div>
-        </header>
+        </div>
 
         <section className="mt-7 grid grid-cols-2 gap-x-10 gap-y-2 text-sm">
           <div><b>Khách hàng:</b> {quote.customerName}</div>
@@ -81,10 +81,10 @@ export default async function QuotePrintPage({ params }: { params: Promise<{ id:
         {quote.note && <section className="mt-8 text-sm"><b>Ghi chú:</b><p className="mt-2 whitespace-pre-line text-slate-700">{quote.note}</p></section>}
         {quote.terms && <section className="mt-6 text-sm"><b>Điều khoản:</b><p className="mt-2 whitespace-pre-line text-slate-700">{quote.terms}</p></section>}
 
-        <footer className="mt-12 grid grid-cols-2 text-center text-sm">
+        <div className="mt-12 grid grid-cols-2 text-center text-sm">
           <div><div className="font-bold">KHÁCH HÀNG</div><div className="mt-1 text-slate-500">Ký và ghi rõ họ tên</div></div>
           <div><div className="font-bold">CÔNG TY CÔNG THẢNH</div><div className="mt-1 text-slate-500">Người lập báo giá</div></div>
-        </footer>
+        </div>
       </article>
     </main>
   );

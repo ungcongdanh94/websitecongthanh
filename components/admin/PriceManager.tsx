@@ -23,6 +23,12 @@ function formatMoney(value: number | null) {
   return value === null ? "—" : value.toLocaleString("vi-VN");
 }
 
+type ImportResult = {
+  updatedCount: number;
+  total: number;
+  skipped: { row: number; reason: string }[];
+};
+
 export default function PriceManager({ products }: { products: PriceProduct[] }) {
   const router = useRouter();
   const [query, setQuery] = useState("");
@@ -30,6 +36,9 @@ export default function PriceManager({ products }: { products: PriceProduct[] })
   const [note, setNote] = useState("");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState<ImportResult | null>(null);
+  const [importError, setImportError] = useState("");
 
   const filtered = useMemo(() => {
     const keyword = query.trim().toLowerCase();
@@ -51,6 +60,31 @@ export default function PriceManager({ products }: { products: PriceProduct[] })
         [field]: value
       }
     }));
+  }
+
+  async function handleImport(event: FormEvent<HTMLInputElement>) {
+    const input = event.currentTarget;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    setImporting(true);
+    setImportError("");
+    setImportResult(null);
+
+    try {
+      const body = new FormData();
+      body.append("file", file);
+      const response = await fetch("/api/admin/prices/import", { method: "POST", body });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message || "Không thể nhập file");
+      setImportResult({ updatedCount: result.updatedCount, total: result.total, skipped: result.skipped || [] });
+      router.refresh();
+    } catch (error) {
+      setImportError(error instanceof Error ? error.message : "Có lỗi xảy ra khi nhập file");
+    } finally {
+      setImporting(false);
+      input.value = "";
+    }
   }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -96,10 +130,43 @@ export default function PriceManager({ products }: { products: PriceProduct[] })
           className="w-full rounded-2xl border border-slate-200 px-4 py-3 lg:max-w-xl"
           placeholder="Tìm theo tên, mã, thương hiệu hoặc danh mục..."
         />
-        <a href="/api/admin/prices/export" className="btn-secondary whitespace-nowrap">
-          Xuất CSV
-        </a>
+        <div className="flex gap-3">
+          <a href="/api/admin/prices/export" className="btn-secondary whitespace-nowrap">
+            Xuất Excel
+          </a>
+          <label className="btn-primary cursor-pointer whitespace-nowrap">
+            {importing ? "Đang nhập..." : "Nhập từ Excel"}
+            <input
+              type="file"
+              accept=".xlsx,.xls,.csv"
+              className="hidden"
+              disabled={importing}
+              onChange={handleImport}
+            />
+          </label>
+        </div>
       </div>
+
+      {(importResult || importError) && (
+        <div className="rounded-3xl border border-brand-100 bg-brand-50 p-5">
+          {importError && <p className="text-sm font-semibold text-red-700">{importError}</p>}
+          {importResult && (
+            <div>
+              <p className="text-sm font-bold text-brand-800">
+                Đã cập nhật {importResult.updatedCount}/{importResult.total} dòng từ file.
+              </p>
+              {importResult.skipped.length > 0 && (
+                <div className="mt-3 max-h-40 overflow-y-auto rounded-2xl bg-white p-3 text-xs text-slate-600">
+                  <div className="mb-1 font-bold text-slate-700">Các dòng bị bỏ qua:</div>
+                  {importResult.skipped.map((item) => (
+                    <div key={item.row}>Dòng {item.row}: {item.reason}</div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="overflow-hidden rounded-3xl border bg-white">
         <div className="overflow-x-auto">

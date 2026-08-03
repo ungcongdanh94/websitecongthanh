@@ -34,6 +34,7 @@ export default async function EditProductPage({
               shortDesc: product.shortDesc,
               description: product.description,
               imageUrl: product.imageUrl,
+              gallery: Array.isArray(product.gallery) ? (product.gallery as string[]) : [],
               price: product.price === null ? null : Number(product.price),
               dealerPrice: product.dealerPrice === null ? null : Number(product.dealerPrice),
               unit: product.unit,

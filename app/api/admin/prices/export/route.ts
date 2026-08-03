@@ -1,10 +1,8 @@
+import * as XLSX from "xlsx";
 import { prisma } from "@/lib/prisma";
 import { getAdminSession } from "@/lib/auth";
 
-function csvCell(value: unknown) {
-  const text = value === null || value === undefined ? "" : String(value);
-  return `"${text.replaceAll('"', '""')}"`;
-}
+export const runtime = "nodejs";
 
 export async function GET() {
   if (!(await getAdminSession())) {
@@ -16,26 +14,33 @@ export async function GET() {
     orderBy: [{ category: { sortOrder: "asc" } }, { name: "asc" }]
   });
 
-  const rows = [
-    ["SKU", "Tên sản phẩm", "Danh mục", "Thương hiệu", "Hệ nhôm", "Màu", "Đơn vị", "Giá bán", "Giá đại lý"],
-    ...products.map((product) => [
-      product.sku || "",
-      product.name,
-      product.category.name,
-      product.brand?.name || "",
-      product.aluminumSystem || "",
-      product.color || "",
-      product.unit || "",
-      product.price === null ? "" : Number(product.price),
-      product.dealerPrice === null ? "" : Number(product.dealerPrice)
-    ])
+  const rows = products.map((product) => ({
+    SKU: product.sku || "",
+    "Tên sản phẩm": product.name,
+    "Danh mục": product.category.name,
+    "Thương hiệu": product.brand?.name || "",
+    "Hệ nhôm": product.aluminumSystem || "",
+    "Màu": product.color || "",
+    "Đơn vị": product.unit || "",
+    "Giá bán": product.price === null ? "" : Number(product.price),
+    "Giá đại lý": product.dealerPrice === null ? "" : Number(product.dealerPrice)
+  }));
+
+  const sheet = XLSX.utils.json_to_sheet(rows);
+  sheet["!cols"] = [
+    { wch: 16 }, { wch: 32 }, { wch: 20 }, { wch: 16 },
+    { wch: 14 }, { wch: 12 }, { wch: 10 }, { wch: 14 }, { wch: 14 }
   ];
 
-  const csv = `\uFEFF${rows.map((row) => row.map(csvCell).join(",")).join("\r\n")}`;
-  return new Response(csv, {
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, sheet, "Bang gia");
+
+  const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" }) as Buffer;
+
+  return new Response(buffer, {
     headers: {
-      "Content-Type": "text/csv; charset=utf-8",
-      "Content-Disposition": `attachment; filename="bang-gia-cong-thanh-${new Date().toISOString().slice(0, 10)}.csv"`
+      "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "Content-Disposition": `attachment; filename="bang-gia-cong-thanh-${new Date().toISOString().slice(0, 10)}.xlsx"`
     }
   });
 }
