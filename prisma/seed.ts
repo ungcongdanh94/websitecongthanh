@@ -220,7 +220,7 @@ async function main() {
   const bannerData = {
     title: `${brandContent.hero.eyebrow} — ${brandContent.hero.title}`,
     subtitle: brandContent.intro.description,
-    imageUrl: siteAssets.assets.hero,
+    imageUrl: "/assets/banners/hero-homepage-v2.webp",
     buttonLabel: brandContent.hero.cta,
     buttonUrl: "/san-pham",
     sortOrder: 0,

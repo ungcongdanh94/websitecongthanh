@@ -143,28 +143,29 @@ export default async function HomePage() {
         <div className="container-page">
           <div className="relative overflow-hidden rounded-[2rem] bg-brand-950 text-white">
             <Image
-              src="/assets/banners/hero-homepage.webp"
+              src="/assets/banners/hero-homepage-v2.webp"
               alt="Công trình sử dụng giải pháp nhôm CÔNG THẢNH"
               fill
               priority
+              quality={90}
+              sizes="100vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-brand-950 via-brand-950/85 to-brand-950/30" />
-            <div className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-brand-400/20 blur-3xl" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-transparent" />
 
-            <div className="relative grid gap-10 px-7 py-14 sm:px-10 lg:grid-cols-[1.05fr_0.95fr] lg:px-14 lg:py-20">
-              <div className="flex flex-col justify-center">
+            <div className="relative flex flex-col gap-10 px-6 py-12 sm:px-10 sm:py-16 lg:flex-row lg:items-center lg:justify-between lg:px-14 lg:py-20">
+              <div className="w-full max-w-[680px]">
                 <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-brand-100 backdrop-blur-xl">
                   <Sparkles className="h-4 w-4 text-brand-300" />
                   Xingfa · Namsung · Draho · Candy — chính hãng
                 </div>
 
-                <h1 className="mt-6 text-4xl font-black uppercase leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+                <h1 className="mt-6 text-4xl font-black uppercase leading-[1.05] tracking-tight sm:text-[42px] lg:text-[60px]">
                   Nhôm cao cấp
                   <span className="block text-brand-300">bền vững cùng thời gian</span>
                 </h1>
 
-                <p className="mt-6 max-w-xl text-base leading-7 text-brand-50/80 sm:text-lg">
+                <p className="mt-6 text-base leading-7 text-white/85 sm:text-lg">
                   CÔNG THẢNH cung cấp giải pháp nhôm toàn diện cho cửa đi, cửa sổ, vách kính,
                   tủ bếp, lan can, hàng rào và nội thất cao cấp.
                 </p>
@@ -183,8 +184,8 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              <div className="hidden lg:flex lg:items-center lg:justify-end">
-                <div className="w-full max-w-md rounded-[1.75rem] border border-white/15 bg-white/10 p-5 shadow-2xl backdrop-blur-2xl">
+              <div className="w-full max-w-[460px] shrink-0 lg:w-[38%]">
+                <div className="rounded-[1.75rem] border border-white/15 bg-white/10 p-5 shadow-2xl backdrop-blur-2xl">
                   <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-200">
                     Quy trình đặt hàng
                   </div>
@@ -195,7 +196,7 @@ export default async function HomePage() {
                           key={item}
                           className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-4"
                         >
-                          <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-500 font-black">
+                          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-500 font-black">
                             {index + 1}
                           </span>
                           <span className="font-bold">{item}</span>

@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## v0.15.1 — Sửa lại toàn bộ Hero trang chủ
+
+### 🔧 Thay đổi
+
+- **Ảnh hero**: đổi từ `hero-homepage.webp` (ảnh crop từ asset board, có chữ/logo nhúng sẵn) sang đường dẫn mới `hero-homepage-v2.webp` — **cần Zen bổ sung ảnh thật** (≥1920×1080, không chữ, không logo). Cùng đường dẫn này cũng được cập nhật trong `prisma/seed.ts` cho banner trang chủ, để đồng bộ cả hai nơi dùng ảnh hero.
+- **`next/image`**: thêm đầy đủ `quality={90}`, `sizes="100vw"` (trước đây thiếu 2 thuộc tính này).
+- **Overlay**: đổi từ gradient nhuộm màu xanh lá (`from-brand-950 via-brand-950/85 to-brand-950/30`) sang đúng `from-black/75 via-black/45 to-transparent` như yêu cầu.
+- **Kích thước heading**: mobile `36px` → `42px` (`sm:`), desktop `60px` (`lg:`) — nằm trong khoảng 56–64px yêu cầu.
+- **Bố cục**: nội dung trái giới hạn `max-w-[680px]`; card quy trình bên phải `max-w-[460px]` và `lg:w-[38%]` (dưới 40%).
+- **Responsive**: đổi từ `grid lg:grid-cols-[...]` (card ẩn hoàn toàn trên mobile — `hidden lg:flex`) sang `flex flex-col lg:flex-row` — mobile giờ xếp 1 cột, card quy trình hiển thị **dưới** nội dung (trước đây bị ẩn hẳn trên mobile).
+
+### ✅ Ảnh hero đã được bổ sung
+
+`public/assets/banners/hero-homepage-v2.webp` — ảnh biệt thự hiện đại do Zen cung cấp, đã resize đúng 1920×1080 (ảnh gốc 1672×941, tỉ lệ khung hình gần như giữ nguyên nên không bị méo khi resize).
+
+---
+
 ## v0.15.0 — Phase 3: Chuẩn hóa API cho plugin SketchUp
 
 ### ✨ Tính năng mới
