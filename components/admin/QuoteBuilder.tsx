@@ -23,9 +23,19 @@ type QuoteLine = {
   note: string;
 };
 
+type CustomerOption = {
+  id: string;
+  name: string;
+  phone: string;
+  email: string | null;
+  company: string | null;
+  address: string | null;
+};
+
 type QuoteData = {
   id: string;
   quoteNumber: string;
+  customerId: string;
   customerName: string;
   phone: string;
   email: string;
@@ -46,10 +56,12 @@ function money(value: number) {
 
 export default function QuoteBuilder({
   initialQuote,
-  products
+  products,
+  customers
 }: {
   initialQuote: QuoteData;
   products: ProductOption[];
+  customers: CustomerOption[];
 }) {
   const router = useRouter();
   const [quote, setQuote] = useState(initialQuote);
@@ -151,6 +163,33 @@ export default function QuoteBuilder({
         </div>
 
         <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <select
+            className={`${field} xl:col-span-3 font-semibold`}
+            value={quote.customerId}
+            onChange={(e) => {
+              const customer = customers.find((c) => c.id === e.target.value);
+              if (customer) {
+                setQuote({
+                  ...quote,
+                  customerId: customer.id,
+                  customerName: customer.name,
+                  phone: customer.phone,
+                  email: customer.email || "",
+                  company: customer.company || "",
+                  address: customer.address || ""
+                });
+              } else {
+                setQuote({ ...quote, customerId: "" });
+              }
+            }}
+          >
+            <option value="">— Nhập tay hoặc chọn khách hàng có sẵn từ CRM —</option>
+            {customers.map((customer) => (
+              <option key={customer.id} value={customer.id}>
+                {customer.name} — {customer.phone}
+              </option>
+            ))}
+          </select>
           <input className={field} value={quote.customerName} onChange={(e) => setQuote({ ...quote, customerName: e.target.value })} placeholder="Tên khách hàng" />
           <input className={field} value={quote.phone} onChange={(e) => setQuote({ ...quote, phone: e.target.value })} placeholder="Số điện thoại" />
           <input className={field} type="email" value={quote.email} onChange={(e) => setQuote({ ...quote, email: e.target.value })} placeholder="Email" />

@@ -45,6 +45,7 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
           email: String(body.email || "").trim() || null,
           company: String(body.company || "").trim() || null,
           address: String(body.address || "").trim() || null,
+          customerId: body.customerId ? String(body.customerId) : null,
           note: String(body.note || "").trim() || null,
           terms: String(body.terms || "").trim() || null,
           status,

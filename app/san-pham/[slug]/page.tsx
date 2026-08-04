@@ -68,8 +68,33 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
       : [])
   ].filter(Boolean) as [string, string][];
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.shortDesc || product.description || undefined,
+    sku: product.sku || undefined,
+    image: product.imageUrl || undefined,
+    brand: product.brand ? { "@type": "Brand", name: product.brand.name } : undefined,
+    category: product.category.name,
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "VND",
+      price: product.price ? Number(product.price) : undefined,
+      availability: product.price
+        ? "https://schema.org/InStock"
+        : "https://schema.org/LimitedAvailability",
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://congthanhco.com"}/san-pham/${product.slug}`
+    }
+  };
+
   return (
     <section className="container-page py-16">
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
       <Link href="/san-pham" className="text-sm font-bold text-brand-700">← Quay lại sản phẩm</Link>
 
       <div className="mt-8 grid gap-10 lg:grid-cols-2">

@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export default async function QuoteDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const [quote, products] = await Promise.all([
+  const [quote, products, customers] = await Promise.all([
     prisma.quoteRequest.findUnique({
       where: { id },
       include: { items: { orderBy: { sortOrder: "asc" } } }
@@ -14,6 +14,10 @@ export default async function QuoteDetailPage({ params }: { params: Promise<{ id
     prisma.product.findMany({
       where: { status: "PUBLISHED" },
       select: { id: true, name: true, sku: true, unit: true, price: true },
+      orderBy: { name: "asc" }
+    }),
+    prisma.customer.findMany({
+      select: { id: true, name: true, phone: true, email: true, company: true, address: true },
       orderBy: { name: "asc" }
     })
   ]);
@@ -27,9 +31,11 @@ export default async function QuoteDetailPage({ params }: { params: Promise<{ id
         <h1 className="mt-3 text-4xl font-black">Soạn báo giá</h1>
       </div>
       <QuoteBuilder
+        customers={customers}
         initialQuote={{
           id: quote.id,
           quoteNumber: quote.quoteNumber || quote.id,
+          customerId: quote.customerId || "",
           customerName: quote.customerName,
           phone: quote.phone,
           email: quote.email || "",

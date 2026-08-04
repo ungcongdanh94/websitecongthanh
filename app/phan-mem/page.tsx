@@ -1,5 +1,11 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Box, Calculator, FileSpreadsheet, WandSparkles } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Phần mềm & công cụ thiết kế | CÔNG THẢNH",
+  description: "Công cụ dựng hình, tính vật tư và xuất bảng cắt cho song bảo vệ và tủ bếp nhôm — đang phát triển, hướng tới tích hợp plugin SketchUp."
+};
 
 export default function SoftwarePage() {
   return (

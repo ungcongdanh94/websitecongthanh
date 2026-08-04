@@ -1,5 +1,30 @@
 # CHANGELOG
 
+## v0.17.0 — Dọn các việc còn tồn đọng
+
+### ✨ Tính năng mới
+
+- **CRM nối vào soạn báo giá**: `QuoteBuilder` giờ có dropdown "chọn khách hàng có sẵn từ CRM" — chọn xong tự điền tên/SĐT/email/công ty/địa chỉ và gắn `customerId`, không cần gõ tay nữa. Vẫn có thể gõ tay như trước nếu khách chưa có trong CRM.
+- **JSON-LD cho sản phẩm**: trang chi tiết sản phẩm (`/san-pham/[slug]`) giờ có structured data (`schema.org/Product`) — tên, giá, thương hiệu, tình trạng còn hàng — giúp Google có thể hiện giá/thông tin sản phẩm ngay trên kết quả tìm kiếm.
+- **Bảng `Setting` đã có tác dụng thật**: trang chủ giờ đọc title/description SEO từ `Setting` (key `seo`, đã seed từ `seo-content.json`) thay vì chỉ để trong database mà không dùng. Có fallback an toàn nếu chưa seed hoặc lỗi kết nối.
+- **`/so-sanh` (so sánh sản phẩm) viết lại hoàn toàn**: trước đây đọc từ file tĩnh `data/products.ts` (không đồng bộ với CMS) — giờ đọc **sản phẩm thật từ database**, cho chọn tối đa 4 sản phẩm bất kỳ để so sánh (trước đây cố định 3 sản phẩm đầu tiên), so sánh cả các thông số kỹ thuật (`specs`) thay vì chỉ vài trường cố định.
+
+### 🧹 Dọn dẹp mã chết
+
+- Xóa `components/ProductExplorer.tsx` — **không được import ở đâu cả**, hoàn toàn không dùng.
+- Xóa `components/ProductCard.tsx` — chỉ được dùng bởi `ProductExplorer` (đã xóa).
+- Xóa `data/products.ts` — dữ liệu tĩnh không còn nơi nào tham chiếu sau khi viết lại `/so-sanh`.
+
+### 📝 SEO — bổ sung metadata còn thiếu
+
+Thêm `title`/`description` cho `/lien-he`, `/bang-gia`, `/phan-mem` (trước đây 3 trang này dùng chung metadata mặc định của toàn site).
+
+### Không có thay đổi schema
+
+`customerId` trên `QuoteRequest` đã có sẵn từ Phase 2 — không cần `prisma db push` lần này.
+
+---
+
 ## v0.16.2 — Quay lại Claude (Anthropic)
 
 Đổi lại từ OpenAI về **Anthropic Claude Haiku 4.5** ($1/$5 mỗi triệu token — rẻ hơn cả GPT-5.6 Luna không đáng kể, nhưng Zen đã có sẵn API key Anthropic từ trước nên tiện hơn). Biến môi trường quay lại **`ANTHROPIC_API_KEY`**.

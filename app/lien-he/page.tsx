@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import { Clock3, Globe2, MapPin, Phone } from "lucide-react";
 import QuoteForm from "@/components/QuoteForm";
 import { site } from "@/data/site";
+
+export const metadata: Metadata = {
+  title: "Liên hệ và nhận báo giá | CÔNG THẢNH",
+  description: "Gửi nhu cầu sản phẩm, số lượng hoặc thông tin công trình để CÔNG THẢNH tư vấn và báo giá."
+};
 
 export default function ContactPage() {
   const hotline = process.env.NEXT_PUBLIC_HOTLINE || site.hotline;

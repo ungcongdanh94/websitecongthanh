@@ -1,7 +1,13 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Bảng giá nhôm và phụ kiện | CÔNG THẢNH",
+  description: "Bảng giá tham khảo nhôm thanh, phụ kiện cửa và nội thất nhôm. Liên hệ CÔNG THẢNH để nhận báo giá theo số lượng và cấu hình."
+};
 
 export default async function PricePage() {
   const products = await prisma.product.findMany({
