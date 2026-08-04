@@ -270,7 +270,7 @@ export default async function HomePage() {
           {promotions.map((promo) => (
             <div
               key={promo.image}
-              className="group relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-slate-100 bg-brand-50"
+              className="group relative aspect-video overflow-hidden rounded-[1.5rem] border border-slate-100 bg-brand-50"
             >
               <Image
                 src={promo.image}
@@ -358,26 +358,18 @@ export default async function HomePage() {
         </div>
 
         <div className="mt-10 grid gap-5 lg:grid-cols-3">
-          {solutions.map(({ icon: Icon, eyebrow, title, text, href }, index) => (
+          {solutions.map(({ icon: Icon, eyebrow, title, text, href }) => (
             <Link
               key={title}
               href={href}
-              className={`group rounded-[2rem] border p-7 transition hover:-translate-y-1 hover:shadow-soft ${
-                index === 0
-                  ? "border-brand-700 bg-brand-800 text-white"
-                  : "border-slate-200 bg-white text-slate-950"
-              }`}
+              className="group rounded-[2rem] border border-slate-200 bg-white p-7 text-slate-950 transition hover:-translate-y-1 hover:border-brand-700 hover:bg-brand-800 hover:text-white hover:shadow-soft"
             >
-              <Icon className={`h-9 w-9 ${index === 0 ? "text-brand-300" : "text-brand-700"}`} />
-              <div
-                className={`mt-7 text-xs font-bold uppercase tracking-[0.18em] ${
-                  index === 0 ? "text-brand-200" : "text-brand-700"
-                }`}
-              >
+              <Icon className="h-9 w-9 text-brand-700 transition group-hover:text-brand-300" />
+              <div className="mt-7 text-xs font-bold uppercase tracking-[0.18em] text-brand-700 transition group-hover:text-brand-200">
                 {eyebrow}
               </div>
               <h3 className="mt-3 text-2xl font-black">{title}</h3>
-              <p className={`mt-3 leading-7 ${index === 0 ? "text-brand-50/80" : "text-slate-600"}`}>
+              <p className="mt-3 leading-7 text-slate-600 transition group-hover:text-brand-50/80">
                 {text}
               </p>
               <div className="mt-7 inline-flex items-center gap-2 font-bold">

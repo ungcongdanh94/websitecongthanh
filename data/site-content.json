@@ -1,0 +1,89 @@
+{
+  "hero": {
+    "eyebrow": "GIẢI PHÁP NHÔM ĐỒNG BỘ",
+    "title": "Nâng tầm công trình bằng sản phẩm phù hợp.",
+    "description": "Từ nhôm thanh, phụ kiện cửa đến nội thất nhôm cao cấp, CÔNG THẢNH giúp khách hàng tra cứu sản phẩm, tham khảo giá và nhận tư vấn nhanh trên một nền tảng thống nhất.",
+    "primaryCta": {
+      "label": "Khám phá sản phẩm",
+      "url": "/san-pham"
+    },
+    "secondaryCta": {
+      "label": "Nhận báo giá",
+      "url": "/lien-he"
+    },
+    "image": "/assets/banners/hero-homepage-v2.webp"
+  },
+  "strengths": [
+    {
+      "title": "Sản phẩm chính hãng",
+      "description": "Danh mục nhôm và phụ kiện từ các thương hiệu uy tín."
+    },
+    {
+      "title": "Báo giá nhanh",
+      "description": "Tra cứu sản phẩm và gửi nhu cầu trực tiếp trên website."
+    },
+    {
+      "title": "Giải pháp đồng bộ",
+      "description": "Tư vấn nhôm, phụ kiện và cấu hình theo từng công trình."
+    },
+    {
+      "title": "Hỗ trợ thực tế",
+      "description": "Đồng hành cùng đại lý, xưởng sản xuất và khách hàng."
+    }
+  ],
+  "about": {
+    "title": "Hơn hai thập kỷ đồng hành cùng ngành nhôm",
+    "description": "CÔNG THẢNH hoạt động trong lĩnh vực thương mại, sản xuất và gia công các sản phẩm ngành nhôm. Doanh nghiệp tập trung vào việc cung cấp sản phẩm rõ nguồn gốc, tư vấn đúng nhu cầu và hỗ trợ khách hàng trong suốt quá trình lựa chọn và sử dụng.",
+    "highlights": [
+      "Hoạt động từ năm 2005",
+      "Phục vụ khách hàng tại An Giang và khu vực miền Tây",
+      "Danh mục nhôm, phụ kiện và nội thất nhôm đa dạng",
+      "Hỗ trợ báo giá và tư vấn cấu hình"
+    ]
+  },
+  "services": [
+    {
+      "slug": "phan-phoi-nhom-thanh",
+      "title": "Phân phối nhôm thanh",
+      "description": "Cung cấp nhiều hệ nhôm dùng cho cửa, công trình và nội thất."
+    },
+    {
+      "slug": "phu-kien-cua-nhom",
+      "title": "Phụ kiện cửa nhôm",
+      "description": "Tư vấn phụ kiện theo kiểu mở, hệ nhôm và nhu cầu sử dụng."
+    },
+    {
+      "slug": "son-tinh-dien",
+      "title": "Gia công sơn tĩnh điện",
+      "description": "Gia công màu sắc theo nhu cầu sản xuất và công trình."
+    },
+    {
+      "slug": "gia-cong-thanh-pham",
+      "title": "Gia công thành phẩm cửa nhôm",
+      "description": "Hỗ trợ gia công sản phẩm hoàn thiện theo yêu cầu."
+    },
+    {
+      "slug": "noi-that-nhom",
+      "title": "Nội thất nhôm cao cấp",
+      "description": "Giải pháp tủ bếp và tủ nội thất nhôm thiết kế theo kích thước thực tế."
+    }
+  ],
+  "faq": [
+    {
+      "question": "Giá trên website có phải giá bán chính thức không?",
+      "answer": "Giá trên website mang tính tham khảo và có thể thay đổi theo màu sắc, quy cách, số lượng và chính sách từng thời điểm."
+    },
+    {
+      "question": "CÔNG THẢNH có hỗ trợ báo giá theo công trình không?",
+      "answer": "Có. Khách hàng có thể gửi nhu cầu, số lượng hoặc thông tin công trình để được tư vấn cấu hình và báo giá."
+    },
+    {
+      "question": "Có thể tải catalogue và tài liệu kỹ thuật không?",
+      "answer": "Có. Catalogue và tài liệu kỹ thuật sẽ được hiển thị tại trang chi tiết sản phẩm khi tài liệu đã được cập nhật."
+    },
+    {
+      "question": "CÔNG THẢNH có cung cấp nội thất nhôm không?",
+      "answer": "Có. CÔNG THẢNH cung cấp giải pháp tủ bếp và nội thất nhôm cao cấp theo kích thước thực tế."
+    }
+  ]
+}

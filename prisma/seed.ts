@@ -1,14 +1,13 @@
 import { PrismaClient, PublishStatus } from "@prisma/client";
+import seedData from "../data/seed-data.json";
+import companyContent from "../data/company-content.json";
+import siteContent from "../data/site-content.json";
+import seoContent from "../data/seo-content.json";
 import siteAssets from "../data/site-assets.json";
-import brandContent from "../data/brand-content.json";
 
 const prisma = new PrismaClient();
 
-function findAsset(keyword: string): string {
-  const match = siteAssets.assets.products.find((path) => path.includes(keyword));
-  if (!match) throw new Error(`Không tìm thấy ảnh sản phẩm khớp từ khoá: ${keyword}`);
-  return match;
-}
+type SeedProduct = (typeof seedData.products)[number];
 
 function findProjectAsset(keyword: string): string {
   const match = siteAssets.assets.projects.find((path) => path.includes(keyword));
@@ -16,159 +15,103 @@ function findProjectAsset(keyword: string): string {
   return match;
 }
 
-// Ảnh cho từng slug sản phẩm. Xingfa/Phú Hoàn Anh/Ocean Luxury có ảnh riêng;
-// Candy và Draho (phụ kiện) chưa có ảnh chụp riêng nên dùng chung ảnh phụ kiện CMECH
-// làm ảnh mặc định — cập nhật lại khi có ảnh thật qua CMS.
-const productImages: Record<string, { imageUrl: string; gallery?: string[] }> = {
-  "nhom-xingfa-class-a-he-55": { imageUrl: findAsset("xingfa-class-a") },
-  "phu-kien-cmech-cua-di": {
-    imageUrl: findAsset("cmech-hinge"),
-    gallery: [findAsset("cmech-handle")]
-  },
-  "phu-kien-candy-cua-nhom": { imageUrl: findAsset("cmech-handle") },
-  "phu-kien-draho-cua-nhom": { imageUrl: findAsset("cmech-hinge") },
-  "tu-bep-nhom-phu-hoan-anh": { imageUrl: findAsset("phu-hoan-anh") },
-  "tu-bep-nhom-ocean-luxury": { imageUrl: findAsset("ocean-luxury") }
-};
-
 async function main() {
   // ---------- Danh mục ----------
-  const categories = [
-    ["nhom-thanh", "Nhôm thanh", "Các hệ nhôm dùng cho cửa và công trình."],
-    ["phu-kien", "Phụ kiện", "Phụ kiện cửa nhôm và giải pháp đồng bộ."],
-    ["noi-that-nhom", "Nội thất nhôm", "Giải pháp tủ bếp và tủ nội thất nhôm."]
-  ] as const;
-
   const categoryMap = new Map<string, string>();
 
-  for (const [slug, name, description] of categories) {
+  for (const item of seedData.categories) {
     const category = await prisma.category.upsert({
-      where: { slug },
-      update: { name, description, isActive: true },
-      create: { slug, name, description }
+      where: { slug: item.slug },
+      update: {
+        name: item.name,
+        description: item.description,
+        imageUrl: item.imageUrl,
+        sortOrder: item.sortOrder,
+        isActive: true
+      },
+      create: {
+        slug: item.slug,
+        name: item.name,
+        description: item.description,
+        imageUrl: item.imageUrl,
+        sortOrder: item.sortOrder,
+        isActive: true
+      }
     });
-    categoryMap.set(slug, category.id);
+    categoryMap.set(item.slug, category.id);
   }
 
   // ---------- Thương hiệu ----------
-  const brands = [
-    ["xingfa-class-a", "Xingfa Class A"],
-    ["cmech", "CMECH"],
-    ["candy", "CANDY"],
-    ["draho", "DRAHO"],
-    ["phu-hoan-anh", "Phú Hoàn Anh"],
-    ["ocean-luxury", "Ocean Luxury"]
-  ] as const;
-
   const brandMap = new Map<string, string>();
 
-  for (const [slug, name] of brands) {
+  for (const item of seedData.brands) {
+    const logoUrl = "logoUrl" in item ? item.logoUrl : null;
     const brand = await prisma.brand.upsert({
-      where: { slug },
-      update: { name, isActive: true },
-      create: { slug, name }
+      where: { slug: item.slug },
+      update: {
+        name: item.name,
+        description: item.description,
+        logoUrl,
+        isActive: true
+      },
+      create: {
+        slug: item.slug,
+        name: item.name,
+        description: item.description,
+        logoUrl,
+        isActive: true
+      }
     });
-    brandMap.set(slug, brand.id);
+    brandMap.set(item.slug, brand.id);
   }
 
   // ---------- Sản phẩm ----------
-  const products = [
-    {
-      slug: "nhom-xingfa-class-a-he-55",
-      name: "Nhôm Xingfa Class A hệ 55",
-      category: "nhom-thanh",
-      brand: "xingfa-class-a",
-      shortDesc: "Hệ nhôm cao cấp dùng cho cửa đi và cửa sổ.",
-      unit: "kg",
-      productLine: "Class A",
-      aluminumSystem: "Hệ 55",
-      color: "Ghi xám",
-      thickness: 2.0,
-      stockLength: 6000,
-      specs: { "Ứng dụng": "Cửa đi, cửa sổ" }
-    },
-    {
-      slug: "phu-kien-cmech-cua-di",
-      name: "Phụ kiện CMECH cho cửa đi",
-      category: "phu-kien",
-      brand: "cmech",
-      shortDesc: "Giải pháp phụ kiện đồng bộ cho cửa nhôm cao cấp.",
-      unit: "bộ",
-      specs: { "Ứng dụng": "Cửa đi", "Báo giá": "Theo cấu hình" }
-    },
-    {
-      slug: "phu-kien-candy-cua-nhom",
-      name: "Phụ kiện CANDY cửa nhôm",
-      category: "phu-kien",
-      brand: "candy",
-      shortDesc: "Phụ kiện cửa nhôm theo từng hệ và kiểu mở.",
-      unit: "bộ",
-      specs: { "Ứng dụng": "Cửa nhôm", "Báo giá": "Theo cấu hình" }
-    },
-    {
-      slug: "phu-kien-draho-cua-nhom",
-      name: "Phụ kiện DRAHO cửa nhôm",
-      category: "phu-kien",
-      brand: "draho",
-      shortDesc: "Bộ phụ kiện phù hợp nhiều dòng cửa nhôm.",
-      unit: "bộ",
-      specs: { "Ứng dụng": "Cửa nhôm", "Báo giá": "Theo cấu hình" }
-    },
-    {
-      slug: "tu-bep-nhom-phu-hoan-anh",
-      name: "Tủ bếp nhôm Phú Hoàn Anh",
-      category: "noi-that-nhom",
-      brand: "phu-hoan-anh",
-      shortDesc: "Giải pháp tủ bếp nhôm cao cấp, thiết kế theo kích thước thực tế.",
-      unit: "mét dài",
-      specs: { "Vật liệu": "Nhôm nội thất", "Thiết kế": "Theo yêu cầu" }
-    },
-    {
-      slug: "tu-bep-nhom-ocean-luxury",
-      name: "Tủ bếp nhôm Ocean Luxury",
-      category: "noi-that-nhom",
-      brand: "ocean-luxury",
-      shortDesc: "Tủ bếp nhôm phong cách hiện đại, thiết kế theo công trình.",
-      unit: "mét dài",
-      specs: { "Vật liệu": "Nhôm nội thất", "Thiết kế": "Theo yêu cầu" }
-    }
-  ];
-
-  const featuredSlugs = ["nhom-xingfa-class-a-he-55", "phu-kien-cmech-cua-di", "tu-bep-nhom-phu-hoan-anh"];
-
-  for (const product of products) {
-    const image = productImages[product.slug];
-
-    const sharedData = {
-      name: product.name,
-      shortDesc: product.shortDesc,
-      imageUrl: image.imageUrl,
-      gallery: image.gallery ?? undefined,
-      unit: product.unit,
-      productLine: "productLine" in product ? product.productLine : null,
-      aluminumSystem: "aluminumSystem" in product ? product.aluminumSystem : null,
-      color: "color" in product ? product.color : null,
-      thickness: "thickness" in product ? product.thickness : null,
-      stockLength: "stockLength" in product ? product.stockLength : null,
-      specs: product.specs,
+  // Dữ liệu sản phẩm (SKU, mô tả chi tiết) lấy từ data/seed-data.json.
+  for (const item of seedData.products as SeedProduct[]) {
+    const data = {
+      name: item.name,
+      sku: item.sku,
+      shortDesc: item.shortDesc,
+      description: item.description,
+      imageUrl: item.imageUrl,
+      gallery: "gallery" in item && item.gallery ? item.gallery : undefined,
+      unit: item.unit,
+      productLine: "productLine" in item ? item.productLine : null,
+      aluminumSystem: "aluminumSystem" in item ? item.aluminumSystem : null,
+      color: "color" in item ? item.color : null,
+      thickness: "thickness" in item ? item.thickness : null,
+      stockLength: "stockLength" in item ? item.stockLength : null,
+      specs: item.specs,
+      isFeatured: item.isFeatured,
       status: PublishStatus.PUBLISHED,
-      isFeatured: featuredSlugs.includes(product.slug),
-      categoryId: categoryMap.get(product.category)!,
-      brandId: brandMap.get(product.brand)!
+      categoryId: categoryMap.get(item.category)!,
+      brandId: brandMap.get(item.brand) ?? null
     };
 
     await prisma.product.upsert({
-      where: { slug: product.slug },
-      update: sharedData,
-      create: {
-        ...sharedData,
-        slug: product.slug,
-        description: "Dữ liệu khởi tạo. Bạn có thể thay đổi nội dung và hình ảnh trong trang quản trị."
-      }
+      where: { slug: item.slug },
+      update: data,
+      create: { ...data, slug: item.slug }
+    });
+  }
+
+  // ---------- Banner trang chủ & khuyến mãi ----------
+  // Dùng slug ổn định (đã gán sẵn trong data/seed-data.json) để upsert an toàn,
+  // thay vì đối chiếu theo tiêu đề (dễ tạo trùng nếu tiêu đề thay đổi sau này).
+  for (const item of seedData.banners) {
+    const { slug, ...bannerData } = item;
+    await prisma.banner.upsert({
+      where: { slug },
+      update: bannerData,
+      create: { ...bannerData, slug }
     });
   }
 
   // ---------- Dự án ----------
+  // Bộ nội dung mới có kèm 2 dự án mẫu (trạng thái DRAFT, ảnh minh hoạ, chưa phải công trình
+  // thực tế — xem README của content pack). Vì đã có 4 dự án thật (PUBLISHED, ảnh thật) từ
+  // trước, ở đây chủ động BỎ QUA 2 dự án mẫu đó để tránh trộn dữ liệu placeholder vào trang
+  // công khai. Giữ lại đoạn dưới đây phòng khi cần đối chiếu ảnh dự án theo từ khoá.
   const projects = [
     {
       slug: "biet-thu-binh-duc",
@@ -208,7 +151,6 @@ async function main() {
       coverUrl: project.coverUrl,
       status: PublishStatus.PUBLISHED
     };
-
     await prisma.project.upsert({
       where: { slug: project.slug },
       update: data,
@@ -216,25 +158,25 @@ async function main() {
     });
   }
 
-  // ---------- Banner trang chủ ----------
-  const bannerData = {
-    title: `${brandContent.hero.eyebrow} — ${brandContent.hero.title}`,
-    subtitle: brandContent.intro.description,
-    imageUrl: "/assets/banners/hero-homepage-v2.webp",
-    buttonLabel: brandContent.hero.cta,
-    buttonUrl: "/san-pham",
-    sortOrder: 0,
-    isActive: true
-  };
+  // ---------- Cài đặt nội dung (Setting) ----------
+  // Lưu sẵn nội dung công ty / trang chủ / SEO dạng key-value để dùng dần về sau
+  // (hiện các trang trong code vẫn dùng nội dung tĩnh; đây là dữ liệu chuẩn bị trước).
+  const settings = [
+    ["company", companyContent],
+    ["siteContent", siteContent],
+    ["seo", seoContent]
+  ] as const;
 
-  await prisma.banner.upsert({
-    where: { slug: "trang-chu-hero" },
-    update: bannerData,
-    create: { ...bannerData, slug: "trang-chu-hero" }
-  });
+  for (const [key, value] of settings) {
+    await prisma.setting.upsert({
+      where: { key },
+      update: { value },
+      create: { key, value }
+    });
+  }
 
   console.log(
-    "Seed hoàn tất: danh mục, thương hiệu, sản phẩm, dự án và banner trang chủ đã được đồng bộ."
+    "Seed hoàn tất: danh mục, thương hiệu, sản phẩm, banner, dự án và cài đặt nội dung đã được đồng bộ."
   );
 }
 

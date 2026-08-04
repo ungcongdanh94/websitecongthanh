@@ -1,0 +1,240 @@
+{
+  "categories": [
+    {
+      "slug": "nhom-thanh",
+      "name": "Nhôm thanh",
+      "description": "Các hệ nhôm dùng cho cửa, công trình và gia công sản xuất.",
+      "imageUrl": "/assets/promotions/promo-xingfa-class-a.webp",
+      "sortOrder": 1
+    },
+    {
+      "slug": "phu-kien",
+      "name": "Phụ kiện",
+      "description": "Phụ kiện cửa nhôm và giải pháp đồng bộ theo từng hệ.",
+      "imageUrl": "/assets/promotions/promo-cmech.webp",
+      "sortOrder": 2
+    },
+    {
+      "slug": "noi-that-nhom",
+      "name": "Nội thất nhôm",
+      "description": "Tủ bếp, tủ áo và giải pháp nội thất nhôm cao cấp.",
+      "imageUrl": "/assets/promotions/promo-ocean-luxury.webp",
+      "sortOrder": 3
+    }
+  ],
+  "brands": [
+    {
+      "slug": "xingfa-class-a",
+      "name": "Xingfa Class A",
+      "description": "Dòng nhôm cao cấp dùng cho cửa đi, cửa sổ và công trình hiện đại.",
+      "logoUrl": "/assets/products/product-xingfa-class-a.webp"
+    },
+    {
+      "slug": "cmech",
+      "name": "CMECH",
+      "description": "Giải pháp phụ kiện cửa đồng bộ cho các công trình yêu cầu độ hoàn thiện cao.",
+      "logoUrl": "/assets/products/product-cmech-handle.webp"
+    },
+    {
+      "slug": "candy",
+      "name": "CANDY",
+      "description": "Phụ kiện cửa nhôm theo từng kiểu mở và nhu cầu sử dụng."
+    },
+    {
+      "slug": "draho",
+      "name": "DRAHO",
+      "description": "Phụ kiện cửa nhôm với nhiều cấu hình ứng dụng."
+    },
+    {
+      "slug": "phu-hoan-anh",
+      "name": "Phú Hoàn Anh",
+      "description": "Giải pháp nhôm nội thất và tủ bếp nhôm cao cấp.",
+      "logoUrl": "/assets/products/product-phu-hoan-anh.webp"
+    },
+    {
+      "slug": "ocean-luxury",
+      "name": "Ocean Luxury",
+      "description": "Giải pháp nội thất nhôm phong cách hiện đại.",
+      "logoUrl": "/assets/products/product-ocean-luxury.webp"
+    }
+  ],
+  "products": [
+    {
+      "slug": "nhom-xingfa-class-a-he-55",
+      "name": "Nhôm Xingfa Class A hệ 55",
+      "sku": "XFA-55",
+      "category": "nhom-thanh",
+      "brand": "xingfa-class-a",
+      "shortDesc": "Hệ nhôm cao cấp dùng cho cửa đi và cửa sổ.",
+      "description": "Nhôm Xingfa Class A hệ 55 phù hợp cho nhiều cấu hình cửa đi và cửa sổ. Sản phẩm cần được lựa chọn theo thiết kế, phụ kiện và yêu cầu thực tế của công trình.",
+      "imageUrl": "/assets/products/product-xingfa-class-a.webp",
+      "gallery": [
+        "/assets/products/product-xingfa-class-a.webp",
+        "/assets/promotions/promo-xingfa-class-a.webp"
+      ],
+      "unit": "kg",
+      "productLine": "Class A",
+      "aluminumSystem": "Hệ 55",
+      "color": "Ghi xám",
+      "thickness": 2.0,
+      "stockLength": 6000,
+      "specs": {
+        "Ứng dụng": "Cửa đi, cửa sổ",
+        "Chiều dài thanh": "6 m",
+        "Báo giá": "Theo màu sắc, quy cách và số lượng"
+      },
+      "isFeatured": true
+    },
+    {
+      "slug": "phu-kien-cmech-cua-di",
+      "name": "Phụ kiện CMECH cho cửa đi",
+      "sku": "CMECH-DOOR",
+      "category": "phu-kien",
+      "brand": "cmech",
+      "shortDesc": "Giải pháp phụ kiện đồng bộ cho cửa nhôm cao cấp.",
+      "description": "Bộ phụ kiện CMECH được lựa chọn theo kiểu mở, kích thước cánh và cấu hình hệ nhôm.",
+      "imageUrl": "/assets/products/product-cmech-handle.webp",
+      "gallery": [
+        "/assets/products/product-cmech-handle.webp",
+        "/assets/products/product-cmech-hinge.webp"
+      ],
+      "unit": "bộ",
+      "specs": {
+        "Ứng dụng": "Cửa đi",
+        "Cấu hình": "Theo kiểu mở và hệ nhôm",
+        "Báo giá": "Theo bộ phụ kiện"
+      },
+      "isFeatured": true
+    },
+    {
+      "slug": "phu-kien-candy-cua-nhom",
+      "name": "Phụ kiện CANDY cửa nhôm",
+      "sku": "CANDY-ALU",
+      "category": "phu-kien",
+      "brand": "candy",
+      "shortDesc": "Phụ kiện cửa nhôm theo từng hệ và kiểu mở.",
+      "description": "Phụ kiện CANDY phù hợp cho nhiều cấu hình cửa nhôm. Cần xác định hệ nhôm, kiểu mở và kích thước cánh trước khi báo giá.",
+      "imageUrl": "/assets/promotions/promo-monthly-offer.webp",
+      "unit": "bộ",
+      "specs": {
+        "Ứng dụng": "Cửa nhôm",
+        "Báo giá": "Theo cấu hình"
+      },
+      "isFeatured": false
+    },
+    {
+      "slug": "phu-kien-draho-cua-nhom",
+      "name": "Phụ kiện DRAHO cửa nhôm",
+      "sku": "DRAHO-ALU",
+      "category": "phu-kien",
+      "brand": "draho",
+      "shortDesc": "Bộ phụ kiện phù hợp nhiều dòng cửa nhôm.",
+      "description": "Phụ kiện DRAHO được tư vấn theo hệ nhôm, kiểu mở và nhu cầu sử dụng.",
+      "imageUrl": "/assets/promotions/promo-monthly-offer.webp",
+      "unit": "bộ",
+      "specs": {
+        "Ứng dụng": "Cửa nhôm",
+        "Báo giá": "Theo cấu hình"
+      },
+      "isFeatured": false
+    },
+    {
+      "slug": "tu-bep-nhom-phu-hoan-anh",
+      "name": "Tủ bếp nhôm Phú Hoàn Anh",
+      "sku": "PHA-KITCHEN",
+      "category": "noi-that-nhom",
+      "brand": "phu-hoan-anh",
+      "shortDesc": "Giải pháp tủ bếp nhôm cao cấp theo kích thước thực tế.",
+      "description": "Tủ bếp nhôm Phú Hoàn Anh được thiết kế theo không gian, nhu cầu sử dụng, màu sắc và cấu hình phụ kiện của từng công trình.",
+      "imageUrl": "/assets/products/product-phu-hoan-anh.webp",
+      "gallery": [
+        "/assets/products/product-phu-hoan-anh.webp",
+        "/assets/promotions/promo-phu-hoan-anh.webp"
+      ],
+      "unit": "mét dài",
+      "specs": {
+        "Vật liệu": "Nhôm nội thất",
+        "Thiết kế": "Theo kích thước thực tế",
+        "Báo giá": "Theo cấu hình"
+      },
+      "isFeatured": true
+    },
+    {
+      "slug": "tu-bep-nhom-ocean-luxury",
+      "name": "Tủ bếp nhôm Ocean Luxury",
+      "sku": "OCEAN-KITCHEN",
+      "category": "noi-that-nhom",
+      "brand": "ocean-luxury",
+      "shortDesc": "Tủ bếp nhôm phong cách hiện đại, thiết kế theo công trình.",
+      "description": "Tủ bếp nhôm Ocean Luxury hướng đến phong cách hiện đại, bền và dễ vệ sinh. Cấu hình thực tế được xác định theo kích thước và phụ kiện.",
+      "imageUrl": "/assets/products/product-ocean-luxury.webp",
+      "gallery": [
+        "/assets/products/product-ocean-luxury.webp",
+        "/assets/promotions/promo-ocean-luxury.webp"
+      ],
+      "unit": "mét dài",
+      "specs": {
+        "Vật liệu": "Nhôm nội thất",
+        "Thiết kế": "Theo yêu cầu",
+        "Báo giá": "Theo cấu hình"
+      },
+      "isFeatured": true
+    }
+  ],
+  "banners": [
+    {
+      "title": "Giải pháp nhôm đồng bộ cho công trình hiện đại",
+      "subtitle": "Nhôm thanh, phụ kiện cửa và nội thất nhôm tại CÔNG THẢNH",
+      "imageUrl": "/assets/banners/hero-homepage-v2.webp",
+      "buttonLabel": "Khám phá sản phẩm",
+      "buttonUrl": "/san-pham",
+      "sortOrder": 1,
+      "isActive": true,
+      "slug": "trang-chu-hero"
+    },
+    {
+      "title": "Xingfa Class A",
+      "subtitle": "Giải pháp nhôm cao cấp cho cửa và công trình",
+      "imageUrl": "/assets/promotions/promo-xingfa-class-a.webp",
+      "buttonLabel": "Xem sản phẩm",
+      "buttonUrl": "/san-pham?brand=xingfa-class-a",
+      "sortOrder": 2,
+      "isActive": true,
+      "slug": "khuyen-mai-xingfa-class-a"
+    },
+    {
+      "title": "Nội thất nhôm cao cấp",
+      "subtitle": "Tủ bếp và tủ nội thất thiết kế theo không gian",
+      "imageUrl": "/assets/promotions/promo-ocean-luxury.webp",
+      "buttonLabel": "Nhận tư vấn",
+      "buttonUrl": "/lien-he",
+      "sortOrder": 3,
+      "isActive": true,
+      "slug": "khuyen-mai-noi-that-nhom"
+    }
+  ],
+  "projects": [
+    {
+      "title": "Dự án mẫu – Villa hiện đại",
+      "slug": "du-an-mau-villa-hien-dai",
+      "description": "Ảnh dự án định hướng giao diện. Cần thay bằng ảnh công trình thực tế trước khi công khai.",
+      "coverUrl": "/assets/projects/project-villa.webp",
+      "gallery": [
+        "/assets/projects/project-villa.webp"
+      ],
+      "location": "Đang cập nhật",
+      "status": "DRAFT"
+    },
+    {
+      "title": "Dự án mẫu – Công trình thương mại",
+      "slug": "du-an-mau-cong-trinh-thuong-mai",
+      "description": "Ảnh dự án định hướng giao diện. Cần thay bằng ảnh công trình thực tế trước khi công khai.",
+      "coverUrl": "/assets/projects/project-hotel.webp",
+      "gallery": [
+        "/assets/projects/project-hotel.webp"
+      ],
+      "location": "Đang cập nhật",
+      "status": "DRAFT"
+    }
+  ]
+}

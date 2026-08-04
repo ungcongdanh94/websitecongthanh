@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## v0.15.2 — Tích hợp Content & Seed Pack (SKU, mô tả chi tiết, cài đặt nội dung)
+
+### ✨ Thay đổi
+
+- **`prisma/seed.ts` viết lại lần nữa**, gộp dữ liệu từ content pack mới (`data/seed-data.json`, `data/company-content.json`, `data/site-content.json`, `data/seo-content.json`):
+  - Sản phẩm giờ có **SKU thật** (VD: `XFA-55`, `CMECH-DOOR`) và **mô tả chi tiết đầy đủ** (trước chỉ có placeholder).
+  - Danh mục có ảnh minh hoạ riêng; thương hiệu Candy/Draho để `logoUrl: null` (trung thực — chưa có logo thật, không còn dùng tạm ảnh CMECH như bản trước).
+  - Banner: sửa lại toàn bộ dùng **slug ổn định** (`trang-chu-hero`, `khuyen-mai-xingfa-class-a`, `khuyen-mai-noi-that-nhom`) để upsert an toàn — bản gốc trong content pack đối chiếu theo `title` (dễ tạo trùng nếu đổi tiêu đề sau này).
+  - Thêm bảng `Setting` (đã có sẵn trong schema, chưa từng dùng) lưu nội dung công ty/trang chủ/SEO dạng key-value — **chuẩn bị cho việc dùng dần**, hiện các trang vẫn hiển thị nội dung tĩnh như cũ.
+
+### 🔧 Đã sửa đường dẫn sai trong content pack gốc
+
+Content pack gửi kèm tham chiếu `hero.image` và banner đầu tiên tới `hero-homepage.webp` — **ảnh cũ có chữ/logo nhúng sẵn đã bị thay ở v0.15.1**. Đã sửa cả 2 chỗ này sang `hero-homepage-v2.webp` trước khi tích hợp.
+
+### ⏭️ Đã bỏ qua có chủ đích
+
+Content pack có kèm 2 "dự án mẫu" (trạng thái `DRAFT`, ảnh minh hoạ, theo README là placeholder cần thay ảnh thật trước khi công khai). Vì đã có 4 dự án thật (`PUBLISHED`, ảnh thật, tên/địa điểm cụ thể) từ trước, seed lần này **chủ động không thêm 2 dự án mẫu đó** để tránh trộn dữ liệu placeholder vào trang công khai.
+
+### 📌 Việc cần làm thủ công (theo README của content pack)
+
+- Cập nhật hotline và email chính thức (hiện đang để trống/`null`)
+- Cập nhật giá bán thật cho sản phẩm (seed không tự tạo giá)
+- Bổ sung catalogue, video kỹ thuật cho sản phẩm
+
+---
+
 ## v0.15.1 — Sửa lại toàn bộ Hero trang chủ
 
 ### 🔧 Thay đổi
