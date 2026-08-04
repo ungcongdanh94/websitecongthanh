@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## v0.24.0 — Màu sắc/độ dày/chiều dài nhiều loại, giá công khai chung chung
+
+### 🗄️ Schema thay đổi (cần chạy `prisma db push`)
+
+Đổi kiểu dữ liệu 2 cột trên `Product`:
+```prisma
+thickness    Decimal? @db.Decimal(8, 2)   →   thickness    String?
+stockLength  Int?                          →   stockLength  String?
+```
+Lý do: cho phép nhập **nhiều giá trị cùng lúc**, phân tách bằng dấu phẩy (VD: `"1.4mm, 2.0mm"`, `"3000mm, 6000mm"`) — trước đây mỗi sản phẩm chỉ lưu được đúng 1 độ dày / 1 chiều dài. `color` giữ nguyên kiểu `String?` như cũ nhưng giờ được diễn giải là danh sách, cùng cách nhập.
+
+> ⚠️ Dữ liệu số cũ (nếu có) sẽ tự chuyển thành chữ khi `db push` (VD: `2.00` → `"2.00"`), không mất dữ liệu, nhưng Zen nên vào `/admin/products` kiểm tra và bổ sung đơn vị (mm) nếu cần cho các sản phẩm đã có sẵn từ trước.
+
+### ✨ Thay đổi hiển thị
+
+- **Màu sắc, độ dày, chiều dài thanh**: trang chi tiết sản phẩm và card sản phẩm giờ hiện **từng giá trị riêng** (dạng tag/chip) nếu nhập nhiều, thay vì gộp chung 1 dòng.
+- Form thêm/sửa sản phẩm: đổi 2 ô Độ dày/Chiều dài từ ô số sang ô chữ, có gợi ý "có thể nhập nhiều, phân tách bằng dấu phẩy".
+- **Giá bán lẻ hiển thị chung chung hơn**: đổi từ hiện giá cố định (VD: "220.000đ/kg") sang dạng tham khảo **"Từ 220.000đ/kg"**, kèm ghi chú giá có thể thay đổi theo cấu hình thực tế — áp dụng cho trang chi tiết sản phẩm và card sản phẩm.
+- **Giá đại lý**: xác nhận lại — **chưa từng và vẫn không** hiển thị ở bất kỳ trang công khai nào (chỉ có trong `/admin`), đúng yêu cầu.
+
+### File đã sửa
+
+`prisma/schema.prisma`, `types/product.ts`, `lib/productDisplay.ts` (mới), `app/san-pham/[slug]/page.tsx`, `app/san-pham/page.tsx`, `app/page.tsx`, `app/thuong-hieu/[slug]/page.tsx`, `app/api/catalog/products/route.ts`, `components/DatabaseProductCard.tsx`, `app/admin/products/page.tsx`, `app/admin/products/[id]/page.tsx`, `components/admin/ProductForm.tsx`, `components/admin/ProductEditForm.tsx`, `app/api/admin/products/route.ts`, `app/api/admin/products/[id]/route.ts`, `data/seed-data.json` (ví dụ minh hoạ nhiều giá trị cho sản phẩm Xingfa hệ 55).
+
+---
+
 ## v0.23.1 — So sánh sản phẩm theo từng danh mục
 
 `/so-sanh` giờ có tab chọn danh mục trước — danh sách sản phẩm để chọn so sánh chỉ hiện đúng sản phẩm trong danh mục đang chọn (trước đây trộn tất cả sản phẩm mọi danh mục vào 1 danh sách dài, dễ so sánh nhầm sản phẩm không cùng loại, ví dụ nhôm thanh với tủ bếp). Bỏ dòng "Danh mục" trong bảng so sánh vì giờ luôn cùng 1 danh mục, không cần hiển thị lại.

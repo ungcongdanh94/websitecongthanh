@@ -81,9 +81,9 @@ export default async function ProductsPage({
                   </td>
                   <td className="px-5 py-4">{product.brand?.name || "—"}</td>
                   <td className="px-5 py-4">
-                    <div>{product.thickness ? `${Number(product.thickness)} mm` : "—"}</div>
+                    <div>{product.thickness || "—"}</div>
                     <div className="mt-1 text-xs text-slate-500">
-                      {product.stockLength ? `${product.stockLength.toLocaleString("vi-VN")} mm` : "—"}
+                      {product.stockLength || "—"}
                     </div>
                   </td>
                   <td className="px-5 py-4">

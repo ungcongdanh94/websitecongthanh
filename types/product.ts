@@ -11,8 +11,8 @@ export type PublicProduct = {
   productLine: string | null;
   aluminumSystem: string | null;
   color: string | null;
-  thickness: number | null;
-  stockLength: number | null;
+  thickness: string | null;
+  stockLength: string | null;
   catalogUrl: string | null;
   videoUrl: string | null;
   specs: Record<string, unknown> | null;

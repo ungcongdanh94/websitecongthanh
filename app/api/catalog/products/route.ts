@@ -69,7 +69,7 @@ export async function GET(request: Request) {
         productLine: product.productLine,
         aluminumSystem: product.aluminumSystem,
         color: product.color,
-        thickness: product.thickness === null ? null : Number(product.thickness),
+        thickness: product.thickness,
         stockLength: product.stockLength,
         unit: product.unit,
         price: product.price === null ? null : Number(product.price),

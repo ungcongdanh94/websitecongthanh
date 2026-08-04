@@ -77,8 +77,8 @@ model Product {
   productLine   String?
   aluminumSystem String?
   color         String?
-  thickness     Decimal?      @db.Decimal(8, 2)
-  stockLength   Int?
+  thickness     String?
+  stockLength   String?
   catalogUrl    String?
   videoUrl      String?
   specs         Json?

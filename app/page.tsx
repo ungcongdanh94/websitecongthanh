@@ -123,7 +123,7 @@ export default async function HomePage() {
     productLine: product.productLine,
     aluminumSystem: product.aluminumSystem,
     color: product.color,
-    thickness: product.thickness === null ? null : Number(product.thickness),
+    thickness: product.thickness,
     stockLength: product.stockLength,
     catalogUrl: product.catalogUrl,
     videoUrl: product.videoUrl,

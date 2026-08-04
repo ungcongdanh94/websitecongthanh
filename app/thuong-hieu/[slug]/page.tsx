@@ -57,7 +57,7 @@ export default async function BrandDetailPage({ params }: { params: Promise<{ sl
     productLine: item.productLine,
     aluminumSystem: item.aluminumSystem,
     color: item.color,
-    thickness: item.thickness === null ? null : Number(item.thickness),
+    thickness: item.thickness,
     stockLength: item.stockLength,
     catalogUrl: item.catalogUrl,
     videoUrl: item.videoUrl,

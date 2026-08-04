@@ -74,12 +74,12 @@ export default function ProductForm({
 
       <div className="grid gap-4 md:grid-cols-3">
         <input name="aluminumSystem" className={input} placeholder="Hệ nhôm, ví dụ: Hệ 55" />
-        <input name="color" className={input} placeholder="Màu sắc" />
-        <input name="thickness" type="number" min="0" step="0.01" className={input} placeholder="Độ dày (mm)" />
+        <input name="color" className={input} placeholder="Màu sắc — có thể nhập nhiều, VD: Trắng, Ghi xám, Vân gỗ" />
+        <input name="thickness" className={input} placeholder="Độ dày — có thể nhập nhiều, VD: 1.4mm, 2.0mm" />
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <input name="stockLength" type="number" min="0" step="1" defaultValue="6000" className={input} placeholder="Chiều dài thanh (mm)" />
+        <input name="stockLength" defaultValue="6000mm" className={input} placeholder="Chiều dài thanh — có thể nhập nhiều, VD: 3000mm, 6000mm" />
         <input name="unit" className={input} placeholder="Đơn vị, ví dụ: kg / thanh / bộ" />
         <select name="status" className={input}>
           <option value="DRAFT">Bản nháp</option>

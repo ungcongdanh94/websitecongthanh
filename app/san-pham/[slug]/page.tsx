@@ -8,6 +8,7 @@ import ProductGallery from "@/components/ProductGallery";
 import DatabaseProductCard from "@/components/DatabaseProductCard";
 import type { PublicProduct } from "@/types/product";
 import siteContent from "@/data/site-content.json";
+import { splitValues } from "@/lib/productDisplay";
 
 export const dynamic = "force-dynamic";
 
@@ -79,7 +80,7 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
     productLine: item.productLine,
     aluminumSystem: item.aluminumSystem,
     color: item.color,
-    thickness: item.thickness === null ? null : Number(item.thickness),
+    thickness: item.thickness,
     stockLength: item.stockLength,
     catalogUrl: item.catalogUrl,
     videoUrl: item.videoUrl,
@@ -93,12 +94,16 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
     brandSlug: item.brand?.slug || null
   }));
 
+  const colorOptions = splitValues(product.color);
+  const thicknessOptions = splitValues(product.thickness);
+  const stockLengthOptions = splitValues(product.stockLength);
+
   const specs = [
     product.productLine ? ["Dòng sản phẩm", product.productLine] : null,
     product.aluminumSystem ? ["Hệ nhôm", product.aluminumSystem] : null,
-    product.color ? ["Màu sắc", product.color] : null,
-    product.thickness !== null ? ["Độ dày", `${Number(product.thickness)} mm`] : null,
-    product.stockLength ? ["Chiều dài thanh", `${product.stockLength.toLocaleString("vi-VN")} mm`] : null,
+    colorOptions.length ? ["Màu sắc", colorOptions.join(" · ")] : null,
+    thicknessOptions.length ? ["Độ dày", thicknessOptions.join(" · ")] : null,
+    stockLengthOptions.length ? ["Chiều dài thanh", stockLengthOptions.join(" · ")] : null,
     product.unit ? ["Đơn vị tính", product.unit] : null,
     ...(product.specs && typeof product.specs === "object" && !Array.isArray(product.specs)
       ? Object.entries(product.specs as Record<string, unknown>).map(([key, value]) => [key, displayValue(value)] as [string, string])
@@ -151,10 +156,14 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
 
           <div className="mt-6 text-3xl font-black text-brand-700">
             {product.price
-              ? `${Number(product.price).toLocaleString("vi-VN")} đ${product.unit ? `/${product.unit}` : ""}`
+              ? `Từ ${Number(product.price).toLocaleString("vi-VN")} đ${product.unit ? `/${product.unit}` : ""}`
               : "Liên hệ báo giá"}
           </div>
-          <p className="mt-2 text-sm text-slate-500">Giá có thể thay đổi theo số lượng, màu sắc và cấu hình.</p>
+          <p className="mt-2 text-sm text-slate-500">
+            {product.price
+              ? "Giá tham khảo, có thể thay đổi theo số lượng, màu sắc, độ dày và cấu hình thực tế."
+              : "Liên hệ CÔNG THẢNH để nhận báo giá theo cấu hình cụ thể."}
+          </p>
 
           <p className="mt-6 text-lg leading-8 text-slate-600">
             {product.description || product.shortDesc || "Liên hệ CÔNG THẢNH để được tư vấn chi tiết."}

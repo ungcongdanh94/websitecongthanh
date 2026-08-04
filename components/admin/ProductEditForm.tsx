@@ -22,8 +22,8 @@ type ProductData = {
   productLine: string | null;
   aluminumSystem: string | null;
   color: string | null;
-  thickness: number | null;
-  stockLength: number | null;
+  thickness: string | null;
+  stockLength: string | null;
   catalogUrl: string | null;
   videoUrl: string | null;
   status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
@@ -103,12 +103,12 @@ export default function ProductEditForm({
 
       <div className="grid gap-4 md:grid-cols-3">
         <input name="aluminumSystem" defaultValue={product.aluminumSystem || ""} className={input} placeholder="Hệ nhôm" />
-        <input name="color" defaultValue={product.color || ""} className={input} placeholder="Màu sắc" />
-        <input name="thickness" type="number" min="0" step="0.01" defaultValue={product.thickness ?? ""} className={input} placeholder="Độ dày (mm)" />
+        <input name="color" defaultValue={product.color || ""} className={input} placeholder="Màu sắc — nhiều giá trị: Trắng, Ghi xám" />
+        <input name="thickness" defaultValue={product.thickness || ""} className={input} placeholder="Độ dày — nhiều giá trị: 1.4mm, 2.0mm" />
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <input name="stockLength" type="number" min="0" step="1" defaultValue={product.stockLength ?? ""} className={input} placeholder="Chiều dài thanh (mm)" />
+        <input name="stockLength" defaultValue={product.stockLength || ""} className={input} placeholder="Chiều dài thanh — nhiều giá trị: 3000mm, 6000mm" />
         <input name="unit" defaultValue={product.unit || ""} className={input} placeholder="Đơn vị" />
         <select name="status" defaultValue={product.status} className={input}>
           <option value="DRAFT">Bản nháp</option>

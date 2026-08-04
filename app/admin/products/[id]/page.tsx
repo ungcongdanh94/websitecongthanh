@@ -41,7 +41,7 @@ export default async function EditProductPage({
               productLine: product.productLine,
               aluminumSystem: product.aluminumSystem,
               color: product.color,
-              thickness: product.thickness === null ? null : Number(product.thickness),
+              thickness: product.thickness,
               stockLength: product.stockLength,
               catalogUrl: product.catalogUrl,
               videoUrl: product.videoUrl,

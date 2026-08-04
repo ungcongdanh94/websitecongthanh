@@ -10,7 +10,8 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Sản phẩm nhôm, phụ kiện, nội thất nhôm | CÔNG THẢNH",
   description:
-    "Tra cứu đầy đủ sản phẩm nhôm Xingfa, Namsung, phụ kiện Draho, Candy và nội thất nhôm — lọc theo danh mục, thương hiệu, hệ nhôm và khoảng giá."
+    "Tra cứu đầy đủ sản phẩm nhôm Xingfa, Namsung, phụ kiện Draho, Candy và nội thất nhôm — lọc theo danh mục, thương hiệu, hệ nhôm và khoảng giá.",
+  alternates: { canonical: "/san-pham" }
 };
 
 const PAGE_SIZE = 12;
@@ -121,7 +122,7 @@ export default async function ProductsPage({
     productLine: product.productLine,
     aluminumSystem: product.aluminumSystem,
     color: product.color,
-    thickness: product.thickness === null ? null : Number(product.thickness),
+    thickness: product.thickness,
     stockLength: product.stockLength,
     catalogUrl: product.catalogUrl,
     videoUrl: product.videoUrl,
