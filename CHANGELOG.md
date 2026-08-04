@@ -1,5 +1,40 @@
 # CHANGELOG
 
+## v0.18.0 — Tích hợp Premium Assets v2 + audit ảnh
+
+### 🔍 Audit trước khi sửa (yêu cầu #1)
+
+Đã kiểm tra từng ảnh trong gói asset mới bằng mắt (không chỉ theo tên file):
+
+- **`hero/`, `categories/`** (5 ảnh): sạch, không chữ/logo, độ phân giải tốt (1920×1080, 1080×1350, 1200×800) — **dùng trực tiếp**.
+- **`solutions/`** (6 ảnh): **có chữ in sẵn** (VD "BIỆT THỰ", "KHÁCH SẠN" ở góc dưới trái) — vi phạm đúng yêu cầu "không chèn chữ vào ảnh". Cách xử lý: đặt tiêu đề HTML ở khối riêng **dưới ảnh** (không đè lên ảnh) để không bị chồng chữ với chữ có sẵn trong ảnh.
+- **`projects/`** (5 ảnh): **bị mờ + có viền bo góc/lỗi render** giống ảnh preview thumbnail bị nén lại — **không dùng**. Ngoài ra 3/5 tên file (`project-villa`, `project-hotel`, `project-showroom`) **trùng tên** với ảnh đang dùng thật cho 4 dự án đã seed trước đây (chất lượng tốt hơn) — nếu chép đè sẽ làm giảm chất lượng ảnh dự án hiện có. **Đã giữ nguyên ảnh dự án cũ, không đụng vào.**
+- `brand/premium-design-reference.webp`: ảnh tham khảo phong cách thiết kế, không phải asset để gắn vào trang — không sử dụng.
+
+### ✨ Đã thay
+
+- **Hero responsive theo thiết bị**: desktop dùng `hero-home-desktop.webp`, mobile dùng `hero-home-mobile.webp` (2 ảnh riêng, không phải resize từ 1 ảnh) — chuyển bằng class Tailwind `lg:hidden` / `hidden lg:block`, không dùng `<picture>` thô vì `next/image` không hỗ trợ trực tiếp. Chiều cao: mobile `min-h-[650px]`, desktop `min-h-[720px]` (đúng khoảng 620–760px yêu cầu).
+- **3 ảnh danh mục**: cập nhật `data/seed-data.json` để dùng `category-aluminum/hardware/interior.webp`. Card đổi từ layout ảnh-vuông-viền-padding sang ảnh-tỉ-lệ-4:3-full-card + tên bên dưới. Grid đổi đúng theo yêu cầu: **1 cột mobile / 2 cột tablet / 3 cột desktop** (trước đây là 2/3/6 — sai yêu cầu).
+- **Section mới "Giải pháp theo không gian"**: 6 card (Biệt thự, Nhà phố, Căn hộ, Văn phòng, Khách sạn, Resort) dùng ảnh `solutions/`, tiêu đề render bằng HTML ở khối dưới ảnh (không đè lên ảnh có chữ sẵn). Hover chỉ zoom nhẹ ảnh, không làm mờ/tối thêm.
+- **Bỏ khối khuyến mãi lớn**: xoá hoàn toàn section "Khuyến mãi đang diễn ra" (lưới 6 ảnh kiểu sàn TMĐT). Thay bằng **1 dòng chữ nhỏ** ("Ưu đãi lắp đặt đang áp dụng theo khu vực...") gắn ngay trong khối CTA cuối trang đã có — không tạo section riêng, không dùng ảnh.
+- **`sizes` cho mọi ảnh `fill`**: thêm đúng theo breakpoint (trước đây một số ảnh `fill` thiếu `sizes`, khiến `next/image` tải ảnh to hơn cần thiết).
+
+### 🧹 Dọn dẹp
+
+Xóa biến `promotions`/`promotionTitles` không còn dùng sau khi bỏ section khuyến mãi (tránh cảnh báo biến chết khi build).
+
+### ✅ Đã xác nhận (yêu cầu #7, #8)
+
+- Không có chỗ nào viết sai "CÔNG THÀNH" (đã grep toàn bộ `app/`, `components/`, `data/` — sạch).
+- `next.config.mjs`: đã đúng cấu hình (Cloudinary + Unsplash trong `remotePatterns`, `output: "standalone"`, không có `assetPrefix`/`basePath` sai) — không cần sửa.
+- Section thương hiệu (brand) đã tự động dùng text tạm khi chưa có `logoUrl` — không cần sửa thêm.
+
+### Không có thay đổi schema, không có dữ liệu dự án giả mới
+
+Đúng yêu cầu: không tạo dự án mẫu mới, không đổi schema.
+
+---
+
 ## v0.17.0 — Dọn các việc còn tồn đọng
 
 ### ✨ Tính năng mới

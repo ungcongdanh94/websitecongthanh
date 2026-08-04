@@ -4,21 +4,21 @@
       "slug": "nhom-thanh",
       "name": "Nhôm thanh",
       "description": "Các hệ nhôm dùng cho cửa, công trình và gia công sản xuất.",
-      "imageUrl": "/assets/promotions/promo-xingfa-class-a.webp",
+      "imageUrl": "/assets/categories/category-aluminum.webp",
       "sortOrder": 1
     },
     {
       "slug": "phu-kien",
       "name": "Phụ kiện",
       "description": "Phụ kiện cửa nhôm và giải pháp đồng bộ theo từng hệ.",
-      "imageUrl": "/assets/promotions/promo-cmech.webp",
+      "imageUrl": "/assets/categories/category-hardware.webp",
       "sortOrder": 2
     },
     {
       "slug": "noi-that-nhom",
       "name": "Nội thất nhôm",
       "description": "Tủ bếp, tủ áo và giải pháp nội thất nhôm cao cấp.",
-      "imageUrl": "/assets/promotions/promo-ocean-luxury.webp",
+      "imageUrl": "/assets/categories/category-interior.webp",
       "sortOrder": 3
     }
   ],

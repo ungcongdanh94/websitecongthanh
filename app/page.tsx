@@ -15,22 +15,23 @@ import {
 import DatabaseProductCard from "@/components/DatabaseProductCard";
 import { prisma } from "@/lib/prisma";
 import type { PublicProduct } from "@/types/product";
-import siteAssets from "@/data/site-assets.json";
+import assetsV2 from "@/data/assets-v2.json";
 
 export const dynamic = "force-dynamic";
 
-const promotionTitles: Record<string, string> = {
-  "promo-xingfa-class-a.webp": "Ưu đãi hệ nhôm Xingfa Class A",
-  "promo-ocean-luxury.webp": "Bộ sưu tập tủ bếp Ocean Luxury",
-  "promo-cmech.webp": "Phụ kiện CMECH chính hãng",
-  "promo-phu-hoan-anh.webp": "Tủ bếp nhôm Phú Hoàn Anh",
-  "promo-software.webp": "Phần mềm thiết kế nhôm miễn phí",
-  "promo-monthly-offer.webp": "Ưu đãi tháng này"
+const spaceSolutionLabels: Record<string, string> = {
+  "biet-thu": "Biệt thự",
+  "nha-pho": "Nhà phố",
+  "can-ho": "Căn hộ",
+  "van-phong": "Văn phòng",
+  "khach-san": "Khách sạn",
+  resort: "Resort"
 };
 
-const promotions = siteAssets.assets.promotions.map((image) => ({
-  image,
-  title: promotionTitles[image.split("/").pop() || ""] || "Ưu đãi CÔNG THẢNH"
+const spaceSolutions = assetsV2.solutions.map((item) => ({
+  slug: item.slug,
+  image: item.image,
+  title: spaceSolutionLabels[item.slug] || item.slug
 }));
 
 const strengths = [
@@ -141,19 +142,28 @@ export default async function HomePage() {
       {/* HERO */}
       <section className="pt-6">
         <div className="container-page">
-          <div className="relative overflow-hidden rounded-[2rem] bg-brand-950 text-white">
+          <div className="relative min-h-[650px] overflow-hidden rounded-[2rem] bg-brand-950 text-white lg:min-h-[720px]">
             <Image
-              src="/assets/banners/hero-homepage-v2.webp"
+              src="/assets/hero/hero-home-mobile.webp"
               alt="Công trình sử dụng giải pháp nhôm CÔNG THẢNH"
               fill
               priority
               quality={90}
               sizes="100vw"
-              className="object-cover"
+              className="object-cover lg:hidden"
+            />
+            <Image
+              src="/assets/hero/hero-home-desktop.webp"
+              alt="Công trình sử dụng giải pháp nhôm CÔNG THẢNH"
+              fill
+              priority
+              quality={90}
+              sizes="100vw"
+              className="hidden object-cover lg:block"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-transparent" />
 
-            <div className="relative flex flex-col gap-10 px-6 py-12 sm:px-10 sm:py-16 lg:flex-row lg:items-center lg:justify-between lg:px-14 lg:py-20">
+            <div className="relative flex h-full min-h-[650px] flex-col justify-center gap-10 px-6 py-12 sm:px-10 sm:py-16 lg:min-h-[720px] lg:flex-row lg:items-center lg:justify-between lg:px-14 lg:py-20">
               <div className="w-full max-w-[680px]">
                 <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-brand-100 backdrop-blur-xl">
                   <Sparkles className="h-4 w-4 text-brand-300" />
@@ -260,32 +270,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* PROMOTIONS */}
-      <section className="container-page py-16">
-        <div className="sec-head max-w-2xl">
-          <div className="eyebrow">Ưu đãi & chương trình</div>
-          <h2 className="section-title mt-3">Khuyến mãi đang diễn ra</h2>
-        </div>
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-          {promotions.map((promo) => (
-            <div
-              key={promo.image}
-              className="group relative aspect-video overflow-hidden rounded-[1.5rem] border border-slate-100 bg-brand-50"
-            >
-              <Image
-                src={promo.image}
-                alt={promo.title}
-                fill
-                className="object-cover transition duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                <div className="text-sm font-black text-white">{promo.title}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* STRENGTHS STRIP */}
       <section className="container-page py-16">
         <div className="grid gap-3 rounded-[2rem] border border-slate-100 bg-white p-4 shadow-soft md:grid-cols-2 xl:grid-cols-4">
@@ -313,19 +297,20 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-6">
+          <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {categories.map((category) => (
               <Link
                 key={category.id}
                 href={`/san-pham?category=${category.slug}`}
-                className="group rounded-[1.5rem] border border-slate-100 bg-white p-4 text-center transition hover:-translate-y-1 hover:border-brand-300 hover:shadow-soft"
+                className="group overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white transition hover:-translate-y-1 hover:border-brand-300 hover:shadow-soft"
               >
-                <div className="relative mb-3 aspect-square overflow-hidden rounded-2xl bg-brand-50">
+                <div className="relative aspect-[4/3] overflow-hidden bg-brand-50">
                   {category.imageUrl ? (
                     <Image
                       src={category.imageUrl}
                       alt={category.name}
                       fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                       className="object-cover transition duration-500 group-hover:scale-105"
                     />
                   ) : (
@@ -334,10 +319,12 @@ export default async function HomePage() {
                     </div>
                   )}
                 </div>
-                <h4 className="text-sm font-bold text-slate-900">{category.name}</h4>
-                <span className="mt-1 inline-block text-xs font-bold text-brand-700">
-                  Xem ngay →
-                </span>
+                <div className="p-5 text-center">
+                  <h4 className="text-base font-bold text-slate-900">{category.name}</h4>
+                  <span className="mt-1 inline-block text-xs font-bold text-brand-700">
+                    Xem ngay →
+                  </span>
+                </div>
               </Link>
             ))}
           </div>
@@ -377,6 +364,35 @@ export default async function HomePage() {
                 <ChevronRight className="h-4 w-4 transition group-hover:translate-x-1" />
               </div>
             </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* SPACE SOLUTIONS */}
+      <section className="container-page py-16">
+        <div className="max-w-2xl">
+          <div className="eyebrow">Giải pháp theo không gian</div>
+          <h2 className="section-title mt-3">Phù hợp với từng loại công trình.</h2>
+        </div>
+        <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {spaceSolutions.map((item) => (
+            <div
+              key={item.slug}
+              className="group overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white transition hover:-translate-y-1 hover:shadow-soft"
+            >
+              <div className="relative aspect-[4/3] overflow-hidden bg-brand-50">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  className="object-cover transition duration-500 group-hover:scale-105"
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="text-lg font-black text-slate-950">{item.title}</h3>
+              </div>
+            </div>
           ))}
         </div>
       </section>
@@ -499,7 +515,10 @@ export default async function HomePage() {
           <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-brand-400/20 blur-3xl" />
           <div className="relative grid items-center gap-10 lg:grid-cols-[1fr_auto]">
             <div className="max-w-3xl">
-              <div className="text-sm font-bold uppercase tracking-[0.18em] text-brand-300">
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-brand-200">
+                Ưu đãi lắp đặt đang áp dụng theo khu vực — hỏi trực tiếp khi gửi yêu cầu
+              </div>
+              <div className="mt-4 text-sm font-bold uppercase tracking-[0.18em] text-brand-300">
                 Cần báo giá nhanh?
               </div>
               <h2 className="mt-4 text-4xl font-black tracking-tight md:text-5xl">

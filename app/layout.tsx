@@ -17,6 +17,8 @@ const DEFAULT_TITLE = "CÔNG THẢNH | Nhôm và phụ kiện cao cấp";
 const DEFAULT_DESCRIPTION =
   "Tham khảo sản phẩm, giá nhôm, phụ kiện và giải pháp nội thất nhôm tại CÔNG THẢNH.";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
   // Đọc tiêu đề/mô tả trang chủ từ bảng Setting (đã seed sẵn ở data/seo-content.json).
   // Nếu chưa seed hoặc lỗi kết nối DB, dùng lại nội dung mặc định — không để trang chủ lỗi.
