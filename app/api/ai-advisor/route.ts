@@ -5,7 +5,7 @@ import companyContent from "@/data/company-content.json";
 
 export const dynamic = "force-dynamic";
 
-const MODEL = "gpt-5.6"; // Đổi ở đây nếu OpenAI cập nhật model khuyến nghị mới
+const MODEL = "claude-haiku-4-5-20251001"; // rẻ, đủ nhanh cho tư vấn ngắn ($1/$5 mỗi triệu token)
 const MAX_HISTORY_MESSAGES = 10;
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
@@ -52,7 +52,7 @@ ${catalogLines.join("\n")}`;
 }
 
 export async function POST(request: Request) {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     return NextResponse.json(
       { ok: false, message: "Trợ lý AI chưa được kích hoạt. Vui lòng liên hệ hotline để được tư vấn." },
@@ -84,22 +84,24 @@ export async function POST(request: Request) {
 
     const systemPrompt = await buildSystemPrompt();
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01"
       },
       body: JSON.stringify({
         model: MODEL,
         max_tokens: 500,
-        messages: [{ role: "system", content: systemPrompt }, ...messages]
+        system: systemPrompt,
+        messages
       })
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("OPENAI_API_ERROR", response.status, errorText);
+      console.error("ANTHROPIC_API_ERROR", response.status, errorText);
       return NextResponse.json(
         { ok: false, message: "Trợ lý AI đang gặp sự cố. Vui lòng thử lại hoặc liên hệ hotline." },
         { status: 502 }
@@ -107,7 +109,11 @@ export async function POST(request: Request) {
     }
 
     const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content?.trim();
+    const reply = data.content
+      ?.filter((block: { type: string }) => block.type === "text")
+      .map((block: { text: string }) => block.text)
+      .join("\n")
+      .trim();
 
     return NextResponse.json({ ok: true, reply: reply || "Xin lỗi, mình chưa hiểu câu hỏi. Bạn có thể nói rõ hơn không?" });
   } catch (error) {

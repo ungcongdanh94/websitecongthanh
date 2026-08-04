@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.16.2 — Quay lại Claude (Anthropic)
+
+Đổi lại từ OpenAI về **Anthropic Claude Haiku 4.5** ($1/$5 mỗi triệu token — rẻ hơn cả GPT-5.6 Luna không đáng kể, nhưng Zen đã có sẵn API key Anthropic từ trước nên tiện hơn). Biến môi trường quay lại **`ANTHROPIC_API_KEY`**.
+
+> Lưu ý đã phát hiện ở bước trước: nếu sau này đổi qua OpenAI lại, KHÔNG dùng model string `"gpt-5.6"` trơn — nó trỏ tới bản Sol (đắt nhất, $5/$30). Nên dùng `"gpt-5.6-luna"` ($0.20/$1.20) cho việc chat tư vấn ngắn như thế này.
+
+---
+
 ## v0.16.1 — Đổi trợ lý AI sang OpenAI (ChatGPT)
 
 - `app/api/ai-advisor/route.ts`: đổi từ gọi Anthropic Claude sang **OpenAI Chat Completions API** (`gpt-5.6` — model khuyến nghị hiện tại của OpenAI cho production, có thể đổi qua hằng số `MODEL` trong file).
