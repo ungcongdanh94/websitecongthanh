@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import { Clock3, Globe2, MapPin, Phone } from "lucide-react";
+import { Clock3, Facebook, Globe2, MapPin, MessageCircle, Phone } from "lucide-react";
 import QuoteForm from "@/components/QuoteForm";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Liên hệ và nhận báo giá | CÔNG THẢNH",
-  description: "Gửi nhu cầu sản phẩm, số lượng hoặc thông tin công trình để CÔNG THẢNH tư vấn và báo giá."
+  description: "Gửi nhu cầu sản phẩm, số lượng hoặc thông tin công trình để CÔNG THẢNH tư vấn và báo giá.",
+  alternates: { canonical: "/lien-he" }
 };
 
 export default function ContactPage() {
   const hotline = process.env.NEXT_PUBLIC_HOTLINE || site.hotline;
+  const zaloUrl = process.env.NEXT_PUBLIC_ZALO_URL || site.zaloUrl;
+  const facebookUrl = process.env.NEXT_PUBLIC_FACEBOOK_URL;
 
   return (
     <section className="container-page py-16">
@@ -27,17 +30,22 @@ export default function ContactPage() {
           </p>
 
           <div className="mt-10 grid gap-4">
-            <div className="flex gap-4 rounded-2xl border border-white/10 bg-white/5 p-4">
-              <MapPin className="mt-0.5 h-6 w-6 shrink-0 text-brand-300" />
-              <div>
-                <div className="font-bold">Địa chỉ</div>
-                <div className="mt-1 text-sm leading-6 text-brand-50/70">{site.address}</div>
+            {site.locations.map((loc) => (
+              <div key={loc.label} className="flex gap-4 rounded-2xl border border-white/10 bg-white/5 p-4">
+                <MapPin className="mt-0.5 h-6 w-6 shrink-0 text-brand-300" />
+                <div>
+                  <div className="font-bold">{loc.label}</div>
+                  <div className="mt-1 text-sm leading-6 text-brand-50/70">{loc.address}</div>
+                  <a href={`tel:${loc.phone.replace(/\s/g, "")}`} className="mt-1 block text-sm font-semibold text-brand-100 hover:text-white">
+                    {loc.phone}
+                  </a>
+                </div>
               </div>
-            </div>
+            ))}
             <div className="flex gap-4 rounded-2xl border border-white/10 bg-white/5 p-4">
               <Phone className="h-6 w-6 shrink-0 text-brand-300" />
               <div>
-                <div className="font-bold">Hotline</div>
+                <div className="font-bold">Hotline chung</div>
                 <a href={`tel:${hotline.replace(/\s/g, "")}`} className="mt-1 block text-sm text-brand-50/70">
                   {hotline}
                 </a>
@@ -57,6 +65,28 @@ export default function ContactPage() {
                 <div className="mt-1 text-sm text-brand-50/70">Trong giờ làm việc</div>
               </div>
             </div>
+            {zaloUrl && (
+              <a
+                href={zaloUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
+              >
+                <MessageCircle className="h-6 w-6 shrink-0 text-brand-300" />
+                <span className="font-bold">Nhắn Zalo</span>
+              </a>
+            )}
+            {facebookUrl && (
+              <a
+                href={facebookUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
+              >
+                <Facebook className="h-6 w-6 shrink-0 text-brand-300" />
+                <span className="font-bold">Fanpage Facebook</span>
+              </a>
+            )}
           </div>
         </div>
 
@@ -72,6 +102,18 @@ export default function ContactPage() {
             <QuoteForm />
           </div>
         </div>
+      </div>
+
+      <div className="mt-12 overflow-hidden rounded-[2rem] border border-slate-200">
+        <iframe
+          title={`Bản đồ ${site.name}`}
+          src={`https://maps.google.com/maps?q=${encodeURIComponent(site.address)}&output=embed`}
+          width="100%"
+          height="380"
+          style={{ border: 0 }}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
       </div>
     </section>
   );

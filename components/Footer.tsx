@@ -58,14 +58,22 @@ export default function Footer() {
         <div>
           <h3 className="font-bold text-white">Thông tin liên hệ</h3>
           <div className="mt-5 grid gap-4 text-sm">
-            <div className="flex gap-3">
-              <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-brand-300" />
-              <span>{site.address}</span>
-            </div>
+            {site.locations.map((loc) => (
+              <div key={loc.label} className="flex gap-3">
+                <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-brand-300" />
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wide text-brand-300">{loc.label}</div>
+                  <div className="mt-0.5">{loc.address}</div>
+                  <a href={`tel:${loc.phone.replace(/\s/g, "")}`} className="mt-0.5 block hover:text-white">
+                    {loc.phone}
+                  </a>
+                </div>
+              </div>
+            ))}
             <div className="flex gap-3">
               <Phone className="h-5 w-5 shrink-0 text-brand-300" />
               <a href={`tel:${hotline.replace(/\s/g, "")}`} className="hover:text-white">
-                {hotline}
+                Hotline: {hotline}
               </a>
             </div>
             <div className="flex gap-3">
@@ -80,8 +88,10 @@ export default function Footer() {
 
       <div className="border-t border-white/10">
         <div className="container-page flex flex-col gap-2 py-5 text-xs text-brand-300/70 sm:flex-row sm:items-center sm:justify-between">
-          <span>© 2026 CÔNG THẢNH. Bảo lưu mọi quyền.</span>
-          <span>Website v0.9 · Nền tảng sản phẩm và báo giá</span>
+          <span>© {new Date().getFullYear()} {site.legalName}. Bảo lưu mọi quyền.</span>
+          <a href={site.zaloUrl} target="_blank" rel="noreferrer" className="hover:text-white">
+            Nhắn Zalo: {site.hotline}
+          </a>
         </div>
       </div>
     </footer>

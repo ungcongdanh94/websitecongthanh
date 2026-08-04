@@ -1,5 +1,56 @@
 # CHANGELOG
 
+## v0.22.0 — Cập nhật thông tin liên hệ theo thực tế (đối chiếu www.congthanhco.com)
+
+### 🔧 Sửa dữ liệu giả bằng dữ liệu thật
+
+Đối chiếu trực tiếp với trang `www.congthanhco.com` đang chạy thật:
+
+- **`data/site.ts`**: hotline giả `0900 000 000` → **`0908 22 99 77`** (số thật, khớp site chính). Bỏ email giả `info@congthanhco.com` (site thật không công khai email nào — không tạo email giả).
+- Thêm mới `site.locations` — **3 địa chỉ + số điện thoại riêng thật**, lấy đúng từ footer trang chính:
+  1. Trụ sở chính & kho — 595A Trần Hưng Đạo — 02963 858 333
+  2. Xưởng sản xuất & sơn tĩnh điện — 621/46 Trần Hưng Đạo — 02963 989 199
+  3. Showroom — 909 Trần Hưng Đạo — 02963 853 587
+- Thêm `site.zaloUrl` thật (`zalo.me/0908229977`, lấy từ widget Zalo trên site chính) làm giá trị dự phòng khi chưa cấu hình `NEXT_PUBLIC_ZALO_URL`.
+- **`components/Footer.tsx`**: hiện đủ 3 địa chỉ (trước đây chỉ hiện 1), có nút Zalo thật ở dòng cuối. Bỏ dòng "Website v0.9..." hard-code (dễ lỗi thời), thay bằng năm hiện tại tự động + tên pháp nhân đầy đủ.
+- **`app/lien-he/page.tsx`**: hiện đủ 3 địa chỉ kèm số điện thoại riêng từng nơi (trước đây chỉ 1 địa chỉ chung).
+
+### ℹ️ Không cần làm lại
+
+Link **Song Bảo Vệ Nhôm** (`songbaove.up.railway.app`) trong trang `/phan-mem` **đã được thêm ở bản v0.18.2 trước đó** — xác nhận vẫn còn, không cần thêm lại.
+
+---
+
+## v0.21.0 — Sprint: Services, Contact Maps/Zalo/Facebook, SEO sâu hơn
+
+Hoàn thành phần còn lại của sprint (6, 7, 8). Mục 9 (Performance) đã rà soát — **không cần sửa**, xem chi tiết bên dưới.
+
+### ✨ Sprint 6 — Trang Dịch vụ mới (`/dich-vu`)
+
+5 dịch vụ đúng yêu cầu (Nhôm thanh, Phụ kiện, Gia công thành phẩm, Sơn tĩnh điện, Nội thất nhôm) — dùng lại đúng dữ liệu `services` đã có trong `data/site-content.json`, không tạo nội dung mới.
+
+### ✨ Sprint 7 — Contact hoàn thiện
+
+- **Google Maps**: nhúng iframe theo địa chỉ công ty, không cần API key.
+- **Zalo**: biến `NEXT_PUBLIC_ZALO_URL` đã tồn tại từ trước trong `.env.example` nhưng **chưa từng được dùng ở đâu** — giờ hiển thị nút "Nhắn Zalo" nếu biến này được cấu hình.
+- **Facebook**: thêm biến mới `NEXT_PUBLIC_FACEBOOK_URL` (rỗng theo mặc định) — nút chỉ hiện khi Zen cấu hình link thật, không tạo link giả.
+
+### ✨ Sprint 8 — SEO sâu hơn
+
+- Thêm `metadataBase` + Open Graph mặc định (site name, locale `vi_VN`) ở `app/layout.tsx` — giúp ảnh OG và canonical resolve đúng domain thật.
+- Thêm `alternates.canonical` cho 8 trang tĩnh: `/san-pham`, `/du-an`, `/lien-he`, `/bang-gia`, `/phan-mem`, `/gioi-thieu`, `/thuong-hieu`, `/dich-vu`.
+- Thêm `/dich-vu` vào `sitemap.ts`.
+
+### ✅ Sprint 9 — Performance (đã rà soát, không cần sửa)
+
+Kiểm tra toàn bộ `priority` trên `next/image`: chỉ dùng cho ảnh hero (trang chủ, giới thiệu), logo header, và ảnh chính trong `ProductGallery` (ảnh LCP hợp lý cho từng trang) — **không có ảnh nào bị đặt `priority` dư thừa**. Các ảnh còn lại đã tự lazy-load theo mặc định của `next/image`, không cần sửa gì thêm.
+
+### 📝 Ghi nhận (chưa sửa, cần Zen xác nhận)
+
+`data/site.ts` đang có **hotline giả** (`0900 000 000`) và **email giả** (`info@congthanhco.com`) làm giá trị dự phòng khi thiếu biến môi trường — khác với hotline thật `0908 22 99 77` đã dùng ở các nơi khác trong dự án. Mình **chưa sửa** vì đây là file được nhiều component dùng chung và không nằm trong sprint lần này — Zen xác nhận muốn mình cập nhật lại không?
+
+---
+
 ## v0.20.0 — Sprint: Products, Projects, Brands landing page
 
 Vẫn tuân thủ "KHÔNG REFACTOR" — chỉ bổ sung route/UI mới, không đổi schema, API, hay CMS hiện có.
