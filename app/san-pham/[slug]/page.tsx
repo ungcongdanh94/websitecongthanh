@@ -2,13 +2,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import type { Metadata } from "next";
-import { Download, PlayCircle } from "lucide-react";
+import { Download, PlayCircle, ShieldCheck } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import ProductGallery from "@/components/ProductGallery";
 import DatabaseProductCard from "@/components/DatabaseProductCard";
 import type { PublicProduct } from "@/types/product";
 import siteContent from "@/data/site-content.json";
-import { splitValues } from "@/lib/productDisplay";
+import { splitValues, getSwatchColor } from "@/lib/productDisplay";
 
 export const dynamic = "force-dynamic";
 
@@ -101,7 +101,6 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
   const specs = [
     product.productLine ? ["Dòng sản phẩm", product.productLine] : null,
     product.aluminumSystem ? ["Hệ nhôm", product.aluminumSystem] : null,
-    colorOptions.length ? ["Màu sắc", colorOptions.join(" · ")] : null,
     thicknessOptions.length ? ["Độ dày", thicknessOptions.join(" · ")] : null,
     stockLengthOptions.length ? ["Chiều dài thanh", stockLengthOptions.join(" · ")] : null,
     product.unit ? ["Đơn vị tính", product.unit] : null,
@@ -169,6 +168,23 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
             {product.description || product.shortDesc || "Liên hệ CÔNG THẢNH để được tư vấn chi tiết."}
           </p>
 
+          {colorOptions.length > 0 && (
+            <div className="mt-6">
+              <div className="text-xs font-bold uppercase text-slate-500">Màu sắc</div>
+              <div className="mt-2 flex flex-wrap gap-3">
+                {colorOptions.map((color) => (
+                  <div key={color} className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5">
+                    <span
+                      className="h-4 w-4 rounded-full border border-slate-300"
+                      style={{ backgroundColor: getSwatchColor(color) }}
+                    />
+                    <span className="text-sm font-semibold text-slate-700">{color}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {!!specs.length && (
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
               {specs.map(([key, value]) => (
@@ -177,6 +193,17 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
                   <div className="mt-1 font-bold">{value}</div>
                 </div>
               ))}
+            </div>
+          )}
+
+          {product.warrantyPolicy && (
+            <div className="mt-6 rounded-2xl border border-brand-100 bg-brand-50 p-5">
+              <div className="flex items-center gap-2 text-sm font-bold text-brand-800">
+                <ShieldCheck className="h-5 w-5" /> Chính sách bảo hành
+              </div>
+              <p className="mt-2 whitespace-pre-line text-sm leading-6 text-brand-900/80">
+                {product.warrantyPolicy}
+              </p>
             </div>
           )}
 

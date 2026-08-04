@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { PublicProduct } from "@/types/product";
-import { splitValues } from "@/lib/productDisplay";
+import { splitValues, getSwatchColor } from "@/lib/productDisplay";
 
 function formatPrice(price: number | null, unit: string | null) {
   if (price === null) return "Liên hệ";
@@ -29,7 +29,10 @@ export default function DatabaseProductCard({ product }: { product: PublicProduc
         <div className="mt-3 flex flex-wrap gap-2">
           {product.aluminumSystem && <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800">{product.aluminumSystem}</span>}
           {colors.map((color) => (
-            <span key={color} className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">{color}</span>
+            <span key={color} className="flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+              <span className="h-3 w-3 rounded-full border border-slate-300" style={{ backgroundColor: getSwatchColor(color) }} />
+              {color}
+            </span>
           ))}
           {thicknesses.map((thickness) => (
             <span key={thickness} className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">{thickness}</span>

@@ -26,6 +26,7 @@ type ProductData = {
   stockLength: string | null;
   catalogUrl: string | null;
   videoUrl: string | null;
+  warrantyPolicy: string | null;
   status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
   categoryId: string;
   brandId: string | null;
@@ -126,6 +127,13 @@ export default function ProductEditForm({
         <input name="catalogUrl" defaultValue={product.catalogUrl || ""} className={input} placeholder="URL catalogue PDF" />
         <input name="videoUrl" defaultValue={product.videoUrl || ""} className={input} placeholder="URL video giới thiệu" />
       </div>
+
+      <textarea
+        name="warrantyPolicy"
+        defaultValue={product.warrantyPolicy || ""}
+        className={`${input} min-h-24`}
+        placeholder="Chính sách bảo hành riêng cho sản phẩm này — VD: Bảo hành 10 năm khung nhôm, 2 năm phụ kiện."
+      />
 
       <MediaPicker name="imageUrl" defaultValue={product.imageUrl || ""} label="Ảnh đại diện sản phẩm" />
       <GalleryPicker name="gallery" defaultValue={product.gallery} label="Thư viện ảnh chi tiết (nhiều ảnh)" />

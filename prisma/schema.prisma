@@ -81,6 +81,7 @@ model Product {
   stockLength   String?
   catalogUrl    String?
   videoUrl      String?
+  warrantyPolicy String?
   specs         Json?
   isFeatured    Boolean       @default(false)
   status        PublishStatus @default(DRAFT)

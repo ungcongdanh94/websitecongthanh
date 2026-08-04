@@ -48,6 +48,7 @@ export async function POST(request: Request) {
         stockLength: String(body.stockLength || "").trim() || null,
         catalogUrl: String(body.catalogUrl || "").trim() || null,
         videoUrl: String(body.videoUrl || "").trim() || null,
+        warrantyPolicy: String(body.warrantyPolicy || "").trim() || null,
         isFeatured: Boolean(body.isFeatured),
         status: ["PUBLISHED", "ARCHIVED"].includes(body.status) ? body.status : "DRAFT",
         categoryId,

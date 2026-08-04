@@ -98,6 +98,12 @@ export default function ProductForm({
         <input name="videoUrl" className={input} placeholder="URL video giới thiệu" />
       </div>
 
+      <textarea
+        name="warrantyPolicy"
+        className={`${input} min-h-24`}
+        placeholder="Chính sách bảo hành riêng cho sản phẩm này — VD: Bảo hành 10 năm khung nhôm, 2 năm phụ kiện."
+      />
+
       <MediaPicker name="imageUrl" label="Ảnh đại diện sản phẩm" />
       <GalleryPicker name="gallery" label="Thư viện ảnh chi tiết (nhiều ảnh)" />
 

@@ -45,6 +45,7 @@ export default async function EditProductPage({
               stockLength: product.stockLength,
               catalogUrl: product.catalogUrl,
               videoUrl: product.videoUrl,
+              warrantyPolicy: product.warrantyPolicy,
               status: product.status,
               categoryId: product.categoryId,
               brandId: product.brandId,

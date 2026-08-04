@@ -1,5 +1,46 @@
 # CHANGELOG
 
+## v0.25.1 — Sửa lại: bảo hành theo từng sản phẩm + màu sắc hiện vòng tròn
+
+### 🔧 Sửa lại quyết định sai ở bản v0.25.0
+
+Zen phản hồi đúng: 1 thương hiệu có nhiều dòng sản phẩm, mỗi sản phẩm bảo hành khác nhau — **không gộp chung theo thương hiệu được**. Đã revert hoàn toàn field `warrantyPolicy` khỏi `Brand`, chuyển sang **`Product`** (đúng theo từng sản phẩm):
+
+```prisma
+// Product
+warrantyPolicy String?
+```
+
+- Form thêm/sửa sản phẩm giờ có ô "Chính sách bảo hành" riêng cho từng sản phẩm.
+- Trang chi tiết sản phẩm hiện đúng bảo hành của sản phẩm đó (không còn ghi kèm tên thương hiệu vì không còn gắn với thương hiệu nữa).
+- `/admin/brands` và trang thương hiệu công khai — bỏ lại như cũ, không còn ô bảo hành ở đó.
+
+> Nếu Zen đã chạy `prisma db push` cho bản v0.25.0 trước đó: chạy lại lần này sẽ tự xoá cột `warrantyPolicy` khỏi `Brand` và tạo lại ở `Product` — không ảnh hưởng dữ liệu khác.
+
+### ✨ Màu sắc hiện vòng tròn thay vì chỉ chữ
+
+Thêm bảng màu tên tiếng Việt → mã màu (Trắng, Đen, Ghi xám, Vân gỗ, Vàng đồng...) trong `lib/productDisplay.ts`. Mỗi màu giờ hiện **vòng tròn nhỏ đúng màu + tên chữ bên cạnh** (không bỏ chữ hẳn — vì tên màu như "vân gỗ" cần chữ mới rõ nghĩa, vòng tròn chỉ minh hoạ thêm). Áp dụng cho card sản phẩm và trang chi tiết sản phẩm. Màu không có trong bảng sẽ hiện vòng tròn xám trung tính, vẫn hiện đúng tên chữ.
+
+---
+
+## v0.25.0 — Chính sách bảo hành theo nhà sản xuất (đã sửa lại ở bản trên, xem v0.25.1)
+
+### 🗄️ Schema mới (cần chạy `prisma db push`)
+
+Thêm `warrantyPolicy String?` vào `Brand` — **để ở cấp thương hiệu (nhà sản xuất)**, không phải cấp sản phẩm, vì chính sách bảo hành thường áp dụng chung cho cả một hãng (Xingfa, CMECH...) chứ không khác nhau theo từng sản phẩm riêng lẻ. Nhờ vậy chỉ cần nhập 1 lần cho mỗi thương hiệu, mọi sản phẩm thuộc thương hiệu đó tự động hiện đúng chính sách.
+
+### ✨ Đã thêm
+
+- Trang sửa thương hiệu (`/admin/brands/[id]`) có thêm ô nhập chính sách bảo hành (dạng văn bản nhiều dòng).
+- Trang chi tiết sản phẩm (`/san-pham/[slug]`) hiện khối "Chính sách bảo hành (Tên thương hiệu)" nếu thương hiệu đó đã được nhập chính sách — tự ẩn nếu chưa nhập, không hiện thông tin rỗng hoặc giả.
+- Trang thương hiệu (`/thuong-hieu/[slug]`) cũng hiện chính sách bảo hành của hãng đó.
+
+### 📌 Cần Zen làm thủ công
+
+Mình **không tự bịa nội dung bảo hành** (số năm, điều kiện...) vì đây là cam kết kinh doanh/pháp lý thật, phải do Zen xác nhận. Sau khi deploy, vào `/admin/brands`, bấm "Sửa" từng thương hiệu và nhập đúng chính sách thật (nếu có) — thương hiệu nào chưa nhập sẽ không hiện khối này trên trang sản phẩm, không phải lỗi.
+
+---
+
 ## v0.24.0 — Màu sắc/độ dày/chiều dài nhiều loại, giá công khai chung chung
 
 ### 🗄️ Schema thay đổi (cần chạy `prisma db push`)
