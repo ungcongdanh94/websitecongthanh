@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.23.1 — So sánh sản phẩm theo từng danh mục
+
+`/so-sanh` giờ có tab chọn danh mục trước — danh sách sản phẩm để chọn so sánh chỉ hiện đúng sản phẩm trong danh mục đang chọn (trước đây trộn tất cả sản phẩm mọi danh mục vào 1 danh sách dài, dễ so sánh nhầm sản phẩm không cùng loại, ví dụ nhôm thanh với tủ bếp). Bỏ dòng "Danh mục" trong bảng so sánh vì giờ luôn cùng 1 danh mục, không cần hiển thị lại.
+
+---
+
 ## v0.23.0 — Thêm Sửa/Xóa cho Danh mục và Thương hiệu
 
 ### 🔴 Xác nhận đây là thiếu tính năng thật, không phải lỗi

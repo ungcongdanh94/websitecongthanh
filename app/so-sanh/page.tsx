@@ -11,14 +11,21 @@ export const metadata = {
 export default async function ComparePage({
   searchParams
 }: {
-  searchParams: Promise<{ ids?: string | string[] }>;
+  searchParams: Promise<{ ids?: string | string[]; category?: string }>;
 }) {
-  const { ids } = await searchParams;
+  const { ids, category } = await searchParams;
   const idList = Array.isArray(ids) ? ids : ids ? [ids] : [];
   const selectedIds = idList.filter(Boolean).slice(0, 4);
 
+  const categories = await prisma.category.findMany({
+    where: { isActive: true },
+    orderBy: { sortOrder: "asc" }
+  });
+
+  const activeCategory = category || categories[0]?.slug || "";
+
   const allProducts = await prisma.product.findMany({
-    where: { status: "PUBLISHED" },
+    where: { status: "PUBLISHED", category: { slug: activeCategory } },
     include: { category: true, brand: true },
     orderBy: [{ isFeatured: "desc" }, { name: "asc" }]
   });
@@ -40,7 +47,6 @@ export default async function ComparePage({
 
   const rows: [string, string[]][] = [
     ["Thương hiệu", selected.map((p) => p?.brand?.name || "—")],
-    ["Danh mục", selected.map((p) => p?.category.name || "—")],
     ["Hệ nhôm", selected.map((p) => p?.aluminumSystem || "—")],
     ["Màu sắc", selected.map((p) => p?.color || "—")],
     [
@@ -64,11 +70,30 @@ export default async function ComparePage({
         <div className="eyebrow">So sánh sản phẩm</div>
         <h1 className="section-title mt-3">So sánh nhanh trước khi lựa chọn</h1>
         <p className="mt-4 text-lg leading-8 text-slate-600">
-          Chọn tối đa 4 sản phẩm để so sánh trực tiếp thông số, giá và thương hiệu.
+          Chọn danh mục, sau đó chọn tối đa 4 sản phẩm trong danh mục đó để so sánh thông số, giá và thương hiệu.
         </p>
       </div>
 
-      <form method="get" action="/so-sanh" className="mt-8 grid gap-3 rounded-3xl border border-slate-200 bg-white p-5 sm:grid-cols-2 xl:grid-cols-3">
+      {categories.length > 0 && (
+        <div className="mt-8 flex flex-wrap gap-2">
+          {categories.map((item) => (
+            <Link
+              key={item.slug}
+              href={`/so-sanh?category=${item.slug}`}
+              className={`rounded-full px-4 py-2 text-sm font-bold transition ${
+                item.slug === activeCategory
+                  ? "bg-brand-700 text-white"
+                  : "border border-slate-200 text-slate-600 hover:border-brand-300"
+              }`}
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
+      )}
+
+      <form method="get" action="/so-sanh" className="mt-6 grid gap-3 rounded-3xl border border-slate-200 bg-white p-5 sm:grid-cols-2 xl:grid-cols-3">
+        <input type="hidden" name="category" value={activeCategory} />
         {allProducts.map((product) => (
           <label key={product.id} className="flex items-center gap-3 rounded-2xl border border-slate-100 p-3 text-sm hover:border-brand-300">
             <input
@@ -81,6 +106,11 @@ export default async function ComparePage({
             <span className="font-semibold">{product.name}</span>
           </label>
         ))}
+        {!allProducts.length && (
+          <div className="text-sm text-slate-500 sm:col-span-2 xl:col-span-3">
+            Chưa có sản phẩm công khai trong danh mục này.
+          </div>
+        )}
         <button className="btn-primary sm:col-span-2 xl:col-span-3">
           So sánh sản phẩm đã chọn
         </button>
