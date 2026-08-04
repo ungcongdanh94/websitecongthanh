@@ -30,7 +30,10 @@ export async function POST(request: Request) {
 
   try {
     const form = await request.formData();
-    const files = form.getAll("files").filter((item): item is File => item instanceof File);
+    // Tránh dùng "instanceof File" — biến toàn cục File không phải lúc nào cũng có sẵn
+    // trong runtime Node.js trên Railway, gây lỗi "File is not defined". FormData chỉ
+    // trả về string hoặc File cho mỗi entry, nên chỉ cần loại bỏ string là đủ.
+    const files = form.getAll("files").filter((item) => typeof item !== "string") as File[];
     const requestedFolder = String(form.get("folder") || "general").toLowerCase();
     const folder = requestedFolder.replace(/[^a-z0-9-_]/g, "-").slice(0, 40) || "general";
 

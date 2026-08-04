@@ -27,7 +27,9 @@ export async function POST(request: Request) {
     const form = await request.formData();
     const file = form.get("file");
 
-    if (!(file instanceof File)) {
+    // Tránh "instanceof File" (biến toàn cục File không luôn có trong runtime Node.js) —
+    // form.get() chỉ trả về string hoặc File, nên kiểm tra khác string là đủ.
+    if (!file || typeof file === "string") {
       return NextResponse.json({ ok: false, message: "Chưa chọn file" }, { status: 400 });
     }
 

@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import SimpleEntityForm from "@/components/admin/SimpleEntityForm";
+import EntityDeleteButton from "@/components/admin/EntityDeleteButton";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +28,11 @@ export default async function BrandsPage() {
                 <div className="font-bold">{item.name}</div>
                 <div className="text-sm text-slate-500">{item.slug}</div>
               </div>
-              <div className="text-sm font-semibold text-slate-500">{item._count.products} sản phẩm</div>
+              <div className="flex items-center gap-4">
+                <div className="text-sm font-semibold text-slate-500">{item._count.products} sản phẩm</div>
+                <Link href={`/admin/brands/${item.id}`} className="text-sm font-semibold text-brand-700">Sửa</Link>
+                <EntityDeleteButton endpoint="/api/admin/brands" id={item.id} name={item.name} />
+              </div>
             </div>
           ))}
         </div>

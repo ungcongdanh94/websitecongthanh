@@ -1,5 +1,34 @@
 # CHANGELOG
 
+## v0.23.0 — Thêm Sửa/Xóa cho Danh mục và Thương hiệu
+
+### 🔴 Xác nhận đây là thiếu tính năng thật, không phải lỗi
+
+Kiểm tra lại: `/admin/categories` và `/admin/brands` từ trước đến nay **chỉ có form thêm mới**, không hề có nút Sửa hoặc Xóa, và cũng chưa có API route xử lý cập nhật/xóa theo id. Không phải do lỗi phát sinh — tính năng này chưa từng được xây dựng.
+
+(Sản phẩm — `/admin/products` — đã có Sửa/Xóa đầy đủ từ trước, không có vấn đề gì.)
+
+### ✅ Đã thêm
+
+- `app/api/admin/categories/[id]/route.ts`, `app/api/admin/brands/[id]/route.ts` — PUT (cập nhật) + DELETE, có thông báo rõ ràng nếu không xóa được vì đang có sản phẩm sử dụng (ràng buộc khóa ngoại).
+- `app/admin/categories/[id]/page.tsx`, `app/admin/brands/[id]/page.tsx` — trang sửa riêng cho từng danh mục/thương hiệu, có thêm ô "Đang hoạt động" để ẩn/hiện trên website mà không cần xóa hẳn.
+- Component chung `EntityEditForm`, `EntityDeleteButton` — dùng lại cho cả 2 (Danh mục và Thương hiệu có cùng cấu trúc dữ liệu: tên, slug, mô tả, trạng thái hoạt động).
+- Thêm nút "Sửa" / "Xóa" vào từng dòng trong danh sách `/admin/categories` và `/admin/brands`.
+
+---
+
+## v0.22.1 — Sửa lỗi "File is not defined" khi tải ảnh lên Media
+
+### 🔴 Lỗi thật
+
+`app/api/admin/media/route.ts` và `app/api/admin/prices/import/route.ts` dùng `item instanceof File` để kiểm tra file upload — biến toàn cục `File` **không phải lúc nào cũng có sẵn** trong runtime Node.js trên Railway, gây lỗi `ReferenceError: File is not defined` mỗi khi tải ảnh lên Media Manager (và khi nhập giá từ Excel).
+
+### ✅ Đã sửa
+
+Bỏ hẳn `instanceof File`, thay bằng cách lọc theo `typeof item !== "string"` — vì `FormData` chỉ trả về `string` hoặc `File` cho mỗi trường, không cần dùng đến biến `File` toàn cục nữa. Áp dụng cho cả 2 route bị ảnh hưởng.
+
+---
+
 ## v0.22.0 — Cập nhật thông tin liên hệ theo thực tế (đối chiếu www.congthanhco.com)
 
 ### 🔧 Sửa dữ liệu giả bằng dữ liệu thật
