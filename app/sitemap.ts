@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://congthanhco.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [products, projects] = await Promise.all([
+  const [products, projects, brands] = await Promise.all([
     prisma.product.findMany({
       where: { status: "PUBLISHED" },
       select: { slug: true, updatedAt: true }
@@ -14,18 +14,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     prisma.project.findMany({
       where: { status: "PUBLISHED" },
       select: { slug: true, updatedAt: true }
+    }),
+    prisma.brand.findMany({
+      where: { isActive: true },
+      select: { slug: true, updatedAt: true }
     })
   ]);
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${baseUrl}/`, changeFrequency: "daily", priority: 1 },
+    { url: `${baseUrl}/gioi-thieu`, changeFrequency: "monthly", priority: 0.6 },
     { url: `${baseUrl}/san-pham`, changeFrequency: "daily", priority: 0.9 },
+    { url: `${baseUrl}/thuong-hieu`, changeFrequency: "weekly", priority: 0.6 },
     { url: `${baseUrl}/du-an`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${baseUrl}/bang-gia`, changeFrequency: "weekly", priority: 0.6 },
     { url: `${baseUrl}/phan-mem`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${baseUrl}/so-sanh`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${baseUrl}/lien-he`, changeFrequency: "monthly", priority: 0.6 }
   ];
+
+  const brandRoutes: MetadataRoute.Sitemap = brands.map((brand) => ({
+    url: `${baseUrl}/thuong-hieu/${brand.slug}`,
+    lastModified: brand.updatedAt,
+    changeFrequency: "weekly",
+    priority: 0.6
+  }));
 
   const productRoutes: MetadataRoute.Sitemap = products.map((product) => ({
     url: `${baseUrl}/san-pham/${product.slug}`,
@@ -41,5 +54,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6
   }));
 
-  return [...staticRoutes, ...productRoutes, ...projectRoutes];
+  return [...staticRoutes, ...productRoutes, ...projectRoutes, ...brandRoutes];
 }

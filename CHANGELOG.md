@@ -1,5 +1,36 @@
 # CHANGELOG
 
+## v0.20.0 — Sprint: Products, Projects, Brands landing page
+
+Vẫn tuân thủ "KHÔNG REFACTOR" — chỉ bổ sung route/UI mới, không đổi schema, API, hay CMS hiện có.
+
+### ✨ Sprint 3 — Hoàn thiện Products
+
+- **Related Products**: trang chi tiết sản phẩm giờ hiện tối đa 4 sản phẩm cùng danh mục.
+- **FAQ**: thêm khối câu hỏi thường gặp (dạng accordion `<details>`, không cần JS) — dùng lại đúng nội dung `faq` đã có trong `data/site-content.json`, không tạo nội dung mới.
+- Download Catalogue/PDF, Gallery, SEO: **đã có từ trước**, không đổi.
+
+### ✨ Sprint 4 — Hoàn thiện Projects
+
+- **Filter**: thêm lọc theo khu vực (`location`) ở `/du-an` — dropdown các khu vực đang có dự án công khai.
+- **Gallery đầy đủ**: trang chi tiết dự án giờ hiện đúng field `gallery` (đã có sẵn trong schema, chưa từng dùng) cùng `coverUrl`, dùng lại component `ProductGallery` (ảnh chính + thumbnail bấm chuyển).
+
+### ✨ Sprint 5 — Brands landing page
+
+- `/thuong-hieu` — danh sách thương hiệu (logo hoặc tên tạm nếu chưa có logo, số sản phẩm mỗi thương hiệu).
+- `/thuong-hieu/[slug]` — trang riêng từng thương hiệu: mô tả + toàn bộ sản phẩm công khai của thương hiệu đó.
+- Thêm 2 route này vào `sitemap.ts` và menu Header (`Giới thiệu`, `Thương hiệu` — trước đây trang Giới thiệu ở bản trước cũng chưa có trong menu, giờ bổ sung luôn).
+- **Không đổi database** — chỉ query thêm từ bảng `Brand`/`Product` đã có.
+
+### Còn lại
+
+6. Services (trang riêng 5 dịch vụ)
+7. Contact: Google Maps
+8. SEO: OG đầy đủ hơn, canonical
+9. Performance: rà soát lazy-load
+
+---
+
 ## v0.19.0 — Sprint: Homepage polish + trang Giới thiệu mới
 
 Tuân thủ đúng yêu cầu "KHÔNG REFACTOR" — chỉ bổ sung, không đổi route/API/CMS/schema hiện có.

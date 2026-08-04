@@ -11,11 +11,25 @@ export const metadata: Metadata = {
   description: "Các công trình và giải pháp nhôm — phụ kiện — nội thất thực tế do CÔNG THẢNH thi công tại An Giang và khu vực miền Tây."
 };
 
-export default async function ProjectsPage() {
-  const projects = await prisma.project.findMany({
-    where: { status: "PUBLISHED" },
-    orderBy: { createdAt: "desc" }
-  });
+export default async function ProjectsPage({
+  searchParams
+}: {
+  searchParams: Promise<{ location?: string }>;
+}) {
+  const { location = "" } = await searchParams;
+
+  const [projects, locations] = await Promise.all([
+    prisma.project.findMany({
+      where: { status: "PUBLISHED", ...(location ? { location } : {}) },
+      orderBy: { createdAt: "desc" }
+    }),
+    prisma.project.findMany({
+      where: { status: "PUBLISHED", location: { not: null } },
+      select: { location: true },
+      distinct: ["location"],
+      orderBy: { location: "asc" }
+    })
+  ]);
 
   return (
     <main className="container-page py-16">
@@ -26,6 +40,22 @@ export default async function ProjectsPage() {
           Các công trình và giải pháp nhôm – phụ kiện – nội thất được cập nhật trực tiếp từ hệ thống quản trị.
         </p>
       </div>
+
+      {locations.length > 1 && (
+        <form className="mt-8 flex flex-wrap items-center gap-3">
+          <select
+            name="location"
+            defaultValue={location}
+            className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold"
+          >
+            <option value="">Tất cả khu vực</option>
+            {locations.map((item) => item.location && (
+              <option key={item.location} value={item.location}>{item.location}</option>
+            ))}
+          </select>
+          <button className="btn-secondary">Lọc theo khu vực</button>
+        </form>
+      )}
 
       <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {projects.map((project) => (

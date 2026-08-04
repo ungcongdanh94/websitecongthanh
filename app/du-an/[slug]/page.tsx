@@ -1,9 +1,9 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import type { Metadata } from "next";
 import { MapPin } from "lucide-react";
 import { prisma } from "@/lib/prisma";
+import ProductGallery from "@/components/ProductGallery";
 
 export const dynamic = "force-dynamic";
 
@@ -53,9 +53,14 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <MapPin className="h-5 w-5" /> {project.location}
           </div>
         )}
-        {project.coverUrl && (
-          <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-[2rem] bg-slate-100">
-            <Image src={project.coverUrl} alt={project.title} fill priority className="object-cover" />
+        {(project.coverUrl || (Array.isArray(project.gallery) && project.gallery.length > 0)) && (
+          <div className="mt-10">
+            <ProductGallery
+              images={[project.coverUrl, ...(Array.isArray(project.gallery) ? (project.gallery as string[]) : [])].filter(
+                (url): url is string => Boolean(url)
+              )}
+              alt={project.title}
+            />
           </div>
         )}
         <div className="prose prose-slate mt-10 max-w-none text-lg leading-8 text-slate-700">

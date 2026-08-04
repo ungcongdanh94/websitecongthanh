@@ -7,7 +7,9 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 const nav = [
+  ["Giới thiệu", "/gioi-thieu"],
   ["Sản phẩm", "/san-pham"],
+  ["Thương hiệu", "/thuong-hieu"],
   ["Bảng giá", "/bang-gia"],
   ["So sánh", "/so-sanh"],
   ["Dự án", "/du-an"],

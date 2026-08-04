@@ -5,6 +5,9 @@ import type { Metadata } from "next";
 import { Download, PlayCircle } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import ProductGallery from "@/components/ProductGallery";
+import DatabaseProductCard from "@/components/DatabaseProductCard";
+import type { PublicProduct } from "@/types/product";
+import siteContent from "@/data/site-content.json";
 
 export const dynamic = "force-dynamic";
 
@@ -55,6 +58,40 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
   const product = await getProduct(slug);
 
   if (!product) notFound();
+
+  const relatedRows = await prisma.product.findMany({
+    where: { status: "PUBLISHED", categoryId: product.categoryId, id: { not: product.id } },
+    include: { category: true, brand: true },
+    orderBy: [{ isFeatured: "desc" }, { name: "asc" }],
+    take: 4
+  });
+
+  const related: PublicProduct[] = relatedRows.map((item) => ({
+    id: item.id,
+    name: item.name,
+    slug: item.slug,
+    shortDesc: item.shortDesc,
+    description: item.description,
+    imageUrl: item.imageUrl,
+    gallery: Array.isArray(item.gallery) ? (item.gallery as string[]) : [],
+    price: item.price === null ? null : Number(item.price),
+    unit: item.unit,
+    productLine: item.productLine,
+    aluminumSystem: item.aluminumSystem,
+    color: item.color,
+    thickness: item.thickness === null ? null : Number(item.thickness),
+    stockLength: item.stockLength,
+    catalogUrl: item.catalogUrl,
+    videoUrl: item.videoUrl,
+    specs:
+      item.specs && typeof item.specs === "object" && !Array.isArray(item.specs)
+        ? (item.specs as Record<string, unknown>)
+        : null,
+    categoryName: item.category.name,
+    categorySlug: item.category.slug,
+    brandName: item.brand?.name || null,
+    brandSlug: item.brand?.slug || null
+  }));
 
   const specs = [
     product.productLine ? ["Dòng sản phẩm", product.productLine] : null,
@@ -147,6 +184,33 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
               </a>
             )}
           </div>
+        </div>
+      </div>
+
+      {related.length > 0 && (
+        <div className="mt-16">
+          <div className="eyebrow">Sản phẩm liên quan</div>
+          <h2 className="section-title mt-3">Xem thêm trong {product.category.name}.</h2>
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+            {related.map((item) => (
+              <DatabaseProductCard key={item.id} product={item} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="mt-16 max-w-3xl">
+        <div className="eyebrow">Câu hỏi thường gặp</div>
+        <h2 className="section-title mt-3">Giải đáp nhanh trước khi đặt hàng.</h2>
+        <div className="mt-6 divide-y divide-slate-200 rounded-3xl border border-slate-200 bg-white">
+          {siteContent.faq.map((item) => (
+            <details key={item.question} className="group p-5">
+              <summary className="cursor-pointer list-none font-bold text-slate-950 marker:content-none">
+                {item.question}
+              </summary>
+              <p className="mt-3 text-sm leading-6 text-slate-600">{item.answer}</p>
+            </details>
+          ))}
         </div>
       </div>
     </section>
