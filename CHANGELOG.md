@@ -1,5 +1,39 @@
 # CHANGELOG
 
+## v0.16.1 — Đổi trợ lý AI sang OpenAI (ChatGPT)
+
+- `app/api/ai-advisor/route.ts`: đổi từ gọi Anthropic Claude sang **OpenAI Chat Completions API** (`gpt-5.6` — model khuyến nghị hiện tại của OpenAI cho production, có thể đổi qua hằng số `MODEL` trong file).
+- Biến môi trường đổi từ `ANTHROPIC_API_KEY` sang **`OPENAI_API_KEY`**.
+- Logic ràng buộc AI (chỉ tư vấn sản phẩm thật trong DB, không bịa giá...) giữ nguyên như trước — chỉ đổi nhà cung cấp, không đổi hành vi.
+
+### ⚠️ Cần đổi biến môi trường trên Railway
+
+Xoá `ANTHROPIC_API_KEY` (nếu đã thêm), thêm `OPENAI_API_KEY` = key OpenAI thật của Zen.
+
+---
+
+## v0.16.0 — Trợ lý AI tư vấn (tính năng thật, gọi Claude thật)
+
+### ✨ Tính năng mới
+
+- **`app/api/ai-advisor/route.ts`**: endpoint công khai gọi Anthropic Claude (`claude-haiku-4-5-20251001`), có context là **danh sách sản phẩm thật đang PUBLISHED trong database** (tên, danh mục, thương hiệu, hệ nhôm, giá, link chi tiết). AI được yêu cầu **chỉ giới thiệu sản phẩm có trong danh sách này**, không bịa sản phẩm/giá.
+- **`components/AiAdvisorWidget.tsx`**: khung chat nổi ở góc phải màn hình, hiển thị trên mọi trang công khai (ẩn ở `/admin`), có lịch sử hội thoại, trạng thái đang trả lời.
+- Gắn vào `app/layout.tsx` để hiện xuyên suốt toàn site.
+- **Rate limit**: 60 request/phút/IP (dùng lại `lib/rateLimit.ts` từ Phase 3) để tránh bị lạm dụng gây tốn phí API.
+
+### ⚠️ Bắt buộc phải làm trước khi tính năng chạy được
+
+Thêm biến môi trường **`ANTHROPIC_API_KEY`** trên Railway (Variables của service web) — Zen đã có key Anthropic sẵn theo xác nhận trước đó. Thiếu biến này, khung chat vẫn hiện nhưng sẽ báo "Trợ lý AI chưa được kích hoạt" thay vì lỗi trắng trang.
+
+### 🧠 Nguyên tắc đã cài vào AI (system prompt)
+
+- Chỉ tư vấn trong phạm vi nhôm/phụ kiện cửa/nội thất nhôm — từ chối lịch sự nếu hỏi ngoài phạm vi
+- Không bịa sản phẩm, thương hiệu, giá không có trong database
+- Sản phẩm chưa có giá công khai → trả lời "giá liên hệ", mời khách để lại số điện thoại
+- Luôn kèm link `/san-pham/slug` khi giới thiệu sản phẩm cụ thể
+
+---
+
 ## v0.15.2 — Tích hợp Content & Seed Pack (SKU, mô tả chi tiết, cài đặt nội dung)
 
 ### ✨ Thay đổi
