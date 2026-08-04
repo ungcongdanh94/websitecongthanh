@@ -104,7 +104,7 @@ export default function ProductEditForm({
 
       <div className="grid gap-4 md:grid-cols-3">
         <input name="aluminumSystem" defaultValue={product.aluminumSystem || ""} className={input} placeholder="Hệ nhôm" />
-        <input name="color" defaultValue={product.color || ""} className={input} placeholder="Màu sắc — nhiều giá trị: Trắng, Ghi xám" />
+        <input name="color" defaultValue={product.color || ""} className={input} placeholder="Màu sắc — VD: Trắng #FFFFFF, Ghi xám #9CA3AF" />
         <input name="thickness" defaultValue={product.thickness || ""} className={input} placeholder="Độ dày — nhiều giá trị: 1.4mm, 2.0mm" />
       </div>
 

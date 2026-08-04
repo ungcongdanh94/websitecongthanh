@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v0.25.2 — Cho phép tự nhập mã màu chính xác
+
+Trả lời câu hỏi của Zen: **có**, giờ Zen tự đưa màu vào được. Khi nhập màu ở form sản phẩm, thêm mã hex ngay sau tên là hệ thống dùng đúng mã đó, không cần đoán qua bảng tên có sẵn nữa.
+
+Cách nhập: `Trắng #FFFFFF, Ghi xám #9CA3AF, Vân gỗ #8B5E34` — vẫn có thể chỉ nhập tên không kèm mã (VD: `Trắng`) như trước, hệ thống sẽ tự tra bảng màu hoặc dùng xám mặc định nếu không nhận diện được.
+
+Không có thay đổi schema — chỉ đổi cách đọc/hiển thị (`lib/productDisplay.ts`).
+
+---
+
 ## v0.25.1 — Sửa lại: bảo hành theo từng sản phẩm + màu sắc hiện vòng tròn
 
 ### 🔧 Sửa lại quyết định sai ở bản v0.25.0

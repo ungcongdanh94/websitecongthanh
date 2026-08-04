@@ -30,3 +30,20 @@ const COLOR_SWATCHES: Record<string, string> = {
 export function getSwatchColor(name: string): string {
   return COLOR_SWATCHES[name.trim().toLowerCase()] || "#D1D5DB";
 }
+
+const HEX_PATTERN = /#[0-9a-fA-F]{3,8}\b/;
+
+export type ColorEntry = { name: string; hex: string };
+
+// Cho phép admin tự đưa mã màu chính xác thay vì chỉ dựa vào tên đoán được.
+// Nhập "Trắng #FFFFFF" (tên rồi mã hex) sẽ dùng đúng mã hex đó — không cần khớp bảng tên có sẵn.
+// Nhập chỉ tên (VD "Trắng") vẫn hoạt động như trước, tự tra bảng màu hoặc dùng xám mặc định.
+export function parseColorEntry(entry: string): ColorEntry {
+  const match = entry.match(HEX_PATTERN);
+  if (match) {
+    const hex = match[0];
+    const name = entry.replace(hex, "").trim() || hex;
+    return { name, hex };
+  }
+  return { name: entry, hex: getSwatchColor(entry) };
+}
