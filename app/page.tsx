@@ -272,7 +272,11 @@ export default async function HomePage() {
 
       {/* STRENGTHS STRIP */}
       <section className="container-page py-16">
-        <div className="grid gap-3 rounded-[2rem] border border-slate-100 bg-white p-4 shadow-soft md:grid-cols-2 xl:grid-cols-4">
+        <div className="max-w-2xl">
+          <div className="eyebrow">Vì sao chọn CÔNG THẢNH</div>
+          <h2 className="section-title mt-3">Bốn lý do khách hàng tin chọn.</h2>
+        </div>
+        <div className="mt-8 grid gap-3 rounded-[2rem] border border-slate-100 bg-white p-4 shadow-soft md:grid-cols-2 xl:grid-cols-4">
           {strengths.map(({ icon: Icon, title, text }) => (
             <div key={title} className="rounded-2xl p-4">
               <Icon className="h-7 w-7 text-brand-700" />

@@ -1,5 +1,53 @@
 # CHANGELOG
 
+## v0.19.0 — Sprint: Homepage polish + trang Giới thiệu mới
+
+Tuân thủ đúng yêu cầu "KHÔNG REFACTOR" — chỉ bổ sung, không đổi route/API/CMS/schema hiện có.
+
+### ✨ Sprint 1 — Hoàn thiện Homepage
+
+- Thêm tiêu đề **"Vì sao chọn CÔNG THẢNH"** cho khối 4 lý do (trước đây không có tiêu đề, hiện ra đột ngột giữa trang).
+- Hero HD, bỏ banner khuyến mãi lớn, section "Giải pháp theo không gian" — **đã làm ở bản trước (v0.18.0)**, không lặp lại.
+
+### ✨ Sprint 2 — Trang Giới thiệu mới (`/gioi-thieu`)
+
+Trang hoàn toàn mới, không đụng route/dữ liệu nào đang có:
+- Hero (dùng lại ảnh HD đã có, không tạo ảnh mới)
+- Giới thiệu công ty, lịch sử hình thành (tính từ `foundedDate` trong `company-content.json` — 2005)
+- Tầm nhìn, sứ mệnh, 4 giá trị cốt lõi
+- Lĩnh vực hoạt động (lấy đúng từ `businessScope` đã có trong `company-content.json`, không bịa thêm)
+- Năng lực (dùng lại đúng số liệu đang hiển thị ở trang chủ — không tạo số liệu mới)
+- Showroom & kho (dùng lại 2 ảnh category đã có, ghi chú minh hoạ — chưa có ảnh thật)
+- Đối tác (query trực tiếp bảng `Brand` có sẵn — không tạo dữ liệu mới)
+- CTA về `/lien-he`
+
+### 🔧 Lỗi thật được phát hiện qua kiểm tra kỹ hơn
+
+Lần này môi trường của mình tình cờ có sẵn `node_modules` + TypeScript compiler (từ lần Zen gửi source trước đó), nên chạy được `tsc --noEmit` thật — phát hiện 1 lỗi kiểu dữ liệu thật trong `app/api/admin/prices/export/route.ts`: `Buffer` không khớp kiểu `BodyInit` của `Response`. Đã sửa bằng cách bọc `new Uint8Array(buffer)`. Lỗi này có khả năng làm `next build` báo lỗi TypeScript — **đã sửa trước khi Zen build**.
+
+> Lưu ý: `node_modules` trong môi trường mình bị cũ hơn schema hiện tại (chưa có `Customer`, `ApiKey`, `Banner.slug`) nên các lỗi liên quan đến chúng khi chạy `tsc` ở đây là **báo động giả**, không phải lỗi thật — code Zen build sau khi `npm install` + `npx prisma generate` đầy đủ sẽ không gặp các lỗi đó.
+
+### Chưa làm (còn lại trong sprint, theo đúng thứ tự đã liệt kê)
+
+3. Hoàn thiện Products (Gallery đã có từ Phase 1, còn thiếu: Related Products, FAQ, Download Catalogue/PDF)
+4. Hoàn thiện Projects (Filter, Gallery đầy đủ)
+5. Brands landing page riêng
+6. Trang Services (Nhôm thanh / Phụ kiện / Gia công / Sơn tĩnh điện / Nội thất nhôm)
+7. Contact: Google Maps
+8. SEO: Open Graph đầy đủ hơn, canonical
+9. Performance: rà soát lazy-load cho ảnh không phải hero
+
+---
+
+## v0.18.2 — Thêm link công cụ Song Bảo Vệ Nhôm vào trang phần mềm
+
+Thêm mục "Đang sử dụng" ở `/phan-mem` với link thật tới `songbaove.up.railway.app` (công cụ Song Bảo Vệ Nhôm).
+
+## v0.18.1 — Sửa lỗi build do generateMetadata truy vấn DB lúc build
+
+Thêm `export const dynamic = "force-dynamic"` vào `app/layout.tsx` — cùng nguyên nhân/cách sửa như lỗi `sitemap.ts` trước đó.
+
+
 ## v0.18.0 — Tích hợp Premium Assets v2 + audit ảnh
 
 ### 🔍 Audit trước khi sửa (yêu cầu #1)
