@@ -16,6 +16,7 @@ import DatabaseProductCard from "@/components/DatabaseProductCard";
 import { prisma } from "@/lib/prisma";
 import type { PublicProduct } from "@/types/product";
 import assetsV2 from "@/data/assets-v2.json";
+import { normalizeLogoUrl } from "@/lib/cloudinary";
 
 export const dynamic = "force-dynamic";
 
@@ -500,7 +501,7 @@ export default async function HomePage() {
               >
                 {brand.logoUrl ? (
                   <div className="relative h-full w-full">
-                    <Image src={brand.logoUrl} alt={brand.name} fill className="object-contain" />
+                    <Image src={normalizeLogoUrl(brand.logoUrl)} alt={brand.name} fill className="object-contain" />
                   </div>
                 ) : (
                   <span className="text-sm font-black uppercase tracking-wide text-slate-600">

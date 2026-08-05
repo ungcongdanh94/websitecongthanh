@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v0.27.0 — Tự động căn chỉnh logo về đúng khung chuẩn
+
+Dùng tính năng transformation có sẵn của **Cloudinary** (nơi đang lưu toàn bộ ảnh Media Manager) để tự động xử lý ảnh logo ngay khi hiển thị — không cần chỉnh sửa gì lúc tải ảnh lên:
+
+- Cloudinary tự đọc kích thước ảnh gốc (vuông, ngang, dọc đều được) và co giãn vừa khung chuẩn **400×267 (tỉ lệ 3:2)**, chèn nền trắng vào phần còn thiếu — không cắt mất phần logo, không kéo méo.
+- Nhờ vậy, **mọi logo hiện với tỉ lệ nhất quán** dù ảnh gốc Zen tải lên có kích thước/tỉ lệ khác nhau thế nào — khác với trước đây, logo ngang mỏng sẽ hiện nhỏ hơn logo gần vuông dù cùng 1 khung.
+- Áp dụng cho khối "Đối tác & thương hiệu" ở trang chủ và trang Giới thiệu (2 nơi đang dùng khung thẻ cố định tỉ lệ). Không đổi database, không cần xử lý lại ảnh đã tải lên trước đó — hoạt động ngay với ảnh cũ.
+
+File thay đổi: `lib/cloudinary.ts` (hàm mới `normalizeLogoUrl`), `app/page.tsx`, `app/gioi-thieu/page.tsx`.
+
+---
+
 ## v0.26.1 — Sửa logo thương hiệu hiện quá nhỏ
 
 Khung hiện logo ở trang chủ và trang Giới thiệu đang cố định cao **32px** trong khi khung thẻ rộng hơn nhiều — logo bị "lọt thỏm" giữa khoảng trắng. Đổi sang để logo **lấp đầy khung thẻ theo tỉ lệ 3:2** (dùng `object-contain` nên không bị kéo méo, chỉ scale lớn lên vừa khung). Áp dụng cho khối "Đối tác & thương hiệu" ở trang chủ và trang Giới thiệu — 2 chỗ còn lại (`/thuong-hieu` danh sách và trang chi tiết từng hãng) khung đã đủ lớn từ trước, không cần sửa.

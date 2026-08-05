@@ -13,6 +13,7 @@ import {
   Target
 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
+import { normalizeLogoUrl } from "@/lib/cloudinary";
 import companyContent from "@/data/company-content.json";
 
 export const dynamic = "force-dynamic";
@@ -255,7 +256,7 @@ export default async function AboutPage() {
               >
                 {brand.logoUrl ? (
                   <div className="relative h-full w-full">
-                    <Image src={brand.logoUrl} alt={brand.name} fill sizes="150px" className="object-contain" />
+                    <Image src={normalizeLogoUrl(brand.logoUrl)} alt={brand.name} fill sizes="150px" className="object-contain" />
                   </div>
                 ) : (
                   <span className="text-sm font-black uppercase tracking-wide text-slate-600">{brand.name}</span>
