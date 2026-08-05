@@ -27,12 +27,14 @@ export default async function EditBrandPage({ params }: { params: Promise<{ id: 
         <EntityEditForm
           endpoint="/api/admin/brands"
           label="Thương hiệu"
+          showLogo
           entity={{
             id: brand.id,
             name: brand.name,
             slug: brand.slug,
             description: brand.description,
-            isActive: brand.isActive
+            isActive: brand.isActive,
+            logoUrl: brand.logoUrl
           }}
         />
       </div>

@@ -13,7 +13,8 @@ export async function POST(request: Request) {
       data: {
         name: String(body.name || "").trim(),
         slug: String(body.slug || "").trim().toLowerCase(),
-        description: String(body.description || "").trim() || null
+        description: String(body.description || "").trim() || null,
+        logoUrl: String(body.logoUrl || "").trim() || null
       }
     });
     return NextResponse.json({ ok: true, brand });

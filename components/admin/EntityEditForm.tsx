@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import MediaPicker from "@/components/admin/MediaPicker";
 
 type Entity = {
   id: string;
@@ -9,16 +10,19 @@ type Entity = {
   slug: string;
   description: string | null;
   isActive: boolean;
+  logoUrl?: string | null;
 };
 
 export default function EntityEditForm({
   endpoint,
   label,
-  entity
+  entity,
+  showLogo = false
 }: {
   endpoint: string;
   label: string;
   entity: Entity;
+  showLogo?: boolean;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -58,6 +62,7 @@ export default function EntityEditForm({
       <input name="name" required defaultValue={entity.name} className="rounded-2xl border px-4 py-3" placeholder={`Tên ${label.toLowerCase()} *`} />
       <input name="slug" required defaultValue={entity.slug} className="rounded-2xl border px-4 py-3" placeholder="Slug *" />
       <input name="description" defaultValue={entity.description || ""} className="rounded-2xl border px-4 py-3" placeholder="Mô tả" />
+      {showLogo && <MediaPicker name="logoUrl" defaultValue={entity.logoUrl || ""} label="Logo thương hiệu" />}
       <label className="flex items-center gap-3 rounded-2xl border px-4 py-3">
         <input type="checkbox" name="isActive" defaultChecked={entity.isActive} className="h-4 w-4 accent-brand-600" />
         <span className="text-sm font-semibold">Đang hoạt động (hiện trên website)</span>

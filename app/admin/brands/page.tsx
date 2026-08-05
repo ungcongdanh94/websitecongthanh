@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import SimpleEntityForm from "@/components/admin/SimpleEntityForm";
@@ -18,15 +19,24 @@ export default async function BrandsPage() {
           <div className="text-sm font-bold uppercase tracking-widest text-brand-700">CMS</div>
           <h1 className="mt-3 text-4xl font-black">Thương hiệu</h1>
           <div className="mt-8">
-            <SimpleEntityForm endpoint="/api/admin/brands" label="Thương hiệu" />
+            <SimpleEntityForm endpoint="/api/admin/brands" label="Thương hiệu" showLogo />
           </div>
         </div>
         <div className="overflow-hidden rounded-3xl border bg-white">
           {brands.map((item) => (
             <div key={item.id} className="flex items-center justify-between border-b px-5 py-4 last:border-0">
-              <div>
-                <div className="font-bold">{item.name}</div>
-                <div className="text-sm text-slate-500">{item.slug}</div>
+              <div className="flex items-center gap-3">
+                <div className="relative grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-xl border bg-slate-50">
+                  {item.logoUrl ? (
+                    <Image src={item.logoUrl} alt={item.name} fill sizes="40px" className="object-contain" />
+                  ) : (
+                    <span className="text-[10px] font-bold text-slate-400">Chưa có</span>
+                  )}
+                </div>
+                <div>
+                  <div className="font-bold">{item.name}</div>
+                  <div className="text-sm text-slate-500">{item.slug}</div>
+                </div>
               </div>
               <div className="flex items-center gap-4">
                 <div className="text-sm font-semibold text-slate-500">{item._count.products} sản phẩm</div>

@@ -17,6 +17,7 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
         name: String(body.name || "").trim(),
         slug: String(body.slug || "").trim().toLowerCase(),
         description: String(body.description || "").trim() || null,
+        logoUrl: String(body.logoUrl || "").trim() || null,
         isActive: Boolean(body.isActive)
       }
     });

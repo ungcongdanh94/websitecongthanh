@@ -2,13 +2,16 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import MediaPicker from "@/components/admin/MediaPicker";
 
 export default function SimpleEntityForm({
   endpoint,
-  label
+  label,
+  showLogo = false
 }: {
   endpoint: string;
   label: string;
+  showLogo?: boolean;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -43,6 +46,7 @@ export default function SimpleEntityForm({
       <input name="name" required className="rounded-2xl border px-4 py-3" placeholder={`Tên ${label.toLowerCase()} *`} />
       <input name="slug" required className="rounded-2xl border px-4 py-3" placeholder="Slug *" />
       <input name="description" className="rounded-2xl border px-4 py-3" placeholder="Mô tả" />
+      {showLogo && <MediaPicker name="logoUrl" label="Logo thương hiệu" />}
       <button disabled={loading} className="btn-primary disabled:opacity-60">
         {loading ? "Đang lưu..." : `Thêm ${label.toLowerCase()}`}
       </button>

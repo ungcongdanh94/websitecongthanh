@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## v0.26.0 — Thêm ô chọn Logo cho Thương hiệu
+
+### 🔴 Xác nhận: thiếu tính năng thật
+
+Kiểm tra lại: `logoUrl` **chưa từng được xử lý ở bất kỳ đâu** trong form thêm/sửa thương hiệu, dù trường này đã có sẵn trong database từ đầu. Đây là lý do khối "Đối tác" ở trang chủ luôn hiện tên chữ — không phải lỗi hiển thị, mà vì chưa có cách nào để nhập logo cả.
+
+### ✅ Đã thêm
+
+- Form thêm thương hiệu (`/admin/brands`) và form sửa (`/admin/brands/[id]`) đều có thêm ô **chọn Logo** — dùng lại Media Manager có sẵn (chọn ảnh đã tải lên, không cần tải lại).
+- Danh sách thương hiệu hiện thumbnail nhỏ logo (hoặc chữ "Chưa có" nếu chưa chọn) để dễ kiểm tra thương hiệu nào còn thiếu logo.
+- Không đổi database — cột `logoUrl` đã có sẵn từ đầu, chỉ là chưa từng dùng tới.
+
+### 📌 Zen cần làm sau khi deploy
+
+Vào `/admin/brands`, bấm "Sửa" từng thương hiệu, chọn logo từ Media Manager (tải logo lên `/admin/media` trước nếu chưa có). Khối "Đối tác" ở trang chủ sẽ tự hiện đúng logo ngay khi Zen chọn xong, không cần thêm bước nào khác.
+
+---
+
 ## v0.25.2 — Cho phép tự nhập mã màu chính xác
 
 Trả lời câu hỏi của Zen: **có**, giờ Zen tự đưa màu vào được. Khi nhập màu ở form sản phẩm, thêm mã hex ngay sau tên là hệ thống dùng đúng mã đó, không cần đoán qua bảng tên có sẵn nữa.
