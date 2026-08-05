@@ -496,10 +496,10 @@ export default async function HomePage() {
             {brands.map((brand) => (
               <div
                 key={brand.id}
-                className="flex items-center justify-center rounded-2xl border border-slate-100 bg-white px-4 py-6 transition hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-soft"
+                className="flex aspect-[3/2] items-center justify-center rounded-2xl border border-slate-100 bg-white p-5 transition hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-soft"
               >
                 {brand.logoUrl ? (
-                  <div className="relative h-8 w-full">
+                  <div className="relative h-full w-full">
                     <Image src={brand.logoUrl} alt={brand.name} fill className="object-contain" />
                   </div>
                 ) : (

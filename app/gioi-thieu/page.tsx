@@ -20,7 +20,8 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Giới thiệu công ty | CÔNG THẢNH",
   description:
-    "CÔNG THẢNH — giải pháp nhôm đồng bộ cho công trình, đại lý và xưởng sản xuất tại An Giang. Tìm hiểu lịch sử hình thành, tầm nhìn, sứ mệnh và năng lực của công ty."
+    "CÔNG THẢNH — giải pháp nhôm đồng bộ cho công trình, đại lý và xưởng sản xuất tại An Giang. Tìm hiểu lịch sử hình thành, tầm nhìn, sứ mệnh và năng lực của công ty.",
+  alternates: { canonical: "/gioi-thieu" }
 };
 
 const coreValues = [
@@ -250,10 +251,10 @@ export default async function AboutPage() {
             {brands.map((brand) => (
               <div
                 key={brand.id}
-                className="flex items-center justify-center rounded-2xl border border-slate-100 bg-white px-4 py-6"
+                className="flex aspect-[3/2] items-center justify-center rounded-2xl border border-slate-100 bg-white p-5"
               >
                 {brand.logoUrl ? (
-                  <div className="relative h-8 w-full">
+                  <div className="relative h-full w-full">
                     <Image src={brand.logoUrl} alt={brand.name} fill sizes="150px" className="object-contain" />
                   </div>
                 ) : (

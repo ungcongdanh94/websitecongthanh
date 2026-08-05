@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.26.1 — Sửa logo thương hiệu hiện quá nhỏ
+
+Khung hiện logo ở trang chủ và trang Giới thiệu đang cố định cao **32px** trong khi khung thẻ rộng hơn nhiều — logo bị "lọt thỏm" giữa khoảng trắng. Đổi sang để logo **lấp đầy khung thẻ theo tỉ lệ 3:2** (dùng `object-contain` nên không bị kéo méo, chỉ scale lớn lên vừa khung). Áp dụng cho khối "Đối tác & thương hiệu" ở trang chủ và trang Giới thiệu — 2 chỗ còn lại (`/thuong-hieu` danh sách và trang chi tiết từng hãng) khung đã đủ lớn từ trước, không cần sửa.
+
+---
+
 ## v0.26.0 — Thêm ô chọn Logo cho Thương hiệu
 
 ### 🔴 Xác nhận: thiếu tính năng thật
