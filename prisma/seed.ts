@@ -4,6 +4,7 @@ import companyContent from "../data/company-content.json";
 import siteContent from "../data/site-content.json";
 import seoContent from "../data/seo-content.json";
 import siteAssets from "../data/site-assets.json";
+import realCatalog from "../data/congthanh-real-catalog.json";
 
 const prisma = new PrismaClient();
 
@@ -13,6 +14,60 @@ function findProjectAsset(keyword: string): string {
   const match = siteAssets.assets.projects.find((path) => path.includes(keyword));
   if (!match) throw new Error(`Không tìm thấy ảnh dự án khớp từ khoá: ${keyword}`);
   return match;
+}
+
+// Nhập catalog sản phẩm thật thu thập từ congthanhco.com (data/congthanh-real-catalog.json).
+// Độc lập với phần seed mẫu ở trên — dùng slug ổn định, chỉ upsert, không xoá dữ liệu nào.
+async function seedRealCatalog() {
+  const categoryMap = new Map<string, string>();
+  for (const item of realCatalog.categories) {
+    const category = await prisma.category.upsert({
+      where: { slug: item.slug },
+      update: { name: item.name, description: item.description, sortOrder: item.sortOrder, isActive: true },
+      create: { slug: item.slug, name: item.name, description: item.description, sortOrder: item.sortOrder }
+    });
+    categoryMap.set(item.slug, category.id);
+  }
+
+  const brandMap = new Map<string, string>();
+  for (const item of realCatalog.brands) {
+    const brand = await prisma.brand.upsert({
+      where: { slug: item.slug },
+      update: { name: item.name, isActive: true },
+      create: { slug: item.slug, name: item.name }
+    });
+    brandMap.set(item.slug, brand.id);
+  }
+
+  for (const item of realCatalog.products) {
+    const data = {
+      name: item.name,
+      shortDesc: "shortDesc" in item ? item.shortDesc : null,
+      imageUrl: item.imageUrl,
+      color: "color" in item ? item.color : null,
+      thickness: "thickness" in item ? item.thickness : null,
+      productLine: "productLine" in item ? item.productLine : null,
+      aluminumSystem: "aluminumSystem" in item ? item.aluminumSystem : null,
+      specs: "specs" in item ? item.specs : undefined,
+      status: PublishStatus.PUBLISHED,
+      categoryId: categoryMap.get(item.category)!,
+      brandId: item.brand ? brandMap.get(item.brand) ?? null : null
+    };
+
+    await prisma.product.upsert({
+      where: { slug: item.slug },
+      update: data,
+      create: {
+        ...data,
+        slug: item.slug,
+        description: "Dữ liệu thật thu thập từ congthanhco.com — cập nhật lại nếu cần qua trang quản trị."
+      }
+    });
+  }
+
+  console.log(
+    `Đã nhập catalog thật: ${realCatalog.categories.length} danh mục, ${realCatalog.brands.length} thương hiệu, ${realCatalog.products.length} sản phẩm từ congthanhco.com.`
+  );
 }
 
 async function main() {
@@ -174,6 +229,8 @@ async function main() {
       create: { key, value }
     });
   }
+
+  await seedRealCatalog();
 
   console.log(
     "Seed hoàn tất: danh mục, thương hiệu, sản phẩm, banner, dự án và cài đặt nội dung đã được đồng bộ."

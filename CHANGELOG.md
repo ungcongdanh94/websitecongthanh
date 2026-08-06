@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## v0.28.0 — Nhập catalog sản phẩm thật từ congthanhco.com
+
+### ✨ Đã thêm
+
+- **`data/congthanh-real-catalog.json`** — dữ liệu thật thu thập trực tiếp từ website `congthanhco.com` qua Research: **56 sản phẩm** (tên, slug, ảnh CDN thật, mô tả, thông số kỹ thuật khi có), gom vào **4 danh mục mới** (Cửa Nhôm, Cửa Kính, Cửa Kéo - Cửa Cuốn, Tủ Nhôm Nội Thất Cánh Kính) và **4 thương hiệu** (Xingfa, MAXPRO JP, ONEDOOR, CTDOOR).
+- **`prisma/seed.ts`**: thêm hàm `seedRealCatalog()` độc lập, chạy thêm sau phần seed mẫu cũ — dùng `upsert` theo slug, **không xoá hoặc đụng vào 6 sản phẩm mẫu đã seed trước đó** (2 bộ dữ liệu tồn tại song song, không xung đột vì slug khác nhau hoàn toàn).
+
+### 📌 Giới hạn cần Zen biết
+
+- Đây là **56/85 sản phẩm** thật trên site gốc — nhóm **"Cửa Sắt - Inox"** (~25-29 sản phẩm còn lại) chưa thu thập được vì mục này trên site gốc không có trang danh mục riêng (link trỏ về trang chủ). Cần thu thập riêng nếu muốn đủ 100%.
+- Toàn bộ sản phẩm nhập vào đều **chưa có giá** (site gốc để "Liên hệ" cho tất cả) — đúng thực tế, không tự đặt giá.
+- Một vài sản phẩm có `shortDesc` để trống (trang danh mục gốc không có mô tả ngắn cho các sản phẩm đó) — Zen có thể bổ sung qua `/admin/products` sau.
+
+---
+
 ## v0.27.0 — Tự động căn chỉnh logo về đúng khung chuẩn
 
 Dùng tính năng transformation có sẵn của **Cloudinary** (nơi đang lưu toàn bộ ảnh Media Manager) để tự động xử lý ảnh logo ngay khi hiển thị — không cần chỉnh sửa gì lúc tải ảnh lên:
