@@ -1,6 +1,25 @@
 # CHANGELOG
 
-## v0.28.0 — Nhập catalog sản phẩm thật từ congthanhco.com
+## v0.29.0 — Xóa sạch dữ liệu sản phẩm/danh mục/thương hiệu
+
+Theo yêu cầu: xóa toàn bộ sản phẩm, danh mục, thương hiệu (cả bộ mẫu cũ và catalog thật vừa nhập từ congthanhco.com).
+
+### ✨ Đã thêm
+
+- **`prisma/clear-catalog.ts`** (script chạy một lần) — xóa an toàn theo đúng thứ tự: gỡ liên kết sản phẩm khỏi các dòng báo giá cũ trước (giữ nguyên báo giá, chỉ bỏ link, không mất dữ liệu báo giá), xóa toàn bộ `Product` (kéo theo `PriceChange` tự xóa), rồi xóa `Category` và `Brand`.
+- Thêm lệnh `npm run db:clear-catalog` để chạy script trên.
+
+### 🔧 Đã sửa để không seed lại
+
+**`prisma/seed.ts` được viết lại** — bỏ hẳn phần seed Danh mục/Thương hiệu/Sản phẩm (cả bộ mẫu 6 sản phẩm cũ và 56 sản phẩm thật vừa nhập). Từ giờ `npm run db:seed` **chỉ còn seed Banner, Dự án và Cài đặt nội dung** — không tự tạo lại sản phẩm nữa. Đã xóa file `data/congthanh-real-catalog.json` (không còn dùng tới).
+
+### ⚠️ Kết quả sau khi xóa
+
+Trang chủ và `/san-pham` sẽ hiện **trống** ở các khối Danh mục, Đối tác & thương hiệu, Sản phẩm nổi bật — đây là trạng thái đã lường trước (có sẵn thông báo rỗng phù hợp), không phải lỗi. Menu, CRM, Dự án, Bảng giá và các phần khác không bị ảnh hưởng.
+
+---
+
+## v0.28.0 — Nhập catalog sản phẩm thật từ congthanhco.com (đã xóa ở bản này)
 
 ### ✨ Đã thêm
 
