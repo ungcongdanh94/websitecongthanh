@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import MediaPicker from "@/components/admin/MediaPicker";
 import GalleryPicker from "@/components/admin/GalleryPicker";
+import MarkdownEditor from "@/components/admin/MarkdownEditor";
 
 type Option = { id: string; name: string };
 
@@ -93,7 +94,7 @@ export default function ProductEditForm({
       </div>
 
       <textarea name="shortDesc" defaultValue={product.shortDesc || ""} className={`${input} min-h-24`} placeholder="Mô tả ngắn" />
-      <textarea name="description" defaultValue={product.description || ""} className={`${input} min-h-40`} placeholder="Mô tả chi tiết" />
+      <MarkdownEditor name="description" defaultValue={product.description || ""} placeholder="Mô tả chi tiết" />
 
       <div className="grid gap-4 md:grid-cols-2">
         <select name="categoryId" required defaultValue={product.categoryId} className={input}>

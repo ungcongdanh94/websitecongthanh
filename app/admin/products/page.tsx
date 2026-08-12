@@ -52,6 +52,7 @@ export default async function ProductsPage({
         </div>
         <div className="flex gap-3">
           <a href="/api/admin/products/export" className="btn-secondary">Xuất Excel</a>
+          <Link href="/admin/products/import" className="btn-secondary">Nhập Excel</Link>
           <Link href="/admin/products/new" className="btn-primary">Thêm sản phẩm</Link>
         </div>
       </div>

@@ -9,6 +9,7 @@ import DatabaseProductCard from "@/components/DatabaseProductCard";
 import type { PublicProduct } from "@/types/product";
 import siteContent from "@/data/site-content.json";
 import { splitValues, parseColorEntry } from "@/lib/productDisplay";
+import { renderSafeMarkdown } from "@/lib/markdown";
 
 export const dynamic = "force-dynamic";
 
@@ -168,9 +169,16 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
               : "Liên hệ CÔNG THẢNH để nhận báo giá theo cấu hình cụ thể."}
           </p>
 
-          <p className="mt-6 text-lg leading-8 text-slate-600">
-            {product.description || product.shortDesc || "Liên hệ CÔNG THẢNH để được tư vấn chi tiết."}
-          </p>
+          {product.description ? (
+            <div
+              className="prose-sm mt-6 text-lg leading-8 text-slate-600 [&_a]:text-brand-700 [&_ul]:mt-2"
+              dangerouslySetInnerHTML={{ __html: renderSafeMarkdown(product.description) }}
+            />
+          ) : (
+            <p className="mt-6 text-lg leading-8 text-slate-600">
+              {product.shortDesc || "Liên hệ CÔNG THẢNH để được tư vấn chi tiết."}
+            </p>
+          )}
 
           {colorOptions.length > 0 && (
             <div className="mt-6">

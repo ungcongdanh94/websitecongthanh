@@ -1,5 +1,33 @@
 # CHANGELOG
 
+## v0.32.0 — Sprint B hoàn thành: Import Excel + Preview, Rich Text, Gallery kéo-thả
+
+Hoàn thành 3 việc còn lại của Sprint B — Sprint B giờ đã xong toàn bộ 9/9 việc.
+
+### ✨ Import Excel/CSV có Preview (2 bước, an toàn)
+
+- **Bước 1 — Xem trước**: `/admin/products/import`, tải file lên → hệ thống đọc và kiểm tra từng dòng (tên, danh mục có tồn tại không, thương hiệu...) — **chưa ghi gì vào database**, chỉ hiện bảng xem trước với dòng hợp lệ/lỗi rõ ràng.
+- **Bước 2 — Xác nhận**: chỉ sau khi Zen bấm "Xác nhận nhập", hệ thống mới ghi các dòng **hợp lệ** vào database (upsert theo slug — sản phẩm đã có sẽ được cập nhật, chưa có sẽ tạo mới).
+- File cần cột: SKU, Tên sản phẩm, Slug (tùy chọn), Danh mục (bắt buộc, khớp theo tên hoặc slug đã có), Thương hiệu, Hệ nhôm, Màu, Độ dày, Chiều dài thanh, Đơn vị, Giá bán, Giá đại lý, Mô tả ngắn, Trạng thái.
+- Route mới: `app/api/admin/products/import/route.ts` (preview), `app/api/admin/products/import/confirm/route.ts` (ghi dữ liệu).
+
+### ✨ Rich text editor cho mô tả sản phẩm (an toàn, không rủi ro XSS)
+
+Thay ô mô tả từ textarea thường sang **editor có toolbar** (Đậm/Nghiêng/Danh sách/Liên kết) với nút "Xem trước". Cách làm: dùng cú pháp markdown giới hạn (không phải HTML thô) — mọi ký tự HTML trong nội dung đều được escape trước khi áp định dạng, nên **không thể chèn script hay HTML độc hại** dù admin dán nội dung gì vào. Trang chi tiết sản phẩm giờ hiển thị mô tả có định dạng (đậm/nghiêng/danh sách) thay vì chữ thuần.
+
+File mới: `lib/markdown.ts` (renderer an toàn), `components/admin/MarkdownEditor.tsx`.
+
+### ✨ Kéo thả đổi thứ tự ảnh trong Gallery
+
+`GalleryPicker` giờ cho kéo-thả các ảnh đã chọn để đổi thứ tự hiển thị (số thứ tự hiện ngay trên mỗi ảnh). Thứ tự này được lưu đúng theo mảng `gallery` trong database, ảnh đầu tiên vẫn luôn hiện trước trên trang sản phẩm.
+
+### File thay đổi
+`app/api/admin/products/import/route.ts`, `app/api/admin/products/import/confirm/route.ts`, `components/admin/ProductImportManager.tsx`, `app/admin/products/import/page.tsx`, `app/admin/products/page.tsx`, `components/admin/GalleryPicker.tsx`, `lib/markdown.ts`, `components/admin/MarkdownEditor.tsx`, `components/admin/ProductForm.tsx`, `components/admin/ProductEditForm.tsx`, `app/san-pham/[slug]/page.tsx`.
+
+Không có thay đổi schema lần này.
+
+---
+
 ## v0.31.0 — Sprint B (phần 1): CMS Content Tools
 
 Làm 4/9 việc trong Sprint B gốc — 5 việc còn lại (rich text editor, gallery kéo-thả, import Excel + preview) để làm tiếp lượt sau vì cần cân nhắc kỹ hơn (rich text cần tránh rủi ro XSS, import cần bước preview trước khi ghi DB).

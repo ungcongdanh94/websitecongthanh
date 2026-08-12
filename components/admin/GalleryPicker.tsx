@@ -19,6 +19,16 @@ export default function GalleryPicker({
   const [open, setOpen] = useState(false);
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(false);
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+
+  function reorder(fromIndex: number, toIndex: number) {
+    setValues((current) => {
+      const next = [...current];
+      const [moved] = next.splice(fromIndex, 1);
+      next.splice(toIndex, 0, moved);
+      return next;
+    });
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -42,12 +52,32 @@ export default function GalleryPicker({
   return (
     <div>
       <input type="hidden" name={name} value={JSON.stringify(values)} />
-      <div className="mb-2 text-sm font-bold text-slate-700">{label}</div>
+      <div className="mb-2 flex items-center justify-between text-sm font-bold text-slate-700">
+        <span>{label}</span>
+        {values.length > 1 && <span className="text-xs font-normal text-slate-400">Kéo thả để đổi thứ tự</span>}
+      </div>
       <div className="rounded-2xl border border-slate-200 p-4">
         <div className="flex flex-wrap gap-3">
-          {values.map((url) => (
-            <div key={url} className="relative h-20 w-24 overflow-hidden rounded-xl bg-slate-100">
+          {values.map((url, index) => (
+            <div
+              key={url}
+              draggable
+              onDragStart={() => setDragIndex(index)}
+              onDragOver={(event) => event.preventDefault()}
+              onDrop={(event) => {
+                event.preventDefault();
+                if (dragIndex !== null && dragIndex !== index) reorder(dragIndex, index);
+                setDragIndex(null);
+              }}
+              onDragEnd={() => setDragIndex(null)}
+              className={`relative h-20 w-24 cursor-move overflow-hidden rounded-xl bg-slate-100 transition ${
+                dragIndex === index ? "opacity-40" : ""
+              }`}
+            >
               <Image src={url} alt="" fill className="object-cover" />
+              <span className="absolute bottom-1 left-1 grid h-5 w-5 place-items-center rounded-full bg-slate-950/70 text-[10px] font-bold text-white">
+                {index + 1}
+              </span>
               <button
                 type="button"
                 onClick={() => remove(url)}
