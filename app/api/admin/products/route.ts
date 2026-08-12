@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAdminSession } from "@/lib/auth";
+import { productSchema } from "@/lib/validators";
 
 export async function POST(request: Request) {
   const session = await getAdminSession();
@@ -10,52 +11,51 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const name = String(body.name || "").trim();
-    const slug = String(body.slug || "").trim().toLowerCase();
-    const categoryId = String(body.categoryId || "").trim();
+
+    const parsed = productSchema.safeParse({ ...body, slug: String(body.slug || "").trim().toLowerCase() });
+    if (!parsed.success) {
+      return NextResponse.json(
+        { ok: false, message: parsed.error.issues[0]?.message || "Dữ liệu không hợp lệ" },
+        { status: 400 }
+      );
+    }
+    const data = parsed.data;
 
     let gallery: string[] = [];
     try {
-      const parsed = JSON.parse(body.gallery || "[]");
-      if (Array.isArray(parsed)) gallery = parsed.filter((item) => typeof item === "string");
+      const parsedGallery = JSON.parse(body.gallery || "[]");
+      if (Array.isArray(parsedGallery)) gallery = parsedGallery.filter((item) => typeof item === "string");
     } catch {
       gallery = [];
     }
 
-    if (!name || !slug || !categoryId) {
-      return NextResponse.json(
-        { ok: false, message: "Thiếu tên, slug hoặc danh mục" },
-        { status: 400 }
-      );
-    }
-
     const product = await prisma.product.create({
       data: {
-        name,
-        slug,
-        sku: String(body.sku || "").trim() || null,
-        shortDesc: String(body.shortDesc || "").trim() || null,
-        description: String(body.description || "").trim() || null,
-        imageUrl: String(body.imageUrl || "").trim() || null,
+        name: data.name,
+        slug: data.slug,
+        sku: data.sku || null,
+        shortDesc: data.shortDesc || null,
+        description: data.description || null,
+        imageUrl: data.imageUrl || null,
         gallery: gallery.length ? gallery : undefined,
-        price: body.price ? Number(body.price) : null,
-        dealerPrice: body.dealerPrice ? Number(body.dealerPrice) : null,
-        unit: String(body.unit || "").trim() || null,
-        productLine: String(body.productLine || "").trim() || null,
-        aluminumSystem: String(body.aluminumSystem || "").trim() || null,
-        color: String(body.color || "").trim() || null,
-        thickness: String(body.thickness || "").trim() || null,
-        stockLength: String(body.stockLength || "").trim() || null,
-        catalogUrl: String(body.catalogUrl || "").trim() || null,
-        videoUrl: String(body.videoUrl || "").trim() || null,
-        warrantyPolicy: String(body.warrantyPolicy || "").trim() || null,
-        seoTitle: String(body.seoTitle || "").trim() || null,
-        seoDescription: String(body.seoDescription || "").trim() || null,
-        ogImage: String(body.ogImage || "").trim() || null,
+        price: data.price === "" || data.price === undefined ? null : Number(data.price),
+        dealerPrice: data.dealerPrice === "" || data.dealerPrice === undefined ? null : Number(data.dealerPrice),
+        unit: data.unit || null,
+        productLine: data.productLine || null,
+        aluminumSystem: data.aluminumSystem || null,
+        color: data.color || null,
+        thickness: data.thickness || null,
+        stockLength: data.stockLength || null,
+        catalogUrl: data.catalogUrl || null,
+        videoUrl: data.videoUrl || null,
+        warrantyPolicy: data.warrantyPolicy || null,
+        seoTitle: data.seoTitle || null,
+        seoDescription: data.seoDescription || null,
+        ogImage: data.ogImage || null,
         isFeatured: Boolean(body.isFeatured),
         status: ["PUBLISHED", "ARCHIVED"].includes(body.status) ? body.status : "DRAFT",
-        categoryId,
-        brandId: String(body.brandId || "").trim() || null
+        categoryId: data.categoryId,
+        brandId: data.brandId || null
       }
     });
 

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAdminSession } from "@/lib/auth";
+import { categorySchema } from "@/lib/validators";
 
 export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   if (!(await getAdminSession())) {
@@ -11,12 +12,17 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
     const { id } = await context.params;
     const body = await request.json();
 
+    const parsed = categorySchema.safeParse({ ...body, slug: String(body.slug || "").trim().toLowerCase() });
+    if (!parsed.success) {
+      return NextResponse.json({ ok: false, message: parsed.error.issues[0]?.message || "Dữ liệu không hợp lệ" }, { status: 400 });
+    }
+
     const category = await prisma.category.update({
       where: { id },
       data: {
-        name: String(body.name || "").trim(),
-        slug: String(body.slug || "").trim().toLowerCase(),
-        description: String(body.description || "").trim() || null,
+        name: parsed.data.name,
+        slug: parsed.data.slug,
+        description: parsed.data.description || null,
         isActive: Boolean(body.isActive)
       }
     });

@@ -1,5 +1,32 @@
 # CHANGELOG
 
+## v0.36.0 — Sprint F: Production QA
+
+### ✅ Đã audit, kết quả sạch (không cần sửa)
+
+- **Chính tả "CÔNG THÀNH"**: grep toàn bộ `app/`, `components/`, `data/`, `lib/`, `prisma/` — **0 kết quả**, không còn chỗ nào viết sai.
+- **Auth API admin**: kiểm tra toàn bộ 27 route trong `app/api/admin/` — **25/25 route cần auth đều có `getAdminSession()`**. 2 route không có (`/login`, `/logout`) là đúng, vì bản chất phải công khai được.
+- **Dữ liệu demo/placeholder lộ ra public**: grep các từ khóa demo/dummy/lorem/mẫu — sạch.
+- **Overflow ngang**: rà soát mọi `min-w-[...]` cố định — cả 3 bảng dùng width cố định (`bang-gia`, `PriceManager`, `QuoteBuilder`) đều đã bọc đúng `overflow-x-auto`, không gây vỡ layout mobile.
+- **Font tiếng Việt**: `Be_Vietnam_Pro` đã khai báo subset `"vietnamese"` từ đầu dự án — không cần sửa.
+- **dealerPrice public**: xác nhận lại lần cuối — không xuất hiện ở bất kỳ trang/API công khai nào.
+
+### ✅ Đã thêm — Validate input bằng Zod
+
+Trước đây **toàn bộ 27 route admin đều validate tay** bằng `String()`/`Number()`, không có route nào dùng Zod (chỉ route công khai `quote-requests` có). Đã thêm Zod schema cho 3 route quan trọng/nhiều field nhất:
+
+- `productSchema` — áp cho tạo/sửa sản phẩm (route phức tạp nhất, nhiều field nhất)
+- `categorySchema`, `brandSchema` — áp cho tạo/sửa danh mục và thương hiệu
+
+Các route còn lại (Projects, Quotes, Customers, Media, API Keys, Prices, Banners) **chưa thêm Zod** — validate tay hiện tại vẫn an toàn vì đều đã có auth, để dành làm tiếp nếu Zen muốn mở rộng thêm.
+
+### File thay đổi
+`lib/validators.ts`, `app/api/admin/products/route.ts`, `app/api/admin/products/[id]/route.ts`, `app/api/admin/categories/route.ts`, `app/api/admin/categories/[id]/route.ts`, `app/api/admin/brands/route.ts`, `app/api/admin/brands/[id]/route.ts`.
+
+Không có thay đổi schema.
+
+---
+
 ## v0.35.1 — Sửa lỗi build: node:crypto lọt vào bundle client
 
 ### 🔴 Lỗi thật, làm build gãy hoàn toàn
