@@ -10,6 +10,7 @@ import type { PublicProduct } from "@/types/product";
 import siteContent from "@/data/site-content.json";
 import { splitValues, parseColorEntry } from "@/lib/productDisplay";
 import { renderSafeMarkdown } from "@/lib/markdown";
+import RecentlyViewed from "@/components/RecentlyViewed";
 
 export const dynamic = "force-dynamic";
 
@@ -261,6 +262,17 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
           ))}
         </div>
       </div>
+
+      <RecentlyViewed
+        current={{
+          id: product.id,
+          name: product.name,
+          slug: product.slug,
+          imageUrl: product.imageUrl,
+          price: product.price === null ? null : Number(product.price),
+          unit: product.unit
+        }}
+      />
     </section>
   );
 }

@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## v0.33.0 — Sprint C: Product UX
+
+Audit trước: filter Danh mục/Thương hiệu/Hệ nhôm/Khoảng giá, sort tên/giá, đồng bộ query string, Compare Products, Related Products, giá null → "Liên hệ", dealerPrice không public — **tất cả đã có từ trước**, không làm lại. Lần này chỉ làm phần còn thiếu thật:
+
+### ✨ Đã thêm
+
+- **Search realtime + Autocomplete**: ô tìm kiếm ở Header giờ gợi ý sản phẩm ngay khi gõ (debounce 250ms), hiện ảnh + giá, bấm vào đi thẳng tới sản phẩm — không cần Enter hay chờ tải lại trang. Route mới: `app/api/search/suggest/route.ts` (public, giới hạn 6 kết quả).
+- **Filter theo Màu và Độ dày**: thêm 2 ô lọc mới ở `/san-pham` — dùng khớp gần đúng (`contains`) vì các field này giờ có thể chứa nhiều giá trị (VD: "Trắng, Ghi xám"), khớp chính xác tuyệt đối sẽ bỏ sót sản phẩm.
+- **Recently Viewed**: lưu lịch sử xem bằng `localStorage` (không cần lưu server, riêng theo từng máy/trình duyệt) — trang chi tiết sản phẩm hiện dải "Đã xem gần đây" (tối đa 8 sản phẩm, loại trừ sản phẩm đang xem).
+
+### 🔧 Sửa thêm (phát hiện khi audit)
+
+Header top-bar có dòng **"Bảo hành đến 10 năm"** — số liệu tự bịa từ trước, vi phạm đúng nguyên tắc "không tự tạo thông số" đã thống nhất từ Sprint gần đây (bảo hành giờ để riêng từng sản phẩm, không có số chung). Đã sửa thành câu chung không cam kết số cụ thể.
+
+### File thay đổi
+`components/Header.tsx`, `app/api/search/suggest/route.ts` (mới), `lib/recentlyViewed.ts` (mới), `components/RecentlyViewed.tsx` (mới), `app/san-pham/[slug]/page.tsx`, `app/san-pham/page.tsx`.
+
+Không có thay đổi schema.
+
+---
+
 ## v0.32.0 — Sprint B hoàn thành: Import Excel + Preview, Rich Text, Gallery kéo-thả
 
 Hoàn thành 3 việc còn lại của Sprint B — Sprint B giờ đã xong toàn bộ 9/9 việc.

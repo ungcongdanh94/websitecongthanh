@@ -44,6 +44,8 @@ export default async function ProductsPage({
     category?: string;
     brand?: string;
     system?: string;
+    color?: string;
+    thickness?: string;
     minPrice?: string;
     maxPrice?: string;
     sort?: string;
@@ -55,6 +57,8 @@ export default async function ProductsPage({
     category = "",
     brand = "",
     system = "",
+    color = "",
+    thickness = "",
     minPrice = "",
     maxPrice = "",
     sort = "moi-nhat",
@@ -80,6 +84,8 @@ export default async function ProductsPage({
     ...(category ? { category: { slug: category } } : {}),
     ...(brand ? { brand: { slug: brand } } : {}),
     ...(system ? { aluminumSystem: system } : {}),
+    ...(color ? { color: { contains: color, mode: "insensitive" } } : {}),
+    ...(thickness ? { thickness: { contains: thickness, mode: "insensitive" } } : {}),
     ...(min !== null || max !== null
       ? {
           price: {
@@ -145,6 +151,8 @@ export default async function ProductsPage({
     if (category) params.set("category", category);
     if (brand) params.set("brand", brand);
     if (system) params.set("system", system);
+    if (color) params.set("color", color);
+    if (thickness) params.set("thickness", thickness);
     if (minPrice) params.set("minPrice", minPrice);
     if (maxPrice) params.set("maxPrice", maxPrice);
     if (sort && sort !== "moi-nhat") params.set("sort", sort);
@@ -179,6 +187,8 @@ export default async function ProductsPage({
             <option key={item.aluminumSystem} value={item.aluminumSystem}>{item.aluminumSystem}</option>
           ))}
         </select>
+        <input name="color" defaultValue={color} className={field} placeholder="Màu (VD: Trắng, Ghi xám)" />
+        <input name="thickness" defaultValue={thickness} className={field} placeholder="Độ dày (VD: 1.4mm)" />
         <input name="minPrice" type="number" min="0" step="1000" defaultValue={minPrice} className={field} placeholder="Giá từ (đ)" />
         <input name="maxPrice" type="number" min="0" step="1000" defaultValue={maxPrice} className={field} placeholder="Giá đến (đ)" />
         <select name="sort" defaultValue={sort} className={field}>

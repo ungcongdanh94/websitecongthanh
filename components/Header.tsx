@@ -4,12 +4,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, Phone, Search, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+type Suggestion = { id: string; name: string; slug: string; imageUrl: string | null; price: number | null; unit: string | null };
 
 const nav = [
   ["Giới thiệu", "/gioi-thieu"],
   ["Sản phẩm", "/san-pham"],
   ["Thương hiệu", "/thuong-hieu"],
+  ["Dịch vụ", "/dich-vu"],
   ["Bảng giá", "/bang-gia"],
   ["So sánh", "/so-sanh"],
   ["Dự án", "/du-an"],
@@ -22,6 +25,26 @@ export default function Header() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (query.trim().length < 2) {
+      setSuggestions([]);
+      return;
+    }
+    debounceRef.current = setTimeout(() => {
+      fetch(`/api/search/suggest?q=${encodeURIComponent(query.trim())}`)
+        .then((res) => res.json())
+        .then((data) => setSuggestions(data.results || []))
+        .catch(() => setSuggestions([]));
+    }, 250);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [query]);
 
   if (pathname.startsWith("/admin")) return null;
 
@@ -29,8 +52,15 @@ export default function Header() {
 
   function handleSearch(event: React.FormEvent) {
     event.preventDefault();
+    setShowSuggestions(false);
     const q = query.trim();
     router.push(q ? `/san-pham?q=${encodeURIComponent(q)}` : "/san-pham");
+  }
+
+  function goToProduct(slug: string) {
+    setShowSuggestions(false);
+    setQuery("");
+    router.push(`/san-pham/${slug}`);
   }
 
   return (
@@ -38,7 +68,7 @@ export default function Header() {
       <div className="hidden bg-brand-900 text-brand-50 lg:block">
         <div className="container-page flex items-center justify-between py-2 text-xs">
           <span>595A Trần Hưng Đạo, P. Bình Đức, An Giang · Giao hàng toàn quốc</span>
-          <span>Bảo hành đến 10 năm · Hỗ trợ kỹ thuật 24/7</span>
+          <span>Bảo hành theo chính sách từng sản phẩm · Hỗ trợ kỹ thuật tận tâm</span>
         </div>
       </div>
 
@@ -63,25 +93,52 @@ export default function Header() {
           </span>
         </Link>
 
-        <form
-          onSubmit={handleSearch}
-          className="hidden flex-1 items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 md:flex"
-        >
-          <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            type="text"
-            placeholder="Tìm sản phẩm, danh mục — ví dụ: Xingfa hệ 65..."
-            className="w-full bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400"
-          />
-          <button
-            type="submit"
-            aria-label="Tìm kiếm"
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand-600 text-white transition hover:bg-brand-700"
+        <div className="relative hidden flex-1 md:block">
+          <form
+            onSubmit={handleSearch}
+            className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2"
           >
-            <Search className="h-4 w-4" />
-          </button>
-        </form>
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              onFocus={() => setShowSuggestions(true)}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+              type="text"
+              placeholder="Tìm sản phẩm, danh mục — ví dụ: Xingfa hệ 65..."
+              className="w-full bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400"
+            />
+            <button
+              type="submit"
+              aria-label="Tìm kiếm"
+              className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand-600 text-white transition hover:bg-brand-700"
+            >
+              <Search className="h-4 w-4" />
+            </button>
+          </form>
+
+          {showSuggestions && suggestions.length > 0 && (
+            <div className="absolute left-0 top-full z-50 mt-2 w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
+              {suggestions.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onMouseDown={() => goToProduct(item.slug)}
+                  className="flex w-full items-center gap-3 px-4 py-3 text-left hover:bg-slate-50"
+                >
+                  <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl bg-slate-100">
+                    {item.imageUrl && <Image src={item.imageUrl} alt={item.name} fill className="object-cover" />}
+                  </span>
+                  <span className="flex-1">
+                    <span className="block text-sm font-semibold text-slate-900">{item.name}</span>
+                    <span className="block text-xs text-slate-500">
+                      {item.price ? `Từ ${item.price.toLocaleString("vi-VN")} đ${item.unit ? `/${item.unit}` : ""}` : "Liên hệ"}
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         <a href={`tel:${hotline.replace(/\s/g, "")}`} className="hidden shrink-0 items-center gap-3 xl:flex">
           <span className="grid h-10 w-10 place-items-center rounded-full bg-brand-50 text-brand-700">
