@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { PublicProduct } from "@/types/product";
 import { splitValues, parseColorEntry } from "@/lib/productDisplay";
+import { optimizeImageUrl } from "@/lib/cloudinaryUrl";
 
 function formatPrice(price: number | null, unit: string | null) {
   if (price === null) return "Liên hệ";
@@ -16,7 +17,13 @@ export default function DatabaseProductCard({ product }: { product: PublicProduc
     <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-soft">
       <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-brand-50 to-slate-100">
         {product.imageUrl ? (
-          <Image src={product.imageUrl} alt={product.name} fill className="object-cover transition duration-500 hover:scale-105" />
+          <Image
+            src={optimizeImageUrl(product.imageUrl, 600)}
+            alt={product.name}
+            fill
+            sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw"
+            className="object-cover transition duration-500 hover:scale-105"
+          />
         ) : (
           <div className="flex h-full items-center justify-center px-6 text-center text-lg font-bold text-brand-800">CÔNG THẢNH</div>
         )}

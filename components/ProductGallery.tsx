@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { optimizeImageUrl } from "@/lib/cloudinaryUrl";
 
 export default function ProductGallery({
   images,
@@ -18,7 +19,14 @@ export default function ProductGallery({
     <div>
       <div className="relative aspect-square overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-50 to-slate-100">
         {current ? (
-          <Image src={current} alt={alt} fill className="object-cover" priority />
+          <Image
+            src={optimizeImageUrl(current, 900)}
+            alt={alt}
+            fill
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="object-cover"
+            priority
+          />
         ) : (
           <div className="flex h-full items-center justify-center text-3xl font-black text-brand-800">CÔNG THẢNH</div>
         )}
@@ -36,7 +44,7 @@ export default function ProductGallery({
               }`}
               aria-label={`Xem ảnh ${index + 1}`}
             >
-              <Image src={url} alt="" fill className="object-cover" />
+              <Image src={optimizeImageUrl(url, 300)} alt="" fill sizes="80px" className="object-cover" />
             </button>
           ))}
         </div>

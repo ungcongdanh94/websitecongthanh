@@ -16,7 +16,7 @@ import DatabaseProductCard from "@/components/DatabaseProductCard";
 import { prisma } from "@/lib/prisma";
 import type { PublicProduct } from "@/types/product";
 import assetsV2 from "@/data/assets-v2.json";
-import { normalizeLogoUrl } from "@/lib/cloudinary";
+import { normalizeLogoUrl } from "@/lib/cloudinaryUrl";
 
 export const dynamic = "force-dynamic";
 

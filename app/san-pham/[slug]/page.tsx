@@ -115,6 +115,8 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
       : [])
   ].filter(Boolean) as [string, string][];
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://congthanhco.com";
+
   const productJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -131,8 +133,29 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
       availability: product.price
         ? "https://schema.org/InStock"
         : "https://schema.org/LimitedAvailability",
-      url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://congthanhco.com"}/san-pham/${product.slug}`
+      url: `${siteUrl}/san-pham/${product.slug}`
     }
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Trang chủ", item: siteUrl },
+      { "@type": "ListItem", position: 2, name: "Sản phẩm", item: `${siteUrl}/san-pham` },
+      { "@type": "ListItem", position: 3, name: product.category.name, item: `${siteUrl}/san-pham?category=${product.category.slug}` },
+      { "@type": "ListItem", position: 4, name: product.name, item: `${siteUrl}/san-pham/${product.slug}` }
+    ]
+  };
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: siteContent.faq.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer }
+    }))
   };
 
   return (
@@ -141,6 +164,16 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <Link href="/san-pham" className="text-sm font-bold text-brand-700">← Quay lại sản phẩm</Link>
 

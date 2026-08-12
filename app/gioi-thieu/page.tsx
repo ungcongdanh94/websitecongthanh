@@ -13,7 +13,7 @@ import {
   Target
 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
-import { normalizeLogoUrl } from "@/lib/cloudinary";
+import { normalizeLogoUrl } from "@/lib/cloudinaryUrl";
 import companyContent from "@/data/company-content.json";
 
 export const dynamic = "force-dynamic";

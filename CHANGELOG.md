@@ -1,5 +1,38 @@
 # CHANGELOG
 
+## v0.35.1 — Sửa lỗi build: node:crypto lọt vào bundle client
+
+### 🔴 Lỗi thật, làm build gãy hoàn toàn
+
+`lib/cloudinary.ts` có dùng `node:crypto` (để ký request upload/xóa ảnh — chỉ chạy được ở server). Ở Sprint E, mình lỡ import `optimizeImageUrl` từ đúng file đó vào `ProductGallery.tsx` và `DatabaseProductCard.tsx` — cả 2 đều là **client component**. Kết quả: webpack cố đóng gói `node:crypto` vào bundle chạy trên trình duyệt → `UnhandledSchemeError`, build gãy hoàn toàn.
+
+### ✅ Đã sửa
+
+Tách `normalizeLogoUrl` và `optimizeImageUrl` (chỉ xử lý chuỗi URL, không cần crypto) ra file mới **`lib/cloudinaryUrl.ts`** — an toàn dùng ở cả client và server. `lib/cloudinary.ts` giờ chỉ còn các hàm thật sự cần chạy ở server (`uploadImage`, `destroyImage`).
+
+### File thay đổi
+`lib/cloudinary.ts`, `lib/cloudinaryUrl.ts` (mới), `app/page.tsx`, `app/gioi-thieu/page.tsx`, `components/DatabaseProductCard.tsx`, `components/ProductGallery.tsx` (chỉ đổi đường import, không đổi logic).
+
+---
+
+## v0.35.0 — Sprint E: SEO/Performance
+
+Audit trước: dynamic metadata, canonical, sitemap, robots.txt, Product schema, Open Graph, alt text (đã kiểm tra kỹ — mọi `<Image>` đều có `alt`), lazy load (chỉ hero/logo/ảnh chính dùng `priority`) — **tất cả đã có từ trước**, không code lại. Article schema bỏ qua vì model `Article` chưa được dùng ở đâu trong code.
+
+### ✨ Đã thêm
+
+- **Breadcrumb schema** (`BreadcrumbList`): thêm vào trang chi tiết sản phẩm (Trang chủ › Sản phẩm › Danh mục › Tên sản phẩm).
+- **FAQ schema** (`FAQPage`): gắn vào đúng khối FAQ đã có sẵn trên trang chi tiết sản phẩm — Google có thể hiện câu hỏi/trả lời ngay trên kết quả tìm kiếm.
+- **LocalBusiness schema**: thêm vào `layout.tsx`, hiện trên **mọi trang** — tên công ty, địa chỉ, hotline, dùng đúng dữ liệu đã có trong `company-content.json`.
+- **Cloudinary transformation theo đúng kích thước hiển thị**: thêm hàm `optimizeImageUrl()` — card sản phẩm tải ảnh cỡ 600px, ảnh chính trang chi tiết cỡ 900px, thumbnail gallery cỡ 300px (trước đây tải nguyên ảnh gốc cho mọi kích thước hiển thị, tốn băng thông không cần thiết). Tự chọn định dạng nhẹ nhất theo trình duyệt (`f_auto`) và chất lượng vừa đủ (`q_auto`) — không làm ảnh mờ.
+
+### File thay đổi
+`lib/cloudinary.ts`, `components/DatabaseProductCard.tsx`, `components/ProductGallery.tsx`, `app/layout.tsx`, `app/san-pham/[slug]/page.tsx`.
+
+Không có thay đổi schema.
+
+---
+
 ## v0.34.0 — Sprint D: Lead & Conversion
 
 Audit trước: CTA "Nhận báo giá" ở Product Detail, lưu lead vào CRM (`findOrCreateCustomer`), không làm banner giảm giá lớn/popup — **đã có từ trước**, không code lại.

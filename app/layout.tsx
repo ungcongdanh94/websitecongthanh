@@ -6,6 +6,24 @@ import Footer from "@/components/Footer";
 import AiAdvisorWidget from "@/components/AiAdvisorWidget";
 import FloatingContact from "@/components/FloatingContact";
 import { prisma } from "@/lib/prisma";
+import companyContent from "@/data/company-content.json";
+
+const SITE_URL_FOR_SCHEMA = process.env.NEXT_PUBLIC_SITE_URL || "https://congthanhco.com";
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  name: companyContent.companyName,
+  legalName: companyContent.legalName,
+  url: SITE_URL_FOR_SCHEMA,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: companyContent.address,
+    addressRegion: "An Giang",
+    addressCountry: "VN"
+  },
+  ...(companyContent.hotline ? { telephone: companyContent.hotline } : {})
+};
 
 const beVietnamPro = Be_Vietnam_Pro({
   subsets: ["latin", "vietnamese"],
@@ -52,6 +70,11 @@ export default function RootLayout({
   return (
     <html lang="vi" className={beVietnamPro.variable}>
       <body className={beVietnamPro.className}>
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
         <Header />
         <main>{children}</main>
         <Footer />
