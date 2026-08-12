@@ -104,6 +104,15 @@ export default function ProductForm({
         placeholder="Chính sách bảo hành riêng cho sản phẩm này — VD: Bảo hành 10 năm khung nhôm, 2 năm phụ kiện."
       />
 
+      <div className="rounded-2xl border border-dashed border-slate-300 p-4">
+        <div className="mb-3 text-xs font-bold uppercase text-slate-500">SEO (tùy chọn — để trống sẽ tự dùng tên/mô tả sản phẩm)</div>
+        <div className="grid gap-3">
+          <input name="seoTitle" className={input} placeholder="SEO Title (nếu khác tên sản phẩm)" maxLength={70} />
+          <textarea name="seoDescription" className={`${input} min-h-20`} placeholder="SEO Description (khuyến nghị 120-160 ký tự)" maxLength={200} />
+          <MediaPicker name="ogImage" label="Ảnh chia sẻ mạng xã hội (Open Graph) — để trống sẽ dùng ảnh đại diện" />
+        </div>
+      </div>
+
       <MediaPicker name="imageUrl" label="Ảnh đại diện sản phẩm" />
       <GalleryPicker name="gallery" label="Thư viện ảnh chi tiết (nhiều ảnh)" />
 

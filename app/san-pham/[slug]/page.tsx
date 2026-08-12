@@ -32,17 +32,21 @@ export async function generateMetadata({
   }
 
   const description =
+    product.seoDescription ||
     product.shortDesc ||
     product.description?.slice(0, 160) ||
     `${product.name} — ${product.category.name} chính hãng tại CÔNG THẢNH.`;
 
+  const title = product.seoTitle || `${product.name} | CÔNG THẢNH`;
+  const ogImage = product.ogImage || product.imageUrl;
+
   return {
-    title: `${product.name} | CÔNG THẢNH`,
+    title,
     description,
     openGraph: {
-      title: product.name,
+      title: product.seoTitle || product.name,
       description,
-      images: product.imageUrl ? [{ url: product.imageUrl }] : undefined
+      images: ogImage ? [{ url: ogImage }] : undefined
     }
   };
 }

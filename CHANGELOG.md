@@ -1,5 +1,34 @@
 # CHANGELOG
 
+## v0.31.0 — Sprint B (phần 1): CMS Content Tools
+
+Làm 4/9 việc trong Sprint B gốc — 5 việc còn lại (rich text editor, gallery kéo-thả, import Excel + preview) để làm tiếp lượt sau vì cần cân nhắc kỹ hơn (rich text cần tránh rủi ro XSS, import cần bước preview trước khi ghi DB).
+
+### 🗄️ Schema mới (cần chạy `prisma db push`)
+
+Thêm 3 field SEO riêng cho từng sản phẩm vào `Product`:
+```prisma
+seoTitle       String?
+seoDescription String?
+ogImage        String?
+```
+Đều tùy chọn — để trống sẽ tự dùng tên/mô tả sản phẩm như trước, không ảnh hưởng sản phẩm cũ.
+
+### ✨ Đã thêm
+
+- **SEO title/description/OG image theo từng sản phẩm**: form thêm/sửa sản phẩm có thêm khối SEO riêng; trang chi tiết sản phẩm ưu tiên dùng các field này nếu có, không thì tự tạo như trước.
+- **Sao chép sản phẩm** (`Duplicate Product`): nút "Sao chép" ở mỗi dòng trong `/admin/products` — tạo bản sao ở trạng thái **Bản nháp** (an toàn, không tự công khai), slug tự thêm `-copy`, SKU/SEO title để trống (tránh trùng).
+- **Bulk publish/unpublish/archive**: `/admin/products` giờ có checkbox chọn nhiều dòng + thanh hành động (Công khai / Chuyển về nháp / Lưu trữ) áp dụng cho tất cả sản phẩm đã chọn cùng lúc.
+- **Export Excel đầy đủ cho sản phẩm**: nút "Xuất Excel" mới ở `/admin/products` — xuất toàn bộ field CMS (SKU, slug, danh mục, thương hiệu, hệ nhôm, màu, độ dày, chiều dài, trạng thái, mô tả ngắn...). Khác với "Xuất Excel" ở `/admin/prices` (chỉ tập trung giá) — hai file phục vụ mục đích khác nhau, không trùng lặp thật.
+- Component mới dùng chung: `ProductTable.tsx` (client, có checkbox+bulk), `DuplicateProductButton.tsx`.
+
+### Chưa làm (Sprint B còn lại)
+- Rich text editor cho mô tả sản phẩm
+- Kéo thả thứ tự ảnh trong Gallery
+- Import Excel/CSV sản phẩm + bảng giá kèm preview trước khi ghi
+
+---
+
 ## v0.30.0 — Sprint A: Nhập lại catalog + chuẩn hóa dữ liệu
 
 Nhập lại 56 sản phẩm thật đã thu thập từ congthanhco.com (bị xóa ở bản trước theo yêu cầu), lần này áp chuẩn hóa Sprint A ngay từ đầu:

@@ -27,6 +27,9 @@ type ProductData = {
   catalogUrl: string | null;
   videoUrl: string | null;
   warrantyPolicy: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
+  ogImage: string | null;
   status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
   categoryId: string;
   brandId: string | null;
@@ -134,6 +137,15 @@ export default function ProductEditForm({
         className={`${input} min-h-24`}
         placeholder="Chính sách bảo hành riêng cho sản phẩm này — VD: Bảo hành 10 năm khung nhôm, 2 năm phụ kiện."
       />
+
+      <div className="rounded-2xl border border-dashed border-slate-300 p-4">
+        <div className="mb-3 text-xs font-bold uppercase text-slate-500">SEO (tùy chọn — để trống sẽ tự dùng tên/mô tả sản phẩm)</div>
+        <div className="grid gap-3">
+          <input name="seoTitle" defaultValue={product.seoTitle || ""} className={input} placeholder="SEO Title (nếu khác tên sản phẩm)" maxLength={70} />
+          <textarea name="seoDescription" defaultValue={product.seoDescription || ""} className={`${input} min-h-20`} placeholder="SEO Description (khuyến nghị 120-160 ký tự)" maxLength={200} />
+          <MediaPicker name="ogImage" defaultValue={product.ogImage || ""} label="Ảnh chia sẻ mạng xã hội (Open Graph) — để trống sẽ dùng ảnh đại diện" />
+        </div>
+      </div>
 
       <MediaPicker name="imageUrl" defaultValue={product.imageUrl || ""} label="Ảnh đại diện sản phẩm" />
       <GalleryPicker name="gallery" defaultValue={product.gallery} label="Thư viện ảnh chi tiết (nhiều ảnh)" />

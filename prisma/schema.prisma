@@ -82,6 +82,9 @@ model Product {
   catalogUrl    String?
   videoUrl      String?
   warrantyPolicy String?
+  seoTitle      String?
+  seoDescription String?
+  ogImage       String?
   specs         Json?
   isFeatured    Boolean       @default(false)
   status        PublishStatus @default(DRAFT)
