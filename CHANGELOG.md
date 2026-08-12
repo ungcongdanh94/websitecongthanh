@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## v0.30.0 — Sprint A: Nhập lại catalog + chuẩn hóa dữ liệu
+
+Nhập lại 56 sản phẩm thật đã thu thập từ congthanhco.com (bị xóa ở bản trước theo yêu cầu), lần này áp chuẩn hóa Sprint A ngay từ đầu:
+
+- **SKU**: thêm mã SKU cho toàn bộ 56 sản phẩm, sinh có quy tắc theo brand + hệ nhôm (VD: `XF-CLA-A80`, `OD-X6`, `MP-R83`). **Lưu ý**: site gốc congthanhco.com không công khai SKU nào — đây là mã nội bộ mình tự đặt có hệ thống, không phải mã thật của công ty. Zen đổi lại qua `/admin/products` nếu công ty đã có hệ SKU riêng.
+- **Slug**: xác nhận toàn bộ 56 slug đều tiếng Việt không dấu, chỉ gồm chữ thường/số/gạch ngang, không trùng lặp.
+- **Hệ nhôm/màu/độ dày**: giữ nguyên format đã chuẩn hóa từ trước (VD: `"1.8mm, 2.0mm"` cho nhiều độ dày).
+- **Giá**: toàn bộ để `null` → hiển thị "Liên hệ" — đúng thực tế site gốc, không bịa giá.
+- **Không seed lại bộ dữ liệu mẫu cũ** (6 sản phẩm demo) — đã bỏ vĩnh viễn từ bản trước, giữ nguyên quyết định đó.
+
+### File thay đổi
+`data/congthanh-real-catalog.json` (tạo lại, có thêm SKU), `prisma/seed.ts` (thêm lại `seedRealCatalog()`, có `sku`).
+
+### Chưa làm (Sprint A còn thiếu)
+- Chuẩn hóa `Project`, `Article` (Article model chưa được dùng ở đâu trong code — bỏ qua cho tới khi có nhu cầu thật)
+- Nhóm "Cửa Sắt - Inox" (~25-29 sản phẩm) vẫn chưa thu thập được (xem lý do ở lượt trước)
+
+---
+
 ## v0.29.0 — Xóa sạch dữ liệu sản phẩm/danh mục/thương hiệu
 
 Theo yêu cầu: xóa toàn bộ sản phẩm, danh mục, thương hiệu (cả bộ mẫu cũ và catalog thật vừa nhập từ congthanhco.com).
