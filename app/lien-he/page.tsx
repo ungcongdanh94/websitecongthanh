@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Clock3, Facebook, Globe2, MapPin, MessageCircle, Phone } from "lucide-react";
 import QuoteForm from "@/components/QuoteForm";
 import { site } from "@/data/site";
@@ -99,7 +100,9 @@ export default function ContactPage() {
             Các trường có dấu * là bắt buộc.
           </p>
           <div className="mt-6">
-            <QuoteForm />
+            <Suspense fallback={<div className="rounded-[2rem] border border-slate-200 bg-white p-8 text-slate-400">Đang tải form...</div>}>
+              <QuoteForm />
+            </Suspense>
           </div>
         </div>
       </div>

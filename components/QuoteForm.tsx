@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Send } from "lucide-react";
 
 type FormState = {
@@ -29,9 +30,18 @@ const fieldClass =
   "w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-100";
 
 export default function QuoteForm() {
+  const searchParams = useSearchParams();
   const [form, setForm] = useState(initialState);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const productFromUrl = searchParams.get("product");
+    if (productFromUrl) {
+      setForm((current) => ({ ...current, productName: productFromUrl }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -44,7 +54,8 @@ export default function QuoteForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          quantity: form.quantity ? Number(form.quantity) : undefined
+          quantity: form.quantity ? Number(form.quantity) : undefined,
+          sourceUrl: typeof window !== "undefined" ? window.location.href : undefined
         })
       });
 

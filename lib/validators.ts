@@ -8,7 +8,8 @@ export const quoteRequestSchema = z.object({
   note: z.string().trim().max(2000).optional(),
   productName: z.string().trim().max(200).optional(),
   quantity: z.coerce.number().positive().optional(),
-  unit: z.string().trim().max(30).optional()
+  unit: z.string().trim().max(30).optional(),
+  sourceUrl: z.string().trim().max(500).optional()
 });
 
 export type QuoteRequestInput = z.infer<typeof quoteRequestSchema>;

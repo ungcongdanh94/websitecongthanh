@@ -29,6 +29,14 @@ export default async function QuoteDetailPage({ params }: { params: Promise<{ id
       <div className="mb-8">
         <div className="eyebrow">Báo giá</div>
         <h1 className="mt-3 text-4xl font-black">Soạn báo giá</h1>
+        {quote.sourceUrl && (
+          <p className="mt-2 text-sm text-slate-500">
+            Nguồn:{" "}
+            <a href={quote.sourceUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-brand-700 underline">
+              {quote.sourceUrl}
+            </a>
+          </p>
+        )}
       </div>
       <QuoteBuilder
         customers={customers}

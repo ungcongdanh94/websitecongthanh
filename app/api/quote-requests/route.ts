@@ -32,6 +32,7 @@ export async function POST(request: Request) {
           company: data.company || null,
           note: data.note || null,
           source: "website",
+          sourceUrl: data.sourceUrl || null,
           customerId,
           items: data.productName
             ? {

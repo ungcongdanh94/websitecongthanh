@@ -171,6 +171,7 @@ model QuoteRequest {
   terms         String?
   status        QuoteStatus @default(NEW)
   source        String?
+  sourceUrl     String?
   customerId    String?
   customer      Customer?   @relation(fields: [customerId], references: [id])
   subtotal      Decimal     @default(0) @db.Decimal(16, 2)

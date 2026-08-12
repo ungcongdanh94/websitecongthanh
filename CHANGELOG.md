@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## v0.34.0 — Sprint D: Lead & Conversion
+
+Audit trước: CTA "Nhận báo giá" ở Product Detail, lưu lead vào CRM (`findOrCreateCustomer`), không làm banner giảm giá lớn/popup — **đã có từ trước**, không code lại.
+
+### 🗄️ Schema mới (cần chạy `prisma db push`)
+
+Thêm `sourceUrl String?` vào `QuoteRequest` — lưu đúng URL trang mà khách đang xem lúc gửi yêu cầu (VD: link sản phẩm cụ thể), giúp biết lead đến từ đâu.
+
+### ✨ Đã thêm
+
+- **Tự điền sản phẩm vào form báo giá**: trước đây nút "Yêu cầu báo giá" ở trang sản phẩm đã link `/lien-he?product=...` nhưng **form chưa từng đọc tham số này** — giờ đã tự điền đúng ô "Sản phẩm quan tâm".
+- **Lưu nguồn lead**: mỗi lần gửi form, `sourceUrl` (URL trang hiện tại) được lưu kèm theo — hiện luôn ở trang chi tiết báo giá trong `/admin/quotes/[id]` (link bấm được, mở đúng trang khách đã xem).
+- **Floating Zalo/Phone**: 2 nút tròn nhỏ góc dưới-trái (đối diện khung chat AI ở góc dưới-phải để không đè lên nhau) — gọi nhanh hoặc nhắn Zalo, không che nội dung trang, không phải popup.
+
+### File thay đổi
+`prisma/schema.prisma`, `lib/validators.ts`, `app/api/quote-requests/route.ts`, `components/QuoteForm.tsx`, `app/lien-he/page.tsx` (thêm Suspense boundary — bắt buộc vì `QuoteForm` giờ dùng `useSearchParams`), `app/admin/quotes/[id]/page.tsx`, `components/FloatingContact.tsx` (mới), `app/layout.tsx`.
+
+---
+
 ## v0.33.0 — Sprint C: Product UX
 
 Audit trước: filter Danh mục/Thương hiệu/Hệ nhôm/Khoảng giá, sort tên/giá, đồng bộ query string, Compare Products, Related Products, giá null → "Liên hệ", dealerPrice không public — **tất cả đã có từ trước**, không làm lại. Lần này chỉ làm phần còn thiếu thật:
