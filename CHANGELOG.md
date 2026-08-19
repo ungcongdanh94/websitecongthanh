@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## v0.44.0 — Ảnh thẻ sản phẩm hiện đầy đủ, không bị crop mất phần
+
+Zen muốn ảnh "fit với frame" — đổi `object-cover` (crop cho đầy khung, có thể mất phần ảnh nếu tỉ lệ khác khung) sang `object-contain` (co giãn vừa khung, giữ nguyên toàn bộ ảnh, có thể dư viền nếu tỉ lệ ảnh khác khung) trong `DatabaseProductCard.tsx`.
+
+### File thay đổi
+`components/DatabaseProductCard.tsx`.
+
+Không có thay đổi schema.
+
+---
+
 ## v0.43.0 — Thu nhỏ ảnh thẻ sản phẩm ở trang /san-pham
 
 Zen yêu cầu ảnh thẻ sản phẩm nhỏ lại. Đổi tỉ lệ khung ảnh từ `aspect-[4/3]` (cao) sang `aspect-[16/10]` (thấp hơn, gọn hơn) trong `DatabaseProductCard.tsx` — dùng chung cho mọi nơi hiển thị card sản phẩm (trang chủ, `/san-pham`, sản phẩm liên quan).
