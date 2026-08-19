@@ -16,15 +16,15 @@ export default function ProductGallery({
   const current = gallery[active];
 
   return (
-    <div>
+    <div className="mx-auto max-w-md">
       <div className="relative aspect-square overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-50 to-slate-100">
         {current ? (
           <Image
-            src={optimizeImageUrl(current, 900)}
+            src={optimizeImageUrl(current, 600)}
             alt={alt}
             fill
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover"
+            sizes="(min-width: 448px) 448px, 100vw"
+            className="object-contain"
             priority
           />
         ) : (

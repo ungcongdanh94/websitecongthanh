@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## v0.45.0 — Trang chi tiết sản phẩm: giảm cỡ chữ, thu nhỏ khung ảnh cho đúng kích thước ảnh thật
+
+Zen báo trang chi tiết sản phẩm (`/san-pham/[slug]`) chữ quá to và ảnh bị phóng to vượt quá độ phân giải thật (ảnh gốc nhỏ hơn khung hiển thị nên bị kéo giãn, nhìn mờ/"zoom" quá mức).
+
+### 🔧 Đã sửa
+
+- Tiêu đề sản phẩm (H1): `text-4xl md:text-6xl` → `text-2xl md:text-4xl`.
+- Giá bán: `text-3xl` → `text-2xl`.
+- Khung ảnh chính (`ProductGallery.tsx`): giới hạn `max-w-md` (thay vì kéo giãn hết nửa chiều rộng trang ở desktop) và đổi `object-cover` → `object-contain` để không phóng to/crop ảnh vượt quá độ phân giải thật — ảnh hiện đúng kích thước thật, không bị kéo giãn mờ.
+
+### File thay đổi
+`app/san-pham/[slug]/page.tsx`, `components/ProductGallery.tsx`.
+
+Không có thay đổi schema.
+
+---
+
 ## v0.44.0 — Ảnh thẻ sản phẩm hiện đầy đủ, không bị crop mất phần
 
 Zen muốn ảnh "fit với frame" — đổi `object-cover` (crop cho đầy khung, có thể mất phần ảnh nếu tỉ lệ khác khung) sang `object-contain` (co giãn vừa khung, giữ nguyên toàn bộ ảnh, có thể dư viền nếu tỉ lệ ảnh khác khung) trong `DatabaseProductCard.tsx`.
