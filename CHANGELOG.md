@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## v0.42.0 — Sửa lỗi ảnh bị crop mất phần trong khối "Giải pháp nhôm cao cấp"
+
+### ⚠️ Ghi chú bàn giao
+
+`app/page.tsx`, `components/Header.tsx` đã bị viết lại hoàn toàn ở đâu đó ngoài các bản ghi CHANGELOG gần đây (không thấy mục CHANGELOG tương ứng cho các commit "Redesign product catalog cards", "Fix product card proportions..."). Bản viết lại này đổi khối "Danh mục" trang chủ thành 12 thẻ loại cửa/sổ **gõ cứng trong code** (không còn đọc từ database `Category`), gắn kèm ảnh tĩnh có sẵn trong `public/assets/catalog/`. Đã báo Zen các vấn đề liên quan (số liệu 20+/1000+/5000+/100%, tên thương hiệu dự phòng, mục Tin tức đều là nội dung chưa xác nhận thật — kể cả header giờ có "Email: info@congthanhco.com" và "Giờ làm việc: 7:30-17:30" cũng chưa xác nhận) — đang chờ Zen quyết định hướng xử lý, **chưa động vào** trong bản này.
+
+### 🐛 Đã sửa (lỗi Zen báo trực tiếp)
+
+Ảnh trong khối "Giải pháp nhôm cao cấp" (12 thẻ loại cửa) bị crop mất phần lớn — ảnh gốc trong `public/assets/catalog/` có tỉ lệ dọc thật (~233×348px, tỉ lệ ≈0.65) nhưng khung hiển thị lại đặt tỉ lệ ngang (`aspect-[1.18]`) kèm `object-cover`, khiến ảnh bị cắt phần lớn trên/dưới cho vừa khung. Sửa khung về đúng tỉ lệ dọc (`aspect-[2/3]`, ≈0.667 — khớp sát tỉ lệ ảnh gốc) để ảnh hiện đầy đủ, không mất khúc.
+
+### File thay đổi
+`app/page.tsx`.
+
+Không có thay đổi schema.
+
+---
+
 ## v0.41.0 — Sửa lỗi menu "Dịch vụ" trỏ tới trang không tồn tại (404)
 
 Zen gửi 1 mockup trang chủ đầy đủ hơn (lại viết sai "CÔNG THÀNH"). Đối chiếu kỹ thấy phần lớn nội dung mockup (thống kê 20+/1000+/5000+, mục Tin tức/blog, 12 ảnh loại cửa minh họa, trang Chính sách bảo mật/Điều khoản) đều cần số liệu/nội dung/ảnh thật mà hiện chưa có — theo yêu cầu của Zen, tạm gác lại toàn bộ phần đó, **chỉ sửa phần layout không cần dữ liệu mới**.
