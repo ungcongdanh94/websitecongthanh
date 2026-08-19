@@ -74,7 +74,7 @@ export default async function HomePage(){
      </div>
      <div className="mx-auto grid max-w-[1260px] grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-5">
        {products.map(([name,slug])=><Link href="/san-pham" key={slug} className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_5px_18px_rgba(15,23,42,.07)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_26px_rgba(15,23,42,.10)]">
-         <div className="relative aspect-[1.18] overflow-hidden bg-white">
+         <div className="relative aspect-[2/3] overflow-hidden bg-white">
            <Image src={`/assets/catalog/${slug}.webp`} alt={name} fill sizes="(min-width:1024px) 14vw, (min-width:768px) 23vw, 46vw" className="object-cover object-center transition duration-500 group-hover:scale-[1.018]"/>
          </div>
          <div className="relative min-h-[64px] border-t border-slate-100 bg-white px-2 pb-3 pt-7">
