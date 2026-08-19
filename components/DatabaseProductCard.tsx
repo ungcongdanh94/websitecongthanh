@@ -22,7 +22,7 @@ export default function DatabaseProductCard({ product }: { product: PublicProduc
             alt={product.name}
             fill
             sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover transition duration-500 hover:scale-105"
+            className="object-contain transition duration-500 hover:scale-105"
           />
         ) : (
           <div className="flex h-full items-center justify-center px-6 text-center text-lg font-bold text-brand-800">CÔNG THẢNH</div>
