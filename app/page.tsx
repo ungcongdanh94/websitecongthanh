@@ -4,15 +4,18 @@ import {
   ArrowRight,
   BadgeCheck,
   Boxes,
+  Building2,
   Calculator,
   ChevronRight,
   Headphones,
   Layers3,
   MapPin,
   ShieldCheck,
-  Sparkles
+  Sparkles,
+  Users
 } from "lucide-react";
 import DatabaseProductCard from "@/components/DatabaseProductCard";
+import BrandsCarousel from "@/components/BrandsCarousel";
 import { prisma } from "@/lib/prisma";
 import type { PublicProduct } from "@/types/product";
 import assetsV2 from "@/data/assets-v2.json";
@@ -55,6 +58,16 @@ const strengths = [
     icon: Headphones,
     title: "Hỗ trợ thực tế",
     text: "Đội ngũ CÔNG THẢNH hỗ trợ xưởng, đại lý và khách hàng."
+  },
+  {
+    icon: Users,
+    title: "Đội ngũ chuyên nghiệp",
+    text: "Nhân sự kỹ thuật và tư vấn giàu kinh nghiệm trong ngành nhôm."
+  },
+  {
+    icon: Building2,
+    title: "Hệ thống đại lý toàn quốc",
+    text: "Mạng lưới đại lý và xưởng gia công hỗ trợ giao hàng nhiều khu vực."
   }
 ];
 
@@ -275,9 +288,9 @@ export default async function HomePage() {
       <section className="container-page py-16">
         <div className="max-w-2xl">
           <div className="eyebrow">Vì sao chọn CÔNG THẢNH</div>
-          <h2 className="section-title mt-3">Bốn lý do khách hàng tin chọn.</h2>
+          <h2 className="section-title mt-3">Sáu lý do khách hàng tin chọn.</h2>
         </div>
-        <div className="mt-8 grid gap-3 rounded-[2rem] border border-slate-100 bg-white p-4 shadow-soft md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-8 grid gap-3 rounded-[2rem] border border-slate-100 bg-white p-4 shadow-soft sm:grid-cols-2 xl:grid-cols-3">
           {strengths.map(({ icon: Icon, title, text }) => (
             <div key={title} className="rounded-2xl p-4">
               <Icon className="h-7 w-7 text-brand-700" />
@@ -493,24 +506,13 @@ export default async function HomePage() {
           <div className="eyebrow">Đối tác</div>
           <h2 className="section-title mt-3">Đối tác &amp; thương hiệu</h2>
 
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4 xl:grid-cols-8">
-            {brands.map((brand) => (
-              <div
-                key={brand.id}
-                className="flex aspect-[3/2] items-center justify-center rounded-2xl border border-slate-100 bg-white p-5 transition hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-soft"
-              >
-                {brand.logoUrl ? (
-                  <div className="relative h-full w-full">
-                    <Image src={normalizeLogoUrl(brand.logoUrl)} alt={brand.name} fill className="object-contain" />
-                  </div>
-                ) : (
-                  <span className="text-sm font-black uppercase tracking-wide text-slate-600">
-                    {brand.name}
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
+          <BrandsCarousel
+            brands={brands.map((brand) => ({
+              id: brand.id,
+              name: brand.name,
+              logoUrl: brand.logoUrl ? normalizeLogoUrl(brand.logoUrl) : null
+            }))}
+          />
         </section>
       )}
 
