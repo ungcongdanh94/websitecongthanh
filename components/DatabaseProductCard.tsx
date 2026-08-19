@@ -15,7 +15,7 @@ export default function DatabaseProductCard({ product }: { product: PublicProduc
 
   return (
     <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-soft">
-      <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-brand-50 to-slate-100">
+      <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-brand-50 to-slate-100">
         {product.imageUrl ? (
           <Image
             src={optimizeImageUrl(product.imageUrl, 600)}
