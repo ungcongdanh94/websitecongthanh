@@ -1,0 +1,68 @@
+{
+  "hero": {
+    "desktop": "/assets/hero/hero-home-desktop.webp",
+    "mobile": "/assets/hero/hero-home-mobile.webp"
+  },
+  "categories": [
+    {
+      "slug": "nhom-thanh",
+      "image": "/assets/categories/category-aluminum.webp"
+    },
+    {
+      "slug": "phu-kien",
+      "image": "/assets/categories/category-hardware.webp"
+    },
+    {
+      "slug": "noi-that-nhom",
+      "image": "/assets/categories/category-interior.webp"
+    }
+  ],
+  "solutions": [
+    {
+      "slug": "biet-thu",
+      "image": "/assets/solutions/solution-villa.webp"
+    },
+    {
+      "slug": "nha-pho",
+      "image": "/assets/solutions/solution-townhouse.webp"
+    },
+    {
+      "slug": "can-ho",
+      "image": "/assets/solutions/solution-apartment.webp"
+    },
+    {
+      "slug": "van-phong",
+      "image": "/assets/solutions/solution-office.webp"
+    },
+    {
+      "slug": "khach-san",
+      "image": "/assets/solutions/solution-hotel.webp"
+    },
+    {
+      "slug": "resort",
+      "image": "/assets/solutions/solution-resort.webp"
+    }
+  ],
+  "projects": [
+    {
+      "slug": "villa",
+      "image": "/assets/projects/project-villa.webp"
+    },
+    {
+      "slug": "hotel",
+      "image": "/assets/projects/project-hotel.webp"
+    },
+    {
+      "slug": "residence",
+      "image": "/assets/projects/project-residence.webp"
+    },
+    {
+      "slug": "resort",
+      "image": "/assets/projects/project-resort.webp"
+    },
+    {
+      "slug": "showroom",
+      "image": "/assets/projects/project-showroom.webp"
+    }
+  ]
+}

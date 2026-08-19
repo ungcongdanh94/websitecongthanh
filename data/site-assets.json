@@ -1,0 +1,40 @@
+{
+  "company": "CÔNG THẢNH",
+  "generated_from": "approved brand asset board + company logo",
+  "assets": {
+    "brand_board": "/assets/brand/brand-asset-board.webp",
+    "hero": "/assets/banners/hero-homepage.webp",
+    "promotions": [
+      "/assets/promotions/promo-xingfa-class-a.webp",
+      "/assets/promotions/promo-ocean-luxury.webp",
+      "/assets/promotions/promo-cmech.webp",
+      "/assets/promotions/promo-phu-hoan-anh.webp",
+      "/assets/promotions/promo-software.webp",
+      "/assets/promotions/promo-monthly-offer.webp"
+    ],
+    "products": [
+      "/assets/products/product-xingfa-class-a.webp",
+      "/assets/products/product-ocean-luxury.webp",
+      "/assets/products/product-cmech-hinge.webp",
+      "/assets/products/product-cmech-handle.webp",
+      "/assets/products/product-phu-hoan-anh.webp"
+    ],
+    "projects": [
+      "/assets/projects/project-villa.webp",
+      "/assets/projects/project-hotel.webp",
+      "/assets/projects/project-townhouse.webp",
+      "/assets/projects/project-showroom.webp"
+    ],
+    "team": [
+      "/assets/team/team-group.webp",
+      "/assets/team/team-meeting.webp",
+      "/assets/team/team-working.webp"
+    ],
+    "textures": [
+      "/assets/brand/texture-green-wave.webp",
+      "/assets/brand/texture-light-wave.webp",
+      "/assets/brand/texture-geometric.webp",
+      "/assets/brand/texture-marble.webp"
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+[33mcommit 8f036edbb3d7abac336acdda49280879b3db6de5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Cong Thanh <email_cua_ban@gmail.com>
+Date:   Mon Aug 3 23:30:23 2026 +0700
+
+    Fix sitemap prerender error (v0.13.0)
+
+ CHANGELOG.md                                      |  31 [32m++++++[m
+ PROJECT-STATUS.md                                 |  49 [32m+++++[m[31m-----[m
+ app/admin/customers/[id]/page.tsx                 | 112 [32m++++++++++++++++++++++[m
+ app/admin/customers/new/page.tsx                  |  17 [32m++++[m
+ app/admin/customers/page.tsx                      |  98 [32m+++++++++++++++++++[m
+ app/api/admin/customers/[id]/route.ts             |  53 [32m++++++++++[m
+ app/api/admin/customers/route.ts                  |  52 [32m++++++++++[m
+ app/api/admin/quotes/route.ts                     |  19 [32m+++[m[31m-[m
+ app/api/quote-requests/route.ts                   |  50 [32m++++++[m[31m----[m
+ app/du-an/[slug]/page.tsx                         |  35 [32m++++++[m[31m-[m
+ app/du-an/page.tsx                                |   6 [32m++[m
+ app/page.tsx                                      |  38 [32m+++++++[m[31m-[m
+ app/robots.ts                                     |  16 [32m++++[m
+ app/san-pham/[slug]/page.tsx                      |  42 [32m+++++++[m[31m-[m
+ app/san-pham/page.tsx                             |   7 [32m++[m
+ app/sitemap.ts                                    |  45 [32m+++++++++[m
+ components/admin/AdminNav.tsx                     |   1 [32m+[m
+ components/admin/CreateQuoteForCustomerButton.tsx |  33 [32m+++++++[m
+ components/admin/CustomerForm.tsx                 |  78 [32m+++++++++++++++[m
+ components/admin/DeleteCustomerButton.tsx         |  24 [32m+++++[m
+ lib/customer.ts                                   |  51 [32m++++++++++[m
+ package-lock.json                                 |   4 [32m+[m[31m-[m
+ package.json                                      |   2 [32m+[m[31m-[m
+ prisma/schema.prisma                              |  19 [32m++++[m
+ 24 files changed, 827 insertions(+), 55 deletions(-)

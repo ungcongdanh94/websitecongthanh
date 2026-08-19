@@ -1,0 +1,31 @@
+{
+  "home": {
+    "title": "CÔNG THẢNH | Nhôm thanh, phụ kiện cửa và nội thất nhôm tại An Giang",
+    "description": "CÔNG THẢNH cung cấp nhôm thanh định hình, phụ kiện cửa nhôm, gia công sơn tĩnh điện và giải pháp nội thất nhôm cho công trình, đại lý và xưởng sản xuất.",
+    "keywords": [
+      "nhôm An Giang",
+      "phụ kiện cửa nhôm",
+      "nhôm Xingfa",
+      "Xingfa Class A",
+      "CMECH",
+      "tủ bếp nhôm",
+      "nội thất nhôm"
+    ]
+  },
+  "products": {
+    "title": "Sản phẩm nhôm và phụ kiện | CÔNG THẢNH",
+    "description": "Tham khảo nhôm thanh, phụ kiện cửa, nội thất nhôm và giá sản phẩm tại CÔNG THẢNH."
+  },
+  "prices": {
+    "title": "Bảng giá nhôm và phụ kiện | CÔNG THẢNH",
+    "description": "Bảng giá tham khảo nhôm thanh, phụ kiện cửa và nội thất nhôm. Liên hệ CÔNG THẢNH để nhận báo giá theo số lượng và cấu hình."
+  },
+  "projects": {
+    "title": "Dự án và công trình thực tế | CÔNG THẢNH",
+    "description": "Tham khảo các giải pháp nhôm, phụ kiện và nội thất nhôm do CÔNG THẢNH cung cấp."
+  },
+  "contact": {
+    "title": "Liên hệ và nhận báo giá | CÔNG THẢNH",
+    "description": "Gửi nhu cầu sản phẩm, số lượng hoặc thông tin công trình để CÔNG THẢNH tư vấn và báo giá."
+  }
+}

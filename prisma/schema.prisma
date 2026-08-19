@@ -1,0 +1,276 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  EDITOR
+  CUSTOMER
+}
+
+enum PublishStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum QuoteStatus {
+  NEW
+  CONTACTED
+  QUOTED
+  WON
+  LOST
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      UserRole @default(CUSTOMER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  imageUrl    String?
+  sortOrder   Int       @default(0)
+  isActive    Boolean   @default(true)
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Brand {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  logoUrl     String?
+  websiteUrl  String?
+  description String?
+  isActive    Boolean   @default(true)
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Product {
+  id            String        @id @default(cuid())
+  name          String
+  slug          String        @unique
+  sku           String?       @unique
+  shortDesc     String?
+  description   String?
+  imageUrl      String?
+  gallery       Json?
+  price         Decimal?      @db.Decimal(14, 2)
+  dealerPrice   Decimal?      @db.Decimal(14, 2)
+  unit          String?
+  productLine   String?
+  aluminumSystem String?
+  color         String?
+  thickness     String?
+  stockLength   String?
+  catalogUrl    String?
+  videoUrl      String?
+  warrantyPolicy String?
+  seoTitle      String?
+  seoDescription String?
+  ogImage       String?
+  specs         Json?
+  isFeatured    Boolean       @default(false)
+  status        PublishStatus @default(DRAFT)
+  categoryId    String
+  brandId       String?
+  category      Category      @relation(fields: [categoryId], references: [id])
+  brand         Brand?        @relation(fields: [brandId], references: [id])
+  quoteItems    QuoteItem[]
+  priceChanges  PriceChange[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([categoryId])
+  @@index([brandId])
+  @@index([status])
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  description String?
+  coverUrl    String?
+  gallery     Json?
+  location    String?
+  completedAt DateTime?
+  status      PublishStatus @default(DRAFT)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Article {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  excerpt     String?
+  content     String?
+  coverUrl    String?
+  status      PublishStatus @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Banner {
+  id          String   @id @default(cuid())
+  slug        String?  @unique
+  title       String
+  subtitle    String?
+  imageUrl    String?
+  buttonLabel String?
+  buttonUrl   String?
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Customer {
+  id        String         @id @default(cuid())
+  name      String
+  phone     String         @unique
+  email     String?
+  company   String?
+  address   String?
+  note      String?
+  source    String?
+  quotes    QuoteRequest[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@index([phone])
+}
+
+model QuoteRequest {
+  id            String      @id @default(cuid())
+  quoteNumber   String?     @unique
+  customerName  String
+  phone         String
+  email         String?
+  company       String?
+  address       String?
+  note          String?
+  terms         String?
+  status        QuoteStatus @default(NEW)
+  source        String?
+  sourceUrl     String?
+  customerId    String?
+  customer      Customer?   @relation(fields: [customerId], references: [id])
+  subtotal      Decimal     @default(0) @db.Decimal(16, 2)
+  discountRate  Decimal     @default(0) @db.Decimal(6, 2)
+  discountValue Decimal     @default(0) @db.Decimal(16, 2)
+  taxRate       Decimal     @default(0) @db.Decimal(6, 2)
+  taxValue      Decimal     @default(0) @db.Decimal(16, 2)
+  total         Decimal     @default(0) @db.Decimal(16, 2)
+  validUntil    DateTime?
+  items         QuoteItem[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([quoteNumber])
+  @@index([customerId])
+}
+
+model QuoteItem {
+  id             String       @id @default(cuid())
+  quoteRequestId String
+  productId      String?
+  productName    String
+  quantity       Decimal      @default(1) @db.Decimal(12, 2)
+  unit           String?
+  unitPrice      Decimal      @default(0) @db.Decimal(14, 2)
+  discountRate   Decimal      @default(0) @db.Decimal(6, 2)
+  lineTotal      Decimal      @default(0) @db.Decimal(16, 2)
+  note           String?
+  sortOrder      Int          @default(0)
+  quoteRequest   QuoteRequest @relation(fields: [quoteRequestId], references: [id], onDelete: Cascade)
+  product        Product?     @relation(fields: [productId], references: [id])
+
+  @@index([quoteRequestId])
+  @@index([productId])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String?
+  email     String?
+  subject   String?
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MediaAsset {
+  id          String   @id @default(cuid())
+  publicId    String   @unique
+  url         String
+  secureUrl   String
+  fileName    String
+  mimeType    String
+  bytes       Int
+  width       Int?
+  height      Int?
+  folder      String   @default("general")
+  altText     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([folder])
+  @@index([createdAt])
+}
+
+model PriceChange {
+  id             String   @id @default(cuid())
+  productId      String
+  oldPrice       Decimal? @db.Decimal(14, 2)
+  newPrice       Decimal? @db.Decimal(14, 2)
+  oldDealerPrice Decimal? @db.Decimal(14, 2)
+  newDealerPrice Decimal? @db.Decimal(14, 2)
+  note           String?
+  effectiveAt    DateTime @default(now())
+  createdAt      DateTime @default(now())
+  product        Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([effectiveAt])
+}
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  key        String    @unique
+  label      String
+  isActive   Boolean   @default(true)
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([key])
+}
