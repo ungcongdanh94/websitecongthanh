@@ -73,11 +73,19 @@ export default async function HomePage(){
        <Link href="/san-pham" className="hidden rounded-md border border-[#0b6e4d]/40 px-4 py-2.5 text-xs font-black uppercase text-[#075d43] sm:inline-flex">Xem tất cả sản phẩm <ArrowRight className="ml-2 h-4 w-4"/></Link>
      </div>
      <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
-       {products.map(([name,slug])=><Link href="/san-pham" key={slug} className="group overflow-hidden rounded-lg border border-slate-200 bg-white shadow-[0_4px_16px_rgba(15,23,42,.06)]">
-         <div className="flex h-[170px] items-center justify-center bg-[#f4f5f2] p-3 sm:h-[180px]"><Image src={`/assets/catalog/${slug}.webp`} alt={name} width={480} height={720} sizes="(min-width:1024px) 14vw, (min-width:768px) 23vw, 46vw" className="h-full w-full object-contain object-center transition duration-300 group-hover:scale-[1.01]"/></div>
-         <div className="grid min-h-[42px] place-items-center px-2 py-2 text-center text-[10px] font-black uppercase leading-4 sm:text-[11px]">{name}</div>
+       {products.map(([name,slug])=><Link href="/san-pham" key={slug} className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_5px_18px_rgba(15,23,42,.07)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_26px_rgba(15,23,42,.10)]">
+         <div className="relative aspect-[0.98] overflow-hidden bg-white">
+           <Image src={`/assets/catalog/${slug}.webp`} alt={name} fill sizes="(min-width:1024px) 14vw, (min-width:768px) 23vw, 46vw" className="object-cover object-center transition duration-500 group-hover:scale-[1.025]"/>
+         </div>
+         <div className="relative border-t border-slate-100 bg-white px-2 pb-3 pt-5">
+           <div className="absolute left-1/2 top-0 grid h-9 w-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-lg border-2 border-white bg-[#063c31] text-[#65d69a] shadow-md">
+             <BadgeCheck className="h-4 w-4"/>
+           </div>
+           <div className="grid min-h-[34px] place-items-center text-center text-[10px] font-black uppercase leading-4 sm:text-[11px]">{name}</div>
+         </div>
        </Link>)}
      </div>
+     <div className="mt-9 flex justify-center sm:hidden"><Link href="/san-pham" className="inline-flex rounded-md border border-[#0b6e4d]/40 px-5 py-3 text-xs font-black uppercase text-[#075d43]">Xem tất cả sản phẩm <ArrowRight className="ml-2 h-4 w-4"/></Link></div>
    </section>
 
    <section className="bg-[#063c31] text-white">
