@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## v0.37.0 — UI trang chủ theo mockup Zen: brand carousel, footer 5 cột, 6 lý do chọn CÔNG THẢNH
+
+Áp 3 hạng mục UI còn thiếu theo mockup Zen gửi trước đó (chỉ tham khảo layout/spacing, không copy chữ vì mockup viết sai "CÔNG THÀNH") — làm trên nền `main` hiện tại (đã qua Sprint A→F), không đụng tới CMS/schema/logic đã có.
+
+### ✨ Đã thêm
+
+- **Khối "Đối tác & thương hiệu" (trang chủ)**: đổi từ lưới ô vuông cố định sang **thanh cuộn ngang** kiểu wordmark, có 2 nút mũi tên trái/phải (`components/BrandsCarousel.tsx`, client component mới — nhận URL logo đã chuẩn hóa từ server, không tự import `lib/cloudinary*` để tránh lỗi bundle client/server).
+- **Footer**: mở rộng từ 3 cột lên **5 cột** — Công ty (logo, mô tả, icon Zalo/Facebook khi có cấu hình), Liên kết nhanh, Sản phẩm, Hỗ trợ (hotline, Zalo, giờ làm việc, website), Thông tin liên hệ (địa chỉ từng cơ sở). Không thêm route mới.
+- **Section "Vì sao chọn CÔNG THẢNH"**: mở rộng từ 4 mục lên **6 mục**, thêm "Đội ngũ chuyên nghiệp" và "Hệ thống đại lý toàn quốc".
+
+### File thay đổi
+`app/page.tsx`, `components/Footer.tsx`, `components/BrandsCarousel.tsx` (mới).
+
+Không có thay đổi schema.
+
+---
+
 ## v0.36.0 — Sprint F: Production QA
 
 ### ✅ Đã audit, kết quả sạch (không cần sửa)
