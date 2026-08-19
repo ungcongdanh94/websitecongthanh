@@ -1,5 +1,27 @@
 # CHANGELOG
 
+## v0.40.0 — Nâng cấp khối "Quy trình làm việc" hero + nút Hotline dạng pill theo mockup Zen
+
+Zen gửi 1 mockup hero khác (lại viết sai "CÔNG THÀNH" — chỉ tham khảo layout, không copy chữ). Đã đối chiếu: phần lớn nội dung hero đã khớp sẵn từ trước, chỉ còn 2 việc làm được ngay không cần ảnh thật:
+
+### ✨ Đã thêm
+
+- **Khối "Quy trình làm việc chuyên nghiệp"** (thẻ nổi trong hero): mỗi bước giờ có icon riêng, mô tả phụ 1 dòng, và mũi tên bên phải — thay vì chỉ số thứ tự + tên bước như trước.
+- **Nút Hotline ở header**: bọc khung viền bo tròn (pill), giống mockup — trước đó chỉ có icon + chữ không khung.
+
+### ❌ Không làm theo mockup (có lý do)
+
+- **Menu header trong mockup chỉ có 6 mục**, thiếu Thương hiệu/Bảng giá/So sánh/Phần mềm đang có thật trên site — giữ nguyên menu đầy đủ, không cắt bớt trang thật.
+- **Dải 4 mục "Sản phẩm cao cấp/Chất lượng bền vững/..."** dưới hero — trùng lặp nội dung với section "Vì sao chọn CÔNG THẢNH" đã có (6 mục) ngay phía dưới — bỏ qua để tránh lặp ý.
+- **Ảnh villa nền hero + ảnh 4 danh mục sản phẩm thật** trong mockup — cần ảnh chụp thật chất lượng cao, chưa có.
+
+### File thay đổi
+`app/page.tsx`, `components/Header.tsx`.
+
+Không có thay đổi schema.
+
+---
+
 ## v0.39.0 — Gắn link công cụ song bảo vệ thật vào trang /phan-mem
 
 Trang `/phan-mem` trước giờ chỉ giới thiệu chung, ghi "đang phát triển" cho cả 4 công cụ, không có link nào bấm được. Zen đã có công cụ song bảo vệ chạy thật tại `https://songbaove.up.railway.app/` — gắn link trực tiếp vào trang.

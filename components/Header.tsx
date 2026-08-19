@@ -140,7 +140,10 @@ export default function Header() {
           )}
         </div>
 
-        <a href={`tel:${hotline.replace(/\s/g, "")}`} className="hidden shrink-0 items-center gap-3 xl:flex">
+        <a
+          href={`tel:${hotline.replace(/\s/g, "")}`}
+          className="hidden shrink-0 items-center gap-3 rounded-full border border-slate-200 bg-white px-3 py-1.5 xl:flex"
+        >
           <span className="grid h-10 w-10 place-items-center rounded-full bg-brand-50 text-brand-700">
             <Phone className="h-4 w-4" />
           </span>

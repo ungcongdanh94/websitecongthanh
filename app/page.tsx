@@ -7,9 +7,13 @@ import {
   Building2,
   Calculator,
   ChevronRight,
+  Factory,
+  HardHat,
   Headphones,
   Layers3,
   MapPin,
+  PenTool,
+  Ruler,
   ShieldCheck,
   Sparkles,
   Users
@@ -37,6 +41,15 @@ const spaceSolutions = assetsV2.solutions.map((item) => ({
   image: item.image,
   title: spaceSolutionLabels[item.slug] || item.slug
 }));
+
+const workProcess = [
+  { icon: Headphones, title: "Tư vấn", text: "Tư vấn giải pháp phù hợp nhu cầu" },
+  { icon: Ruler, title: "Khảo sát", text: "Khảo sát và đo đạc thực tế" },
+  { icon: PenTool, title: "Thiết kế", text: "Lên bản vẽ thiết kế chi tiết" },
+  { icon: Factory, title: "Sản xuất", text: "Sản xuất theo đúng quy cách" },
+  { icon: HardHat, title: "Thi công", text: "Thi công lắp đặt đúng kỹ thuật" },
+  { icon: ShieldCheck, title: "Bảo hành", text: "Bảo hành và hỗ trợ sau lắp đặt" }
+];
 
 const strengths = [
   {
@@ -214,19 +227,24 @@ export default async function HomePage() {
                     Quy trình làm việc chuyên nghiệp
                   </div>
                   <div className="mt-5 grid gap-2.5">
-                    {["Tư vấn", "Khảo sát", "Thiết kế", "Sản xuất", "Thi công", "Bảo hành"].map(
-                      (item, index) => (
-                        <div
-                          key={item}
-                          className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-3.5"
-                        >
-                          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-500 font-black">
-                            {index + 1}
-                          </span>
-                          <span className="font-bold">{item}</span>
+                    {workProcess.map(({ icon: Icon, title, text }, index) => (
+                      <div
+                        key={title}
+                        className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3"
+                      >
+                        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-500/20 text-brand-300">
+                          <Icon className="h-5 w-5" />
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 text-sm font-bold">
+                            <span className="text-brand-300">{String(index + 1).padStart(2, "0")}</span>
+                            {title}
+                          </div>
+                          <div className="truncate text-xs text-white/60">{text}</div>
                         </div>
-                      )
-                    )}
+                        <ChevronRight className="h-4 w-4 shrink-0 text-white/40" />
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
