@@ -211,14 +211,14 @@ export default async function HomePage() {
               <div className="w-full max-w-[460px] shrink-0 lg:w-[38%]">
                 <div className="rounded-[1.75rem] border border-white/15 bg-white/10 p-5 shadow-2xl backdrop-blur-2xl">
                   <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-200">
-                    Quy trình đặt hàng
+                    Quy trình làm việc chuyên nghiệp
                   </div>
-                  <div className="mt-5 grid gap-3">
-                    {["Chọn sản phẩm", "So sánh cấu hình", "Gửi yêu cầu báo giá"].map(
+                  <div className="mt-5 grid gap-2.5">
+                    {["Tư vấn", "Khảo sát", "Thiết kế", "Sản xuất", "Thi công", "Bảo hành"].map(
                       (item, index) => (
                         <div
                           key={item}
-                          className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-4"
+                          className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-3.5"
                         >
                           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-500 font-black">
                             {index + 1}

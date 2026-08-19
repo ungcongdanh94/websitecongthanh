@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## v0.38.0 — Sửa khối "Quy trình đặt hàng" ở hero trang chủ theo poster thật
+
+Zen gửi 1 poster infographic công ty (đúng chính tả "CÔNG THẢNH") có sẵn khối "Quy trình làm việc chuyên nghiệp" 6 bước — thay cho khối 3 bước cũ trên trang chủ (vốn chỉ mô tả luồng thao tác trên web: chọn sản phẩm → so sánh → gửi báo giá, không phản ánh đúng quy trình thực tế của công ty).
+
+### 🔧 Đã sửa
+
+- Khối thẻ nổi trong hero trang chủ: đổi 3 bước ("Chọn sản phẩm", "So sánh cấu hình", "Gửi yêu cầu báo giá") thành **6 bước đúng theo poster**: Tư vấn → Khảo sát → Thiết kế → Sản xuất → Thi công → Bảo hành.
+- Đổi tiêu đề khối từ "Quy trình đặt hàng" thành **"Quy trình làm việc chuyên nghiệp"** cho khớp nội dung mới (không còn chỉ là bước đặt hàng, mà là toàn bộ quy trình dịch vụ).
+
+### File thay đổi
+`app/page.tsx`.
+
+Không có thay đổi schema.
+
+---
+
 ## v0.37.0 — UI trang chủ theo mockup Zen: brand carousel, footer 5 cột, 6 lý do chọn CÔNG THẢNH
 
 Áp 3 hạng mục UI còn thiếu theo mockup Zen gửi trước đó (chỉ tham khảo layout/spacing, không copy chữ vì mockup viết sai "CÔNG THÀNH") — làm trên nền `main` hiện tại (đã qua Sprint A→F), không đụng tới CMS/schema/logic đã có.
