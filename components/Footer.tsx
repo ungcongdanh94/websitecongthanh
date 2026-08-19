@@ -15,7 +15,7 @@ export default function Footer() {
   const facebookUrl = process.env.NEXT_PUBLIC_FACEBOOK_URL;
 
   return (
-    <footer className="mt-24 bg-brand-900 text-brand-100">
+    <footer className="bg-brand-900 text-brand-100">
       <div className="container-page grid gap-12 py-16 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <div className="flex items-center gap-3">
