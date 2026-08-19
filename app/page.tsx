@@ -74,7 +74,7 @@ export default async function HomePage(){
      </div>
      <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
        {products.map(([name,slug])=><Link href="/san-pham" key={slug} className="group overflow-hidden rounded-lg border border-slate-200 bg-white shadow-[0_4px_16px_rgba(15,23,42,.06)]">
-         <div className="relative aspect-[1.42] overflow-hidden bg-[#f4f5f2] p-2.5 sm:p-3"><div className="relative h-full w-full overflow-hidden rounded-md"><Image src={`/assets/catalog/${slug}.webp`} alt={name} fill sizes="(min-width:1024px) 14vw, (min-width:768px) 23vw, 46vw" className="object-contain object-center transition duration-300 group-hover:scale-[1.015]"/></div></div>
+         <div className="flex h-[170px] items-center justify-center bg-[#f4f5f2] p-3 sm:h-[180px]"><Image src={`/assets/catalog/${slug}.webp`} alt={name} width={480} height={720} sizes="(min-width:1024px) 14vw, (min-width:768px) 23vw, 46vw" className="h-full w-full object-contain object-center transition duration-300 group-hover:scale-[1.01]"/></div>
          <div className="grid min-h-[42px] place-items-center px-2 py-2 text-center text-[10px] font-black uppercase leading-4 sm:text-[11px]">{name}</div>
        </Link>)}
      </div>
