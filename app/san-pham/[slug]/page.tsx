@@ -189,10 +189,10 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
           <div className="text-sm font-bold uppercase tracking-widest text-brand-700">
             {product.brand?.name || product.category.name}
           </div>
-          <h1 className="mt-3 text-4xl font-black text-slate-950 md:text-6xl">{product.name}</h1>
+          <h1 className="mt-3 text-2xl font-black text-slate-950 md:text-4xl">{product.name}</h1>
           {product.sku && <p className="mt-3 text-sm font-semibold text-slate-500">Mã sản phẩm: {product.sku}</p>}
 
-          <div className="mt-6 text-3xl font-black text-brand-700">
+          <div className="mt-6 text-2xl font-black text-brand-700">
             {product.price
               ? `Từ ${Number(product.price).toLocaleString("vi-VN")} đ${product.unit ? `/${product.unit}` : ""}`
               : "Liên hệ báo giá"}
