@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## v0.39.0 — Gắn link công cụ song bảo vệ thật vào trang /phan-mem
+
+Trang `/phan-mem` trước giờ chỉ giới thiệu chung, ghi "đang phát triển" cho cả 4 công cụ, không có link nào bấm được. Zen đã có công cụ song bảo vệ chạy thật tại `https://songbaove.up.railway.app/` — gắn link trực tiếp vào trang.
+
+### ✨ Đã thêm
+
+- Nút **"Mở công cụ song bảo vệ"** ở khối hero, mở tab mới tới `songbaove.up.railway.app`.
+- Thẻ **"Dựng hình nhanh"** (1 trong 4 thẻ tính năng) giờ bấm được, dẫn thẳng tới công cụ — có nhãn "Dùng thử ngay". 3 thẻ còn lại (Tính vật tư, Xuất bảng cắt, Chuẩn bị tích hợp AI) vẫn giữ nhãn "Đang phát triển" vì chưa có công cụ thật.
+- Sửa câu mô tả hero cho đúng thực tế: không còn ghi tất cả "đang phát triển" nữa, tách rõ phần đã dùng được và phần đang làm tiếp.
+
+### File thay đổi
+`app/phan-mem/page.tsx`.
+
+Không có thay đổi schema.
+
+---
+
 ## v0.38.0 — Sửa khối "Quy trình đặt hàng" ở hero trang chủ theo poster thật
 
 Zen gửi 1 poster infographic công ty (đúng chính tả "CÔNG THẢNH") có sẵn khối "Quy trình làm việc chuyên nghiệp" 6 bước — thay cho khối 3 bước cũ trên trang chủ (vốn chỉ mô tả luồng thao tác trên web: chọn sản phẩm → so sánh → gửi báo giá, không phản ánh đúng quy trình thực tế của công ty).
