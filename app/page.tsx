@@ -67,21 +67,21 @@ export default async function HomePage(){
      </div>
    </section>
 
-   <section className="container-page py-14">
+   <section className="container-page py-12">
      <div className="mb-7 flex items-end justify-between">
        <div><div className="text-xs font-black uppercase tracking-[.12em] text-[#168055]">Sản phẩm nổi bật</div><h2 className="mt-2 text-3xl font-black uppercase">Giải pháp nhôm cao cấp</h2></div>
        <Link href="/san-pham" className="hidden rounded-md border border-[#0b6e4d]/40 px-4 py-2.5 text-xs font-black uppercase text-[#075d43] sm:inline-flex">Xem tất cả sản phẩm <ArrowRight className="ml-2 h-4 w-4"/></Link>
      </div>
-     <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
+     <div className="mx-auto grid max-w-[1320px] grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-5">
        {products.map(([name,slug])=><Link href="/san-pham" key={slug} className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_5px_18px_rgba(15,23,42,.07)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_26px_rgba(15,23,42,.10)]">
-         <div className="relative aspect-[0.98] overflow-hidden bg-white">
-           <Image src={`/assets/catalog/${slug}.webp`} alt={name} fill sizes="(min-width:1024px) 14vw, (min-width:768px) 23vw, 46vw" className="object-cover object-center transition duration-500 group-hover:scale-[1.025]"/>
+         <div className="relative aspect-[1.08] overflow-hidden bg-white">
+           <Image src={`/assets/catalog/${slug}.webp`} alt={name} fill sizes="(min-width:1024px) 14vw, (min-width:768px) 23vw, 46vw" className="object-cover object-center transition duration-500 group-hover:scale-[1.018]"/>
          </div>
-         <div className="relative border-t border-slate-100 bg-white px-2 pb-3 pt-5">
-           <div className="absolute left-1/2 top-0 grid h-9 w-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-lg border-2 border-white bg-[#063c31] text-[#65d69a] shadow-md">
-             <BadgeCheck className="h-4 w-4"/>
+         <div className="relative border-t border-slate-100 bg-white px-2 pb-2.5 pt-4.5">
+           <div className="absolute left-1/2 top-0 grid h-8 w-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-lg border-2 border-white bg-[#063c31] text-[#65d69a] shadow-md">
+             <BadgeCheck className="h-3.5 w-3.5"/>
            </div>
-           <div className="grid min-h-[34px] place-items-center text-center text-[10px] font-black uppercase leading-4 sm:text-[11px]">{name}</div>
+           <div className="grid min-h-[32px] place-items-center text-center text-[10px] font-black uppercase leading-4">{name}</div>
          </div>
        </Link>)}
      </div>
