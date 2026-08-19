@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## v0.41.0 — Sửa lỗi menu "Dịch vụ" trỏ tới trang không tồn tại (404)
+
+Zen gửi 1 mockup trang chủ đầy đủ hơn (lại viết sai "CÔNG THÀNH"). Đối chiếu kỹ thấy phần lớn nội dung mockup (thống kê 20+/1000+/5000+, mục Tin tức/blog, 12 ảnh loại cửa minh họa, trang Chính sách bảo mật/Điều khoản) đều cần số liệu/nội dung/ảnh thật mà hiện chưa có — theo yêu cầu của Zen, tạm gác lại toàn bộ phần đó, **chỉ sửa phần layout không cần dữ liệu mới**.
+
+### 🐛 Đã sửa (lỗi thật, phát hiện khi audit — không liên quan mockup)
+
+Menu header có mục **"Dịch vụ"** trỏ tới `/dich-vu` — trang này **không tồn tại**, bấm vào ra lỗi 404. Đã gỡ mục này khỏi menu. Sẽ thêm lại khi Zen có nội dung dịch vụ thật để dựng trang.
+
+### 📌 Còn lại, chờ Zen cung cấp dữ liệu thật để làm tiếp
+- Số liệu thống kê (năm kinh nghiệm/khách hàng/công trình) — số trong mockup khác số đang có trên site, cần Zen xác nhận số đúng.
+- Tính năng Tin tức (blog) — chưa xây, cần nội dung bài viết thật.
+- Ảnh thật cho từng loại cửa/sổ nếu muốn làm khối minh họa chi tiết như mockup.
+- Trang Chính sách bảo mật / Điều khoản sử dụng — cần nội dung pháp lý thật.
+
+### File thay đổi
+`components/Header.tsx`.
+
+Không có thay đổi schema.
+
+---
+
 ## v0.40.0 — Nâng cấp khối "Quy trình làm việc" hero + nút Hotline dạng pill theo mockup Zen
 
 Zen gửi 1 mockup hero khác (lại viết sai "CÔNG THÀNH" — chỉ tham khảo layout, không copy chữ). Đã đối chiếu: phần lớn nội dung hero đã khớp sẵn từ trước, chỉ còn 2 việc làm được ngay không cần ảnh thật:
