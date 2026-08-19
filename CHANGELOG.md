@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## v0.43.0 — Thu nhỏ ảnh thẻ sản phẩm ở trang /san-pham
+
+Zen yêu cầu ảnh thẻ sản phẩm nhỏ lại. Đổi tỉ lệ khung ảnh từ `aspect-[4/3]` (cao) sang `aspect-[16/10]` (thấp hơn, gọn hơn) trong `DatabaseProductCard.tsx` — dùng chung cho mọi nơi hiển thị card sản phẩm (trang chủ, `/san-pham`, sản phẩm liên quan).
+
+### ⚠️ Đang chờ Zen — lỗi ảnh sản phẩm không tải được
+
+Zen gửi ảnh chụp `/san-pham` cho thấy nhiều ảnh sản phẩm bị lỗi không hiện (chỉ hiện chữ alt-text thay vì ảnh thật, ví dụ "Tủ Nhôm Nội Thất", "Cabin Phòng Tắm"). Đây là lỗi thật, nhiều khả năng do URL ảnh trỏ tới domain chưa được khai báo trong `next.config.mjs` (`images.remotePatterns` hiện chỉ cho phép `res.cloudinary.com` và `images.unsplash.com`) hoặc link ảnh đã hỏng. Cần Zen cung cấp URL ảnh thật đang lỗi (chuột phải ảnh → Copy image address) để xác định đúng nguyên nhân trước khi sửa — chưa xử lý trong bản này.
+
+### File thay đổi
+`components/DatabaseProductCard.tsx`.
+
+Không có thay đổi schema.
+
+---
+
 ## v0.42.0 — Sửa lỗi ảnh bị crop mất phần trong khối "Giải pháp nhôm cao cấp"
 
 ### ⚠️ Ghi chú bàn giao
