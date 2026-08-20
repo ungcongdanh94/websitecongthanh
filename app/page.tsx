@@ -44,7 +44,6 @@ export default async function HomePage(){
      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/48 to-black/15" />
      <div className="container-page relative grid min-h-[620px] items-center gap-10 py-12 lg:grid-cols-[1.02fr_.72fr]">
        <div className="max-w-[610px]">
-         <div className="inline-flex rounded-full border border-white/20 bg-black/35 px-4 py-2 text-xs font-extrabold uppercase tracking-[.14em] text-white/90">XINGFA · NAMSUNG · DRAHO · CANDY · CHÍNH HÃNG</div>
          <h1 className="mt-7 text-5xl font-black uppercase leading-[.98] tracking-tight md:text-6xl">Nhôm cao cấp <span className="mt-2 block text-[#65d69a]">Bền vững cùng<br/>thời gian</span></h1>
          <p className="mt-7 max-w-[560px] text-base leading-7 text-white/90">CÔNG THẢNH cung cấp giải pháp nhôm toàn diện cho cửa đi, cửa sổ, vách kính, tủ bếp, lan can, hàng rào và nội thất cao cấp.</p>
          <div className="mt-8 flex gap-3">
