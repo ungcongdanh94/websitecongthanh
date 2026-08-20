@@ -17,7 +17,7 @@ export default function Footer() {
   return (
     <footer className="bg-brand-900 text-brand-100">
       <div className="container-page grid gap-12 py-16 lg:grid-cols-12">
-        <div className="lg:col-span-4">
+        <div className="lg:col-span-6">
           <div className="flex items-center gap-3">
             <span className="relative h-12 w-12 shrink-0">
               <Image
@@ -94,7 +94,6 @@ export default function Footer() {
             <Link href="/san-pham" className="hover:text-white">Tất cả sản phẩm</Link>
             <Link href="/thuong-hieu" className="hover:text-white">Thương hiệu</Link>
             <Link href="/so-sanh" className="hover:text-white">So sánh sản phẩm</Link>
-            <Link href="/phan-mem" className="hover:text-white">Phần mềm</Link>
           </div>
         </div>
 
@@ -125,17 +124,19 @@ export default function Footer() {
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="lg:col-span-2">
+      <div className="border-t border-white/10">
+        <div className="container-page py-10">
           <h3 className="font-bold text-white">Thông tin liên hệ</h3>
-          <div className="mt-5 grid gap-4 text-sm">
+          <div className="mt-5 grid gap-5 sm:grid-cols-3">
             {site.locations.map((loc) => (
-              <div key={loc.label} className="flex gap-3">
+              <div key={loc.label} className="flex gap-3 rounded-xl bg-white/5 p-4 text-sm">
                 <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-brand-300" />
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wide text-brand-300">{loc.label}</div>
                   <div className="mt-0.5">{loc.address}</div>
-                  <a href={`tel:${loc.phone.replace(/\s/g, "")}`} className="mt-0.5 block hover:text-white">
+                  <a href={`tel:${loc.phone.replace(/\s/g, "")}`} className="mt-0.5 block font-semibold hover:text-white">
                     {loc.phone}
                   </a>
                 </div>
