@@ -94,7 +94,7 @@ export default function Footer() {
             <Link href="/san-pham" className="hover:text-white">Tất cả sản phẩm</Link>
             <Link href="/thuong-hieu" className="hover:text-white">Thương hiệu</Link>
             <Link href="/so-sanh" className="hover:text-white">So sánh sản phẩm</Link>
-            <Link href="/bang-gia" className="hover:text-white">Bảng giá</Link>
+            <Link href="/phan-mem" className="hover:text-white">Phần mềm</Link>
           </div>
         </div>
 

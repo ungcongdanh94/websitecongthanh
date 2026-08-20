@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, Building2, Factory, Headphones, PenTool, Ruler, ShieldCheck, Users, Wrench, Medal, Phone } from "lucide-react";
+import { ArrowRight, BadgeCheck, Building2, Factory, Headphones, PenTool, Ruler, ShieldCheck, Users, Wrench, Medal, Phone, Truck, Award } from "lucide-react";
 import { prisma } from "@/lib/prisma";
+import BrandStrip from "@/components/BrandStrip";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +35,7 @@ export default async function HomePage(){
  let dbProjects:any[]=[]; let brands:any[]=[];
  try { [dbProjects,brands]=await Promise.all([
    prisma.project.findMany({where:{status:"PUBLISHED"},orderBy:{createdAt:"desc"},take:4}),
-   prisma.brand.findMany({where:{isActive:true},orderBy:{name:"asc"},take:6})
+   prisma.brand.findMany({where:{isActive:true},orderBy:{name:"asc"},take:12})
  ]); } catch {}
  const projects=dbProjects.length?dbProjects.map(p=>[p.title,p.location||"CÔNG THẢNH",p.coverUrl||"/assets/projects/project-villa.webp",p.slug]):projectFallback;
  return <main className="bg-white text-slate-950">
@@ -89,9 +90,9 @@ export default async function HomePage(){
    </section>
 
    <section className="bg-[#063c31] text-white">
-     <div className="container-page grid lg:grid-cols-[1.45fr_repeat(4,1fr)]">
-       <div className="py-9 pr-8"><div className="text-xs font-black uppercase tracking-wider text-[#63d89a]">Về CÔNG THẢNH</div><h2 className="mt-3 text-2xl font-black uppercase leading-tight">Đối tác tin cậy<br/>cho mọi công trình</h2><p className="mt-4 max-w-sm text-xs leading-5 text-white/72">Với kinh nghiệm nhiều năm trong lĩnh vực nhôm cao cấp, CÔNG THẢNH cam kết mang đến sản phẩm chính hãng, chất lượng vượt trội và dịch vụ chuyên nghiệp nhất.</p><Link href="/gioi-thieu" className="mt-5 inline-flex rounded-md bg-[#0aa765] px-4 py-2.5 text-xs font-black uppercase">Tìm hiểu thêm →</Link></div>
-       {[[Building2,"20+","Năm kinh nghiệm"],[Users,"1000+","Khách hàng"],[Factory,"5000+","Công trình"],[Medal,"100%","Chính hãng"]].map(([Icon,n,l]:any)=><div key={l} className="grid place-items-center border-t border-white/10 py-8 text-center lg:border-l lg:border-t-0"><div><Icon className="mx-auto h-9 w-9 text-lime-400"/><div className="mt-4 text-3xl font-black">{n}</div><div className="mt-1 text-xs font-black uppercase text-lime-300">{l}</div></div></div>)}
+     <div className="container-page grid lg:grid-cols-[1.15fr_repeat(6,1fr)]">
+       <div className="py-9 pr-8"><div className="text-xs font-black uppercase tracking-wider text-[#63d89a]">Vì sao chọn CÔNG THẢNH</div><h2 className="mt-3 text-2xl font-black uppercase leading-tight">Đối tác tin cậy<br/>cho mọi công trình</h2><p className="mt-4 max-w-sm text-xs leading-5 text-white/72">Với kinh nghiệm nhiều năm trong lĩnh vực nhôm cao cấp, CÔNG THẢNH cam kết mang đến sản phẩm chính hãng, chất lượng vượt trội và dịch vụ chuyên nghiệp nhất.</p><Link href="/gioi-thieu" className="mt-5 inline-flex rounded-md bg-[#0aa765] px-4 py-2.5 text-xs font-black uppercase">Tìm hiểu thêm →</Link></div>
+       {[[Building2,"20+","Năm kinh nghiệm"],[Award,"100%","Sản phẩm chính hãng"],[BadgeCheck,"Đồng bộ","Giải pháp toàn diện"],[Users,"Chuyên môn","Đội ngũ nhân sự"],[Truck,"Sẵn hàng","Kho vật tư lớn"],[Factory,"Toàn quốc","Hệ thống đại lý"]].map(([Icon,n,l]:any)=><div key={l} className="grid place-items-center border-t border-white/10 py-8 text-center lg:border-l lg:border-t-0"><div><Icon className="mx-auto h-9 w-9 text-lime-400"/><div className="mt-4 text-xl font-black">{n}</div><div className="mt-1 text-xs font-black uppercase text-lime-300">{l}</div></div></div>)}
      </div>
    </section>
 
@@ -99,6 +100,6 @@ export default async function HomePage(){
 
    <section className="container-page pb-14"><div className="mb-6 flex items-end justify-between"><h2 className="text-xl font-black uppercase">Tin tức mới nhất</h2><span className="text-xs font-black uppercase">Xem tất cả tin tức →</span></div><div className="grid gap-5 lg:grid-cols-[1fr_1fr_1fr_1fr_290px]">{[...news,["Quy trình thi công cửa nhôm chuẩn kỹ thuật","/assets/solutions/solution-villa.webp"]].map(([t,img])=><div key={t} className="overflow-hidden rounded-lg border bg-white shadow-sm"><div className="relative aspect-[1.65]"><Image src={img} alt={t} fill className="object-cover"/></div><div className="p-3"><div className="text-[10px] text-slate-400">10/05/2026</div><div className="mt-2 text-xs font-bold leading-5">{t}</div><div className="mt-3 text-[11px] font-bold text-[#08764f]">Đọc thêm →</div></div></div>)}<div className="rounded-lg bg-[#064333] p-6 text-white"><div className="text-xl font-black uppercase">Cần tư vấn ngay?</div><p className="mt-3 text-xs leading-5 text-white/70">Đội ngũ chuyên viên của chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7.</p><Link href="/lien-he" className="mt-6 inline-flex rounded-md bg-[#0cad68] px-5 py-3 text-xs font-black uppercase">Liên hệ ngay →</Link><div className="mt-5 text-xs font-bold">Hotline: 0908 22 99 77</div></div></div></section>
 
-   <section className="container-page pb-14"><div className="text-center text-xs font-black uppercase tracking-wider text-[#17694e]">Đối tác – thương hiệu</div><div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">{(brands.length?brands.map((b:any)=>b.name):["XINGFA","NAMSUNG","DRAHO","CMECH","CANDY","KIN LONG"]).slice(0,6).map((b:any)=><div key={typeof b==='string'?b:b.name} className="grid min-h-[76px] place-items-center rounded-lg border bg-white px-4 text-xl font-black text-[#17694e] shadow-sm">{typeof b==='string'?b:b.name}</div>)}</div></section>
+   <section className="container-page pb-14"><div className="text-center text-xs font-black uppercase tracking-wider text-[#17694e]">Đối tác – thương hiệu</div><BrandStrip brands={(brands.length?brands.map((b:any)=>b.name):["XINGFA","NAMSUNG","DRAHO","CMECH","CANDY","KIN LONG"])} /></section>
  </main>
 }
