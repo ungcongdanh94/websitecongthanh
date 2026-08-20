@@ -90,9 +90,11 @@ export default async function HomePage(){
    </section>
 
    <section className="bg-[#063c31] text-white">
-     <div className="container-page grid lg:grid-cols-[1.15fr_repeat(6,1fr)]">
-       <div className="py-9 pr-8"><div className="text-xs font-black uppercase tracking-wider text-[#63d89a]">Vì sao chọn CÔNG THẢNH</div><h2 className="mt-3 text-2xl font-black uppercase leading-tight">Đối tác tin cậy<br/>cho mọi công trình</h2><p className="mt-4 max-w-sm text-xs leading-5 text-white/72">Với kinh nghiệm nhiều năm trong lĩnh vực nhôm cao cấp, CÔNG THẢNH cam kết mang đến sản phẩm chính hãng, chất lượng vượt trội và dịch vụ chuyên nghiệp nhất.</p><Link href="/gioi-thieu" className="mt-5 inline-flex rounded-md bg-[#0aa765] px-4 py-2.5 text-xs font-black uppercase">Tìm hiểu thêm →</Link></div>
-       {[[Building2,"20+","Năm kinh nghiệm"],[Award,"100%","Sản phẩm chính hãng"],[BadgeCheck,"Đồng bộ","Giải pháp toàn diện"],[Users,"Chuyên môn","Đội ngũ nhân sự"],[Truck,"Sẵn hàng","Kho vật tư lớn"],[Factory,"Toàn quốc","Hệ thống đại lý"]].map(([Icon,n,l]:any)=><div key={l} className="grid place-items-center border-t border-white/10 py-8 text-center lg:border-l lg:border-t-0"><div><Icon className="mx-auto h-9 w-9 text-lime-400"/><div className="mt-4 text-xl font-black">{n}</div><div className="mt-1 text-xs font-black uppercase text-lime-300">{l}</div></div></div>)}
+     <div className="container-page grid gap-10 py-12 lg:grid-cols-[minmax(0,340px)_1fr] lg:items-center">
+       <div><div className="text-xs font-black uppercase tracking-wider text-[#63d89a]">Vì sao chọn CÔNG THẢNH</div><h2 className="mt-3 text-2xl font-black uppercase leading-tight">Đối tác tin cậy cho mọi công trình</h2><p className="mt-4 max-w-sm text-xs leading-5 text-white/72">Với kinh nghiệm nhiều năm trong lĩnh vực nhôm cao cấp, CÔNG THẢNH cam kết mang đến sản phẩm chính hãng, chất lượng vượt trội và dịch vụ chuyên nghiệp nhất.</p><Link href="/gioi-thieu" className="mt-5 inline-flex rounded-md bg-[#0aa765] px-4 py-2.5 text-xs font-black uppercase">Tìm hiểu thêm →</Link></div>
+       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+         {[[Building2,"20+","Năm kinh nghiệm"],[Award,"100%","Sản phẩm chính hãng"],[BadgeCheck,"Đồng bộ","Giải pháp toàn diện"],[Users,"Chuyên môn","Đội ngũ nhân sự"],[Truck,"Sẵn hàng","Kho vật tư lớn"],[Factory,"Toàn quốc","Hệ thống đại lý"]].map(([Icon,n,l]:any)=><div key={l} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-6 text-center"><Icon className="mx-auto h-8 w-8 text-lime-400"/><div className="mt-3 text-xl font-black">{n}</div><div className="mt-1 text-xs font-bold uppercase leading-4 text-lime-300">{l}</div></div>)}
+       </div>
      </div>
    </section>
 
