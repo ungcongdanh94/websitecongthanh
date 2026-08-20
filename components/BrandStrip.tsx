@@ -1,51 +1,40 @@
 "use client";
 
-import { useRef } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
-export default function BrandStrip({ brands }: { brands: string[] }) {
-  const trackRef = useRef<HTMLDivElement>(null);
+type Brand = { name: string; logoUrl: string | null };
 
-  function scrollBy(amount: number) {
-    trackRef.current?.scrollBy({ left: amount, behavior: "smooth" });
-  }
+export default function BrandStrip({ brands }: { brands: Brand[] }) {
+  if (!brands.length) return null;
+
+  // Nhân đôi danh sách để tạo hiệu ứng chạy liên tục không bị giật/đứt đoạn.
+  const loop = [...brands, ...brands];
 
   return (
-    <div className="relative mt-6">
-      <div
-        ref={trackRef}
-        className="flex gap-3 overflow-x-auto scroll-smooth pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        {brands.map((name) => (
+    <div className="group mt-6 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
+      <div className="flex w-max animate-[brand-marquee_28s_linear_infinite] gap-4 group-hover:[animation-play-state:paused]">
+        {loop.map((brand, index) => (
           <div
-            key={name}
-            className="grid min-h-[76px] w-[160px] shrink-0 place-items-center rounded-lg border bg-white px-4 text-lg font-black text-[#17694e] shadow-sm"
+            key={`${brand.name}-${index}`}
+            className="grid h-[76px] w-[170px] shrink-0 place-items-center rounded-lg border bg-white px-4 shadow-sm"
           >
-            {name}
+            {brand.logoUrl ? (
+              <div className="relative h-full w-full py-3">
+                <Image src={brand.logoUrl} alt={brand.name} fill sizes="170px" className="object-contain" />
+              </div>
+            ) : (
+              <span className="text-center text-lg font-black leading-tight text-[#17694e]">{brand.name}</span>
+            )}
           </div>
         ))}
       </div>
 
-      {brands.length > 4 && (
-        <>
-          <button
-            type="button"
-            onClick={() => scrollBy(-340)}
-            aria-label="Xem thương hiệu trước"
-            className="absolute -left-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 place-items-center rounded-full border bg-white shadow-md sm:grid"
-          >
-            <ChevronLeft className="h-5 w-5 text-[#17694e]" />
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollBy(340)}
-            aria-label="Xem thương hiệu tiếp theo"
-            className="absolute -right-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 place-items-center rounded-full border bg-white shadow-md sm:grid"
-          >
-            <ChevronRight className="h-5 w-5 text-[#17694e]" />
-          </button>
-        </>
-      )}
+      <style>{`
+        @keyframes brand-marquee {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+      `}</style>
     </div>
   );
 }
