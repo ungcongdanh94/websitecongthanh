@@ -15,6 +15,7 @@ import {
 import { prisma } from "@/lib/prisma";
 import { normalizeLogoUrl } from "@/lib/cloudinaryUrl";
 import companyContent from "@/data/company-content.json";
+import BrandStrip from "@/components/BrandStrip";
 
 export const dynamic = "force-dynamic";
 
@@ -200,9 +201,9 @@ export default async function AboutPage() {
           <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-4">
             {[
               [`${yearsActive}+`, "Năm kinh nghiệm"],
-              ["50+", "Đại lý — đối tác"],
-              ["3.000+", "Công trình"],
-              ["10.000+", "Khách hàng tin dùng"]
+              ["100+", "Đại lý — đối tác"],
+              ["5.000+", "Công trình"],
+              ["5.000+", "Khách hàng tin dùng"]
             ].map(([num, label]) => (
               <div key={label}>
                 <div className="text-3xl font-black text-brand-300 sm:text-4xl">{num}</div>
@@ -248,22 +249,7 @@ export default async function AboutPage() {
             <div className="eyebrow">Đối tác</div>
             <h2 className="section-title mt-3">Thương hiệu đang phân phối.</h2>
           </div>
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4 xl:grid-cols-8">
-            {brands.map((brand) => (
-              <div
-                key={brand.id}
-                className="flex aspect-[3/2] items-center justify-center rounded-2xl border border-slate-100 bg-white p-5"
-              >
-                {brand.logoUrl ? (
-                  <div className="relative h-full w-full">
-                    <Image src={normalizeLogoUrl(brand.logoUrl)} alt={brand.name} fill sizes="150px" className="object-contain" />
-                  </div>
-                ) : (
-                  <span className="text-sm font-black uppercase tracking-wide text-slate-600">{brand.name}</span>
-                )}
-              </div>
-            ))}
-          </div>
+          <BrandStrip brands={brands.map((brand) => ({ name: brand.name, logoUrl: brand.logoUrl ? normalizeLogoUrl(brand.logoUrl) : null }))} />
         </section>
       )}
 
