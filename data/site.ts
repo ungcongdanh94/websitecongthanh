@@ -5,6 +5,7 @@ export const site = {
   address: "595A Trần Hưng Đạo, P. Bình Đức, An Giang",
   website: "www.congthanhco.com",
   hotline: "0908 22 99 77",
+  email: "mail@congthanhco.com",
   zaloUrl: "https://zalo.me/0908229977",
   locations: [
     {
