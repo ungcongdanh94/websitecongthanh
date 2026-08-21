@@ -43,6 +43,7 @@ async function seedRealCatalog() {
       name: item.name,
       sku: item.sku,
       shortDesc: "shortDesc" in item ? item.shortDesc : null,
+      description: "description" in item ? item.description : null,
       imageUrl: item.imageUrl,
       gallery: "gallery" in item ? item.gallery : undefined,
       color: "color" in item ? item.color : null,
