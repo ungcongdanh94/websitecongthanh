@@ -65,6 +65,19 @@ async function seedRealCatalog() {
     });
   }
 
+  // Dọn 3 danh mục lớn cũ (Cửa Nhôm / Cửa Kính / Cửa Kéo - Cửa Cuốn) — đã tách thành
+  // 15 danh mục con chi tiết đúng cấu trúc thật của web cũ, sản phẩm đã được gán lại ở
+  // trên. Chỉ xóa nếu không còn sản phẩm nào trỏ vào (an toàn — không xóa nhầm nếu có
+  // dữ liệu Zen tự thêm tay vào đó).
+  const obsoleteCategorySlugs = ["cua-nhom", "cua-kinh", "cua-keo-cua-cuon"];
+  for (const slug of obsoleteCategorySlugs) {
+    const category = await prisma.category.findUnique({ where: { slug }, include: { _count: { select: { products: true } } } });
+    if (category && category._count.products === 0) {
+      await prisma.category.delete({ where: { slug } });
+      console.log(`Đã xóa danh mục lớn cũ không còn dùng: ${slug}`);
+    }
+  }
+
   console.log(
     `Đã nhập catalog thật: ${realCatalog.categories.length} danh mục, ${realCatalog.brands.length} thương hiệu, ${realCatalog.products.length} sản phẩm từ congthanhco.com.`
   );
