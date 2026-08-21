@@ -1,5 +1,5 @@
 param(
-  [string]$RepoPath = "C:\Users\ACER\Downloads\websitecongthanh-new",
+  [string]$RepoPath = "$env:USERPROFILE\Downloads\websitecongthanh-new",
   [string]$RepoUrl = "https://github.com/ungcongdanh94/websitecongthanh.git"
 )
 
