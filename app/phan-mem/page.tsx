@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Công cụ dựng hình song bảo vệ dùng thử ngay, cùng các công cụ tính vật tư và xuất bảng cắt cho tủ bếp nhôm đang phát triển, hướng tới tích hợp plugin SketchUp."
 };
 
-const SONGBAOVE_TOOL_URL = "https://songbaove.up.railway.app/";
+const SONGBAOVE_TOOL_URL = "https://songbaove.congthanhco.com/";
 
 export default function SoftwarePage() {
   return (
