@@ -658,7 +658,17 @@
       "category": "he-thuy-luc",
       "brand": null,
       "productLine": "Hệ Thủy Lực",
-      "imageUrl": "https://bizweb.dktcdn.net/thumb/medium/100/353/703/products/cua-kinh-thuy-luc-nhom-chat-luong-cao.jpg?v=1709283265140"
+      "imageUrl": "https://bizweb.dktcdn.net/thumb/medium/100/353/703/products/cua-kinh-thuy-luc-nhom-chat-luong-cao.jpg?v=1709283265140",
+      "gallery": [
+        "https://bizweb.dktcdn.net/thumb/medium/100/353/703/products/cua-nhom-thuy-luc.jpg?v=1709283266083",
+        "https://bizweb.dktcdn.net/thumb/medium/100/353/703/products/cua-nhom-thuy-luc-1-2.jpg?v=1709283266790",
+        "https://bizweb.dktcdn.net/thumb/medium/100/353/703/products/d38026a5-a7e7-4ec6-8b79-187404034ba3-jpeg.jpg?v=1709283267600",
+        "https://bizweb.dktcdn.net/thumb/medium/100/353/703/products/r.jpg?v=1709283267953",
+        "https://bizweb.dktcdn.net/thumb/medium/100/353/703/products/thi-cong-cua-thuy-luc-singhan-tai-long-bien-2.jpg?v=1709283268300"
+      ],
+      "specs": {
+        "Bản cánh": "120mm, 150mm, 180mm"
+      }
     },
     {
       "slug": "cua-kinh-thuy-luc-duong-san",
