@@ -10,6 +10,7 @@ import type { PublicProduct } from "@/types/product";
 import siteContent from "@/data/site-content.json";
 import { splitValues, parseColorEntry } from "@/lib/productDisplay";
 import { renderSafeMarkdown } from "@/lib/markdown";
+import DOMPurify from "isomorphic-dompurify";
 import RecentlyViewed from "@/components/RecentlyViewed";
 
 export const dynamic = "force-dynamic";
@@ -205,8 +206,8 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
 
           {product.description ? (
             <div
-              className="prose-sm mt-6 text-lg leading-8 text-slate-600 [&_a]:text-brand-700 [&_ul]:mt-2"
-              dangerouslySetInnerHTML={{ __html: renderSafeMarkdown(product.description) }}
+              className="prose-sm mt-6 text-lg leading-8 text-slate-600 [&_a]:text-brand-700 [&_ul]:mt-2 [&_img]:rounded-2xl"
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}
             />
           ) : (
             <p className="mt-6 text-lg leading-8 text-slate-600">

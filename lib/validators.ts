@@ -25,7 +25,7 @@ export const productSchema = z.object({
   brandId: z.string().trim().optional().or(z.literal("")),
   sku: optionalTrimmed(60),
   shortDesc: optionalTrimmed(300),
-  description: z.string().trim().max(10000).optional().or(z.literal("")),
+  description: z.string().trim().max(30000).optional().or(z.literal("")),
   imageUrl: optionalTrimmed(500),
   price: z.coerce.number().nonnegative().optional().or(z.literal("")),
   dealerPrice: z.coerce.number().nonnegative().optional().or(z.literal("")),
