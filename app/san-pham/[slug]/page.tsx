@@ -204,16 +204,9 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
               : "Liên hệ CÔNG THẢNH để nhận báo giá theo cấu hình cụ thể."}
           </p>
 
-          {product.description ? (
-            <div
-              className="prose-sm mt-6 text-lg leading-8 text-slate-600 [&_a]:text-brand-700 [&_ul]:mt-2 [&_img]:rounded-2xl"
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}
-            />
-          ) : (
-            <p className="mt-6 text-lg leading-8 text-slate-600">
-              {product.shortDesc || "Liên hệ CÔNG THẢNH để được tư vấn chi tiết."}
-            </p>
-          )}
+          <p className="mt-6 text-lg leading-8 text-slate-600">
+            {product.shortDesc || (!product.description ? "Liên hệ CÔNG THẢNH để được tư vấn chi tiết." : null)}
+          </p>
 
           {colorOptions.length > 0 && (
             <div className="mt-6">
@@ -269,6 +262,19 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
           </div>
         </div>
       </div>
+
+      {product.description && (
+        <div className="mt-16 max-w-4xl">
+          <div className="eyebrow">Thông tin sản phẩm</div>
+          <h2 className="section-title mt-3">Chi tiết {product.name}.</h2>
+          <div className="mt-6 overflow-x-auto">
+            <div
+              className="prose-sm min-w-[560px] text-lg leading-8 text-slate-600 [&_a]:text-brand-700 [&_ul]:mt-2 [&_h2]:mt-8 [&_h2]:text-2xl [&_h2]:font-black [&_h2]:text-slate-950 [&_h3]:mt-6 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-slate-950 [&_table]:mt-4 [&_table]:w-full [&_table]:border-collapse [&_th]:border [&_th]:border-slate-200 [&_th]:bg-slate-50 [&_th]:p-3 [&_th]:text-left [&_th]:text-sm [&_td]:border [&_td]:border-slate-200 [&_td]:p-3 [&_td]:text-sm [&_img]:rounded-2xl"
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}
+            />
+          </div>
+        </div>
+      )}
 
       {related.length > 0 && (
         <div className="mt-16">
