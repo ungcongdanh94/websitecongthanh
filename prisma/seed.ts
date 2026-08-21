@@ -59,8 +59,7 @@ async function seedRealCatalog() {
       update: data,
       create: {
         ...data,
-        slug: item.slug,
-        description: "Dữ liệu thật thu thập từ congthanhco.com — cập nhật lại nếu cần qua trang quản trị."
+        slug: item.slug
       }
     });
   }
@@ -76,6 +75,18 @@ async function seedRealCatalog() {
       await prisma.category.delete({ where: { slug } });
       console.log(`Đã xóa danh mục lớn cũ không còn dùng: ${slug}`);
     }
+  }
+
+  // Dọn câu mô tả chung chung đã lỡ gán cho sản phẩm ở lần seed trước (bug: che mất
+  // shortDesc thật vì code hiển thị ưu tiên "description" hơn "shortDesc"). Chỉ xóa
+  // đúng câu chữ cũ này — không đụng nếu Zen đã tự viết mô tả thật qua /admin/products.
+  const legacyPlaceholder = "Dữ liệu thật thu thập từ congthanhco.com — cập nhật lại nếu cần qua trang quản trị.";
+  const clearedPlaceholders = await prisma.product.updateMany({
+    where: { description: legacyPlaceholder },
+    data: { description: null }
+  });
+  if (clearedPlaceholders.count > 0) {
+    console.log(`Đã dọn mô tả chung chung ở ${clearedPlaceholders.count} sản phẩm — giờ sẽ hiện đúng mô tả thật.`);
   }
 
   console.log(
