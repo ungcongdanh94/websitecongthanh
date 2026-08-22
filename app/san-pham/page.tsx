@@ -99,15 +99,42 @@ export default async function ProductsPage({
       : {})
   };
 
-  const [rows, total, categories, brands, systems] = await Promise.all([
-    prisma.product.findMany({
-      where,
-      include: { category: true, brand: true },
-      orderBy: buildOrderBy(sort),
-      skip: (page - 1) * PAGE_SIZE,
-      take: PAGE_SIZE
-    }),
-    prisma.product.count({ where }),
+  const hasActiveFilters = Boolean(category || brand || system || color || thickness || minPrice || maxPrice);
+  // Khi chưa lọc/tìm gì cả, gom sản phẩm theo từng danh mục cho gọn thay vì
+  // trộn lẫn 56 sản phẩm vào một lưới duy nhất. Khi đã lọc hoặc tìm kiếm,
+  // quay lại lưới phẳng có phân trang như trước (kết quả đã thu hẹp rồi).
+  const isBrowsingAll = !hasActiveFilters && !q;
+
+  function toPublicProduct(product: Prisma.ProductGetPayload<{ include: { category: true; brand: true } }>): PublicProduct {
+    return {
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      shortDesc: product.shortDesc,
+      description: product.description,
+      imageUrl: product.imageUrl,
+      gallery: Array.isArray(product.gallery) ? (product.gallery as string[]) : [],
+      price: product.price === null ? null : Number(product.price),
+      unit: product.unit,
+      productLine: product.productLine,
+      aluminumSystem: product.aluminumSystem,
+      color: product.color,
+      thickness: product.thickness,
+      stockLength: product.stockLength,
+      catalogUrl: product.catalogUrl,
+      videoUrl: product.videoUrl,
+      specs:
+        product.specs && typeof product.specs === "object" && !Array.isArray(product.specs)
+          ? (product.specs as Record<string, unknown>)
+          : null,
+      categoryName: product.category.name,
+      categorySlug: product.category.slug,
+      brandName: product.brand?.name || null,
+      brandSlug: product.brand?.slug || null
+    };
+  }
+
+  const [categories, brands, systems] = await Promise.all([
     prisma.category.findMany({ where: { isActive: true }, orderBy: { sortOrder: "asc" } }),
     prisma.brand.findMany({ where: { isActive: true }, orderBy: { name: "asc" } }),
     prisma.product.findMany({
@@ -118,36 +145,43 @@ export default async function ProductsPage({
     })
   ]);
 
-  const products: PublicProduct[] = rows.map((product) => ({
-    id: product.id,
-    name: product.name,
-    slug: product.slug,
-    shortDesc: product.shortDesc,
-    description: product.description,
-    imageUrl: product.imageUrl,
-    gallery: Array.isArray(product.gallery) ? (product.gallery as string[]) : [],
-    price: product.price === null ? null : Number(product.price),
-    unit: product.unit,
-    productLine: product.productLine,
-    aluminumSystem: product.aluminumSystem,
-    color: product.color,
-    thickness: product.thickness,
-    stockLength: product.stockLength,
-    catalogUrl: product.catalogUrl,
-    videoUrl: product.videoUrl,
-    specs:
-      product.specs && typeof product.specs === "object" && !Array.isArray(product.specs)
-        ? (product.specs as Record<string, unknown>)
-        : null,
-    categoryName: product.category.name,
-    categorySlug: product.category.slug,
-    brandName: product.brand?.name || null,
-    brandSlug: product.brand?.slug || null
-  }));
+  let products: PublicProduct[] = [];
+  let total = 0;
+  let totalPages = 1;
+  let groupedByCategory: { categoryName: string; categorySlug: string; items: PublicProduct[] }[] = [];
 
-  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-
-  const hasActiveFilters = Boolean(category || brand || system || color || thickness || minPrice || maxPrice);
+  if (isBrowsingAll) {
+    const allRows = await prisma.product.findMany({
+      where,
+      include: { category: true, brand: true },
+      orderBy: [{ category: { sortOrder: "asc" } }, { isFeatured: "desc" }, { createdAt: "desc" }]
+    });
+    total = allRows.length;
+    const bySlug = new Map<string, { categoryName: string; categorySlug: string; items: PublicProduct[] }>();
+    for (const row of allRows) {
+      const item = toPublicProduct(row);
+      const key = row.category.slug;
+      if (!bySlug.has(key)) {
+        bySlug.set(key, { categoryName: row.category.name, categorySlug: row.category.slug, items: [] });
+      }
+      bySlug.get(key)!.items.push(item);
+    }
+    groupedByCategory = Array.from(bySlug.values());
+  } else {
+    const [rows, count] = await Promise.all([
+      prisma.product.findMany({
+        where,
+        include: { category: true, brand: true },
+        orderBy: buildOrderBy(sort),
+        skip: (page - 1) * PAGE_SIZE,
+        take: PAGE_SIZE
+      }),
+      prisma.product.count({ where })
+    ]);
+    products = rows.map(toPublicProduct);
+    total = count;
+    totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  }
 
   function pageHref(targetPage: number) {
     const params = new URLSearchParams();
@@ -194,10 +228,37 @@ export default async function ProductsPage({
 
       <div className="mt-6 flex flex-wrap items-center justify-between gap-3 text-sm font-semibold text-slate-500">
         <span>Tìm thấy {total} sản phẩm</span>
-        {totalPages > 1 && <span>Trang {page} / {totalPages}</span>}
+        {!isBrowsingAll && totalPages > 1 && <span>Trang {page} / {totalPages}</span>}
       </div>
 
-      {products.length ? (
+      {isBrowsingAll ? (
+        groupedByCategory.length ? (
+          <div className="mt-6 space-y-14">
+            {groupedByCategory.map((group) => (
+              <div key={group.categorySlug}>
+                <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-slate-200 pb-3">
+                  <h2 className="text-2xl font-black text-slate-950">{group.categoryName}</h2>
+                  <Link
+                    href={`/san-pham?category=${group.categorySlug}`}
+                    className="text-sm font-bold text-brand-700 hover:underline"
+                  >
+                    Xem lọc riêng ({group.items.length}) →
+                  </Link>
+                </div>
+                <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                  {group.items.map((product) => (
+                    <DatabaseProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-10 rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center">
+            <h2 className="text-xl font-bold">Chưa có sản phẩm nào</h2>
+          </div>
+        )
+      ) : products.length ? (
         <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {products.map((product) => <DatabaseProductCard key={product.id} product={product} />)}
         </div>
@@ -208,7 +269,7 @@ export default async function ProductsPage({
         </div>
       )}
 
-      {totalPages > 1 && (
+      {!isBrowsingAll && totalPages > 1 && (
         <nav className="mt-10 flex flex-wrap items-center justify-center gap-2">
           <Link
             href={pageHref(Math.max(1, page - 1))}
