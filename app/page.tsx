@@ -50,8 +50,8 @@ export default async function HomePage(){
            <Link href="/san-pham" className="rounded-md bg-[#08a865] px-6 py-3.5 text-sm font-black">XEM SẢN PHẨM <ArrowRight className="ml-2 inline h-4 w-4"/></Link>
            <Link href="/lien-he" className="rounded-md border border-white/40 bg-black/25 px-6 py-3.5 text-sm font-black">NHẬN BÁO GIÁ <ArrowRight className="ml-2 inline h-4 w-4"/></Link>
          </div>
-         <div className="mt-9 grid max-w-[650px] grid-cols-2 border-t border-white/15 sm:grid-cols-4">
-           {[[BadgeCheck,"Nhôm chính hãng"],[Medal,"Độ bền vượt trội"],[Wrench,"Thi công chuyên nghiệp"],[ShieldCheck,"Bảo hành dài hạn"]].map(([Icon,t]:any)=><div key={t} className="flex items-center gap-2 border-r border-white/10 px-3 py-4 first:pl-0"><Icon className="h-6 w-6 shrink-0 text-[#55e19b]"/><span className="text-[11px] font-bold leading-4">{t}</span></div>)}
+         <div className="mt-9 grid max-w-[650px] grid-cols-2 gap-x-6 gap-y-4 border-t border-white/15 pt-5 sm:grid-cols-4">
+           {[[BadgeCheck,"Nhôm chính hãng"],[Medal,"Độ bền vượt trội"],[Wrench,"Thi công chuyên nghiệp"],[ShieldCheck,"Bảo hành dài hạn"]].map(([Icon,t]:any)=><div key={t} className="flex items-center gap-2"><Icon className="h-6 w-6 shrink-0 text-[#55e19b]"/><span className="text-[11px] font-bold leading-4">{t}</span></div>)}
          </div>
        </div>
        <div className="overflow-hidden rounded-[24px] border border-white/15 bg-[#063b30]/92 p-5 shadow-2xl backdrop-blur-md">
