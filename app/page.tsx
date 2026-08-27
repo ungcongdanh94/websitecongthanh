@@ -26,18 +26,21 @@ const projectFallback=[
  ["Showroom CÔNG THẢNH","Long Xuyên, An Giang","/assets/projects/project-showroom.webp"]
 ];
 const news=[
- ["Xu hướng thiết kế cửa nhôm hiện đại năm 2026","/assets/solutions/solution-villa.webp"],
- ["So sánh nhôm Xingfa, Namsung và cách lựa chọn phù hợp","/assets/solutions/solution-townhouse.webp"],
- ["Bí quyết chọn cửa nhôm phù hợp với từng loại công trình","/assets/solutions/solution-apartment.webp"]
+ ["Xu hướng thiết kế cửa nhôm hiện đại năm 2026","/assets/solutions/solution-villa.webp","xu-huong-thiet-ke-cua-nhom-hien-dai-2026"],
+ ["So sánh nhôm Xingfa và nhôm Maxpro Nhật Bản — cách lựa chọn phù hợp","/assets/solutions/solution-townhouse.webp","so-sanh-nhom-xingfa-va-maxpro-cach-lua-chon-phu-hop"],
+ ["Bí quyết chọn cửa nhôm phù hợp với từng loại công trình","/assets/solutions/solution-apartment.webp","bi-quyet-chon-cua-nhom-phu-hop-tung-loai-cong-trinh"],
+ ["Quy trình thi công cửa nhôm chuẩn kỹ thuật","/assets/team/team-working.webp","quy-trinh-thi-cong-cua-nhom-chuan-ky-thuat"]
 ];
 
 export default async function HomePage(){
- let dbProjects:any[]=[]; let brands:any[]=[];
- try { [dbProjects,brands]=await Promise.all([
+ let dbProjects:any[]=[]; let brands:any[]=[]; let dbArticles:any[]=[];
+ try { [dbProjects,brands,dbArticles]=await Promise.all([
    prisma.project.findMany({where:{status:"PUBLISHED"},orderBy:{createdAt:"desc"},take:4}),
-   prisma.brand.findMany({where:{isActive:true},orderBy:{name:"asc"},take:12})
+   prisma.brand.findMany({where:{isActive:true},orderBy:{name:"asc"},take:12}),
+   prisma.article.findMany({where:{status:"PUBLISHED"},orderBy:{publishedAt:"desc"},take:4})
  ]); } catch {}
  const projects=dbProjects.length?dbProjects.map(p=>[p.title,p.location||"CÔNG THẢNH",p.coverUrl||"/assets/projects/project-villa.webp",p.slug]):projectFallback;
+ const newsItems=dbArticles.length?dbArticles.map(a=>[a.title,a.coverUrl||"/assets/solutions/solution-villa.webp",a.slug]):news;
  return <main className="bg-white text-slate-950">
    <section className="relative min-h-[620px] overflow-hidden bg-[#062e25] text-white">
      <Image src="/assets/hero/hero-home-desktop.webp" alt="Nhôm cao cấp CÔNG THẢNH" fill priority className="object-cover" />
@@ -99,7 +102,7 @@ export default async function HomePage(){
 
    <section className="container-page py-14"><div className="mb-6 flex items-end justify-between"><div><div className="text-xs font-black uppercase tracking-wider text-[#168055]">Dự án tiêu biểu</div><h2 className="mt-2 text-3xl font-black uppercase">Công trình nổi bật</h2></div><Link href="/du-an" className="text-xs font-black uppercase">Xem tất cả dự án →</Link></div><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">{projects.slice(0,4).map((p:any)=><Link href={p[3]?`/du-an/${p[3]}`:"/du-an"} key={p[0]} className="overflow-hidden rounded-lg border bg-white shadow-sm"><div className="relative aspect-[1.55]"><Image src={p[2]} alt={p[0]} fill className="object-cover"/></div><div className="p-4"><div className="text-sm font-black uppercase">{p[0]}</div><div className="mt-1 text-xs text-slate-500">{p[1]}</div></div></Link>)}</div></section>
 
-   <section className="container-page pb-14"><div className="mb-6 flex items-end justify-between"><h2 className="text-xl font-black uppercase">Tin tức mới nhất</h2><span className="text-xs font-black uppercase">Xem tất cả tin tức →</span></div><div className="grid gap-5 lg:grid-cols-[1fr_1fr_1fr_1fr_290px]">{[...news,["Quy trình thi công cửa nhôm chuẩn kỹ thuật","/assets/solutions/solution-villa.webp"]].map(([t,img])=><div key={t} className="overflow-hidden rounded-lg border bg-white shadow-sm"><div className="relative aspect-[1.65]"><Image src={img} alt={t} fill className="object-cover"/></div><div className="p-3"><div className="text-[10px] text-slate-400">10/05/2026</div><div className="mt-2 text-xs font-bold leading-5">{t}</div><div className="mt-3 text-[11px] font-bold text-[#08764f]">Đọc thêm →</div></div></div>)}<div className="rounded-lg bg-[#064333] p-6 text-white"><div className="text-xl font-black uppercase">Cần tư vấn ngay?</div><p className="mt-3 text-xs leading-5 text-white/70">Đội ngũ chuyên viên của chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7.</p><Link href="/lien-he" className="mt-6 inline-flex rounded-md bg-[#0cad68] px-5 py-3 text-xs font-black uppercase">Liên hệ ngay →</Link><div className="mt-5 text-xs font-bold">Hotline: 0908 22 99 77</div></div></div></section>
+   <section className="container-page pb-14"><div className="mb-6 flex items-end justify-between"><h2 className="text-xl font-black uppercase">Tin tức mới nhất</h2><Link href="/tin-tuc" className="text-xs font-black uppercase hover:text-brand-700">Xem tất cả tin tức →</Link></div><div className="grid gap-5 lg:grid-cols-[1fr_1fr_1fr_1fr_290px]">{newsItems.map(([t,img,slug]:any)=><Link key={t} href={`/tin-tuc/${slug}`} className="overflow-hidden rounded-lg border bg-white shadow-sm transition hover:shadow-soft"><div className="relative aspect-[1.65]"><Image src={img} alt={t} fill className="object-cover"/></div><div className="p-3"><div className="mt-2 text-xs font-bold leading-5">{t}</div><div className="mt-3 text-[11px] font-bold text-[#08764f]">Đọc thêm →</div></div></Link>)}<div className="rounded-lg bg-[#064333] p-6 text-white"><div className="text-xl font-black uppercase">Cần tư vấn ngay?</div><p className="mt-3 text-xs leading-5 text-white/70">Đội ngũ chuyên viên của chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7.</p><Link href="/lien-he" className="mt-6 inline-flex rounded-md bg-[#0cad68] px-5 py-3 text-xs font-black uppercase">Liên hệ ngay →</Link><div className="mt-5 text-xs font-bold">Hotline: 0908 22 99 77</div></div></div></section>
 
    <section className="container-page pb-14"><div className="text-center text-xs font-black uppercase tracking-wider text-[#17694e]">Đối tác – thương hiệu</div><BrandStrip brands={(brands.length?brands.map((b:any)=>({name:b.name,logoUrl:b.logoUrl||null})):[["XINGFA"],["NAMSUNG"],["DRAHO"],["CMECH"],["CANDY"],["KIN LONG"]].map(([n])=>({name:n,logoUrl:null})))} /></section>
  </main>

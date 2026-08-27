@@ -5,6 +5,7 @@ import siteContent from "../data/site-content.json";
 import seoContent from "../data/seo-content.json";
 import siteAssets from "../data/site-assets.json";
 import realCatalog from "../data/congthanh-real-catalog.json";
+import articlesContent from "../data/articles-content.json";
 
 const prisma = new PrismaClient();
 
@@ -153,6 +154,23 @@ async function main() {
       where: { slug: project.slug },
       update: data,
       create: { ...data, slug: project.slug }
+    });
+  }
+
+  // ---------- Tin tức / bài viết ----------
+  for (const article of articlesContent.articles) {
+    const data = {
+      title: article.title,
+      excerpt: article.excerpt,
+      content: article.content,
+      coverUrl: article.coverUrl,
+      status: PublishStatus.PUBLISHED,
+      publishedAt: new Date()
+    };
+    await prisma.article.upsert({
+      where: { slug: article.slug },
+      update: data,
+      create: { ...data, slug: article.slug }
     });
   }
 

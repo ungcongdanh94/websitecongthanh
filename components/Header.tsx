@@ -13,7 +13,7 @@ const nav: [string, string][] = [
   ["Giới thiệu", "/gioi-thieu"],
   ["Dự án", "/du-an"],
   ["Phần mềm", "/phan-mem"],
-  ["Tin tức", "/san-pham"],
+  ["Tin tức", "/tin-tuc"],
   ["Liên hệ", "/lien-he"]
 ];
 
