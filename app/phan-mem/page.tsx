@@ -1,13 +1,14 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowUpRight, Box, Calculator, FileSpreadsheet, WandSparkles } from "lucide-react";
+import { ArrowUpRight, Box, Calculator, FileSpreadsheet, Sun, WandSparkles } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Phần mềm & công cụ thiết kế | CÔNG THẢNH",
-  description: "Công cụ dựng hình song bảo vệ dùng thử ngay, cùng các công cụ tính vật tư và xuất bảng cắt cho tủ bếp nhôm đang phát triển, hướng tới tích hợp plugin SketchUp."
+  description: "Công cụ dựng hình song bảo vệ và tính toán điện mặt trời dùng thử ngay, cùng các công cụ tính vật tư và xuất bảng cắt cho tủ bếp nhôm đang phát triển, hướng tới tích hợp plugin SketchUp."
 };
 
 const SONGBAOVE_TOOL_URL = "https://songbaove.congthanhco.com/";
+const DIENMATTROI_TOOL_URL = "https://dienmattroi.congthanhco.com/";
 
 export default function SoftwarePage() {
   return (
@@ -17,7 +18,7 @@ export default function SoftwarePage() {
           <div className="text-sm font-bold uppercase tracking-widest text-brand-200">Phần mềm CÔNG THẢNH</div>
           <h1 className="mt-4 text-5xl font-black md:text-7xl">Thiết kế nhanh. Tính vật tư chuẩn. Báo giá thuận tiện.</h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-white/80">
-            Công cụ dựng hình song bảo vệ đã dùng thử được ngay bên dưới. Các công cụ tủ bếp nhôm và plugin SketchUp đang được phát triển tiếp theo.
+            Công cụ dựng hình song bảo vệ và tính toán điện mặt trời đã dùng thử được ngay bên dưới. Các công cụ tủ bếp nhôm và plugin SketchUp đang được phát triển tiếp theo.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
@@ -29,6 +30,15 @@ export default function SoftwarePage() {
               Mở công cụ song bảo vệ
               <ArrowUpRight className="ml-2 h-4 w-4" />
             </a>
+            <a
+              href={DIENMATTROI_TOOL_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center rounded-full bg-white px-6 py-3 font-bold text-brand-800"
+            >
+              Mở công cụ điện mặt trời
+              <ArrowUpRight className="ml-2 h-4 w-4" />
+            </a>
             <Link
               href="/lien-he"
               className="inline-flex items-center rounded-full border border-white/40 bg-white/10 px-6 py-3 font-bold text-white backdrop-blur-xl transition hover:bg-white/20"
@@ -38,9 +48,10 @@ export default function SoftwarePage() {
           </div>
         </div>
       </div>
-      <div className="mt-10 grid gap-5 md:grid-cols-4">
+      <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
         {[
           [Box, "Dựng hình nhanh", SONGBAOVE_TOOL_URL],
+          [Sun, "Điện mặt trời", DIENMATTROI_TOOL_URL],
           [Calculator, "Tính vật tư", null],
           [FileSpreadsheet, "Xuất bảng cắt", null],
           [WandSparkles, "Chuẩn bị tích hợp AI", null]
